@@ -3,31 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TWU LLC | Tech Wizards United — Sovereign Systems & Private Offline AI</title>
-  <meta name="description" content="Sovereign engineering, local AI architecture, and on-site systems for Mesa businesses and community institutions. Built by Ethan Kilmer.">
+  <title>Tech Wizards United — Independent Software & Systems Studio</title>
+  <meta name="description" content="TWU LLC builds bespoke software, on-site systems, and private offline AI for Arizona businesses and community institutions. Founded by Ethan Kilmer in Mesa, AZ.">
   <link rel="icon" type="image/svg+xml" href="assets/twu-logo.svg">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #05070c;
-      --panel-bg: rgba(10, 15, 26, 0.75);
-      --panel-border: rgba(0, 240, 255, 0.15);
-      --panel-border-active: #00f0ff;
-      --cyan: #00f0ff;
-      --cyan-dim: rgba(0, 240, 255, 0.12);
-      --cyan-glow: rgba(0, 240, 255, 0.4);
-      --violet: #8b5cf6;
-      --emerald: #10b981;
-      --amber: #f59e0b;
-      --text: #e2e8f0;
-      --text-muted: #64748b;
-      --text-dim: #334155;
+      --bg: #090d16;
+      --bg-elevated: #0f1523;
+      --bg-subtle: #141b2d;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.16);
+      --border-accent: rgba(0, 240, 255, 0.35);
+      
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-tertiary: #64748b;
+      --text-accent: #00f0ff;
+      
+      --accent-blue: #38bdf8;
+      --accent-indigo: #6366f1;
+      --accent-violet: #a855f7;
+      --accent-emerald: #10b981;
+      
+      --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
-      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      
+      --container-width: 1080px;
     }
 
     * {
@@ -38,1046 +45,675 @@
 
     body {
       background-color: var(--bg);
-      color: var(--text);
-      font-family: var(--font-display);
-      line-height: 1.5;
+      color: var(--text-secondary);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
-      position: relative;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 100% 40%, rgba(99, 102, 241, 0.04) 0%, transparent 40%);
+      background-repeat: no-repeat;
     }
 
-    /* Hardware Canvas Grid in Background */
-    #hud-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.65;
-    }
-
-    .wrap {
-      position: relative;
-      z-index: 1;
-      max-width: 1240px;
+    .container {
+      max-width: var(--container-width);
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 32px;
     }
 
-    /* Top HUD Metric Ticker */
-    .hud-ticker {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.5px;
-      color: var(--text-muted);
-    }
-    .hud-ticker-left {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-    }
-    .hud-dot {
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--emerald);
-      box-shadow: 0 0 8px var(--emerald);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-    }
-    .hud-val {
-      color: var(--cyan);
-      font-weight: 600;
-    }
-
-    /* Main Navigation HUD */
+    /* Navigation */
     header {
-      padding: 18px 0;
-      border-bottom: 1px solid var(--panel-border);
-      background: rgba(5, 7, 12, 0.85);
-      backdrop-filter: blur(20px);
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 100;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
-    .nav-bar {
+    .nav-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .brand-mark {
+    .brand {
       display: flex;
       align-items: center;
       gap: 14px;
       text-decoration: none;
-      color: #fff;
+      color: var(--text-primary);
     }
-    .brand-mark img {
-      width: 40px;
-      height: 40px;
-      filter: drop-shadow(0 0 10px var(--cyan-glow));
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      display: block;
     }
-    .brand-title {
-      font-size: 1.15rem;
+    .brand-text {
+      font-family: var(--font-display);
       font-weight: 700;
-      letter-spacing: -0.5px;
+      font-size: 1.1rem;
+      letter-spacing: -0.3px;
     }
-    .brand-subtitle {
+    .brand-location {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--cyan);
-      letter-spacing: 1px;
+      font-size: 0.72rem;
+      color: var(--text-tertiary);
+      display: block;
+      margin-top: -2px;
+      letter-spacing: 0.5px;
     }
-    .nav-actions {
+    .nav-links {
       display: flex;
-      gap: 18px;
+      gap: 32px;
       align-items: center;
+      list-style: none;
     }
-    .nav-link {
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      color: var(--text-muted);
+    .nav-links a {
+      color: var(--text-secondary);
       text-decoration: none;
-      transition: color 0.2s;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
     }
-    .nav-link:hover {
-      color: var(--cyan);
+    .nav-links a:hover {
+      color: var(--text-primary);
     }
-    .hud-btn {
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      font-weight: 600;
+    .btn-nav {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text-primary) !important;
       padding: 8px 18px;
-      border-radius: 4px;
-      background: var(--cyan-dim);
-      border: 1px solid var(--cyan);
-      color: var(--cyan);
-      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
       transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
     }
-    .hud-btn:hover {
-      background: var(--cyan);
-      color: #000;
-      box-shadow: 0 0 20px var(--cyan-glow);
+    .btn-nav:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--border-hover);
     }
 
-    /* Hero Bleeding Edge Terminal / Monolith */
-    .hero-split {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 40px;
-      padding: 70px 0 60px;
-      align-items: center;
+    /* Hero */
+    .hero {
+      padding: 120px 0 90px;
+      text-align: center;
+      position: relative;
     }
-    @media (max-width: 960px) {
-      .hero-split {
-        grid-template-columns: 1fr;
-      }
-    }
-    .hero-kicker {
+    .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 9999px;
       font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: var(--cyan);
-      background: rgba(0, 240, 255, 0.06);
-      border: 1px solid rgba(0, 240, 255, 0.2);
-      padding: 4px 12px;
-      margin-bottom: 24px;
-      border-radius: 2px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
     }
-    .hero-title {
-      font-size: clamp(2.4rem, 5.5vw, 4.2rem);
-      font-weight: 700;
-      line-height: 1.05;
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 4.4rem);
+      font-weight: 800;
+      line-height: 1.1;
       letter-spacing: -1.5px;
-      color: #fff;
-      margin-bottom: 24px;
+      color: var(--text-primary);
+      max-width: 860px;
+      margin: 0 auto 28px;
     }
-    .hero-title span {
-      background: linear-gradient(135deg, #00f0ff 0%, #8b5cf6 50%, #ec4899 100%);
+    .hero h1 span.gradient {
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-blue) 80%, var(--accent-indigo) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .hero-summary {
-      font-size: 1.15rem;
-      color: var(--text-muted);
+    .hero-p {
+      font-size: 1.22rem;
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin: 0 auto 44px;
       line-height: 1.6;
-      margin-bottom: 34px;
-      max-width: 580px;
     }
-    .hero-cta-group {
+    .hero-actions {
       display: flex;
+      justify-content: center;
       gap: 16px;
       flex-wrap: wrap;
     }
-    .btn-solid {
-      background: #00f0ff;
-      color: #05070c;
-      font-family: var(--font-mono);
+    .btn-primary {
+      background: #ffffff;
+      color: #090d16;
+      font-family: var(--font-display);
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       padding: 14px 28px;
-      border-radius: 4px;
+      border-radius: 9px;
       text-decoration: none;
       transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 0 25px rgba(0, 240, 255, 0.35);
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
     }
-    .btn-solid:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 35px rgba(0, 240, 255, 0.6);
+    .btn-primary:hover {
+      background: #f1f5f9;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 25px rgba(255, 255, 255, 0.25);
     }
-    .btn-ghost {
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #fff;
-      font-family: var(--font-mono);
-      font-size: 0.9rem;
-      padding: 14px 24px;
-      border-radius: 4px;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-    .btn-ghost:hover {
-      border-color: var(--cyan);
-      background: rgba(0, 240, 255, 0.05);
-    }
-
-    /* Live Interactive Terminal Card */
-    .terminal-console {
-      background: #080c14;
-      border: 1px solid rgba(0, 240, 255, 0.25);
-      border-radius: 8px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 30px rgba(0, 240, 255, 0.1);
-      position: relative;
-      overflow: hidden;
-    }
-    .terminal-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #0e1422;
-      padding: 10px 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--text-muted);
-    }
-    .t-dots {
-      display: flex;
-      gap: 6px;
-    }
-    .t-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-    .terminal-body {
-      padding: 20px;
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      min-height: 280px;
-      color: #cbd5e1;
-      line-height: 1.7;
-    }
-    .t-prompt {
-      color: var(--cyan);
-    }
-    .t-dim {
-      color: var(--text-muted);
-    }
-    .t-success {
-      color: var(--emerald);
-    }
-    .t-accent {
-      color: var(--violet);
-    }
-    .terminal-quick-runs {
-      display: flex;
-      gap: 8px;
-      padding: 12px 16px;
-      background: #090e18;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      overflow-x: auto;
-    }
-    .cmd-pill {
+    .btn-secondary {
       background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--cyan);
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      padding: 4px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.15s;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 14px 26px;
+      border-radius: 9px;
+      text-decoration: none;
+      transition: all 0.2s ease;
     }
-    .cmd-pill:hover {
-      background: var(--cyan);
-      color: #000;
-    }
-
-    /* THE CAPABILITY MATRIX (REPLACES OVERSATURATED CARDS) */
-    .matrix-section {
-      padding: 80px 0;
-    }
-    .matrix-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 36px;
-      border-bottom: 1px solid var(--panel-border);
-      padding-bottom: 20px;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-    .matrix-title {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.5px;
-    }
-    .matrix-desc {
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      color: var(--cyan);
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--border-hover);
     }
 
-    /* Asymmetric Interactive Workstation */
-    .workstation {
+    /* Trust Strip */
+    .trust-bar {
       display: grid;
-      grid-template-columns: 340px 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 24px;
-      background: var(--panel-bg);
-      border: 1px solid var(--panel-border);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 110px;
     }
-    @media (max-width: 900px) {
-      .workstation {
+    .trust-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+    .trust-cell svg {
+      flex-shrink: 0;
+      color: var(--accent-blue);
+    }
+
+    /* Section Headers */
+    .section-head {
+      margin-bottom: 56px;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 10px;
+      display: block;
+      font-weight: 500;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 2.3rem;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 620px;
+      margin-top: 12px;
+    }
+
+    /* Curated Services Layout */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 130px;
+    }
+    @media (max-width: 768px) {
+      .services-grid {
         grid-template-columns: 1fr;
       }
     }
-
-    /* Capability Selectors List (Left Column) */
-    .cap-list {
-      background: rgba(8, 12, 20, 0.6);
-      border-right: 1px solid var(--panel-border);
+    .service-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 38px 34px;
+      transition: all 0.25s ease;
       display: flex;
       flex-direction: column;
     }
-    .cap-item {
-      padding: 24px 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      position: relative;
+    .service-card:hover {
+      border-color: var(--border-hover);
+      background: var(--bg-subtle);
+      transform: translateY(-2px);
     }
-    .cap-item:last-child {
-      border-bottom: none;
-    }
-    .cap-item.active {
-      background: rgba(0, 240, 255, 0.06);
-    }
-    .cap-item.active::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      background: var(--cyan);
-      box-shadow: 0 0 15px var(--cyan);
-    }
-    .cap-item-top {
+    .service-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 8px;
+      justify-content: center;
+      margin-bottom: 24px;
     }
-    .cap-item-top img {
-      width: 28px;
-      height: 28px;
+    .service-icon svg {
+      width: 22px;
+      height: 22px;
     }
-    .cap-name {
-      font-size: 1.05rem;
+    .service-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
       font-weight: 700;
-      color: #fff;
-    }
-    .cap-summary {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    /* Telemetry Detail Inspector (Right Column) */
-    .inspector-pane {
-      padding: 36px 32px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-    }
-    .inspector-tag {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--cyan);
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      color: var(--text-primary);
       margin-bottom: 12px;
-      display: inline-block;
+      letter-spacing: -0.3px;
     }
-    .inspector-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
+    .service-card p {
+      font-size: 0.98rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 24px;
+      flex-grow: 1;
     }
-    .inspector-body {
-      font-size: 1.05rem;
-      color: #cbd5e1;
-      line-height: 1.7;
-      margin-bottom: 28px;
-      max-width: 680px;
-    }
-    .spec-matrix {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
-      margin-bottom: 30px;
-      padding: 16px 20px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 6px;
+    .service-tag {
       font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-tertiary);
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
     }
-    .spec-key {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    .spec-val {
-      font-size: 0.95rem;
-      color: #fff;
-      font-weight: 600;
-    }
-    .spec-val.green { color: var(--emerald); }
-    .spec-val.cyan { color: var(--cyan); }
-    .spec-val.violet { color: var(--violet); }
 
-    /* Architecture Blueprint Frame */
-    .arch-frame {
-      margin: 80px 0;
-      background: var(--panel-bg);
-      border: 1px solid var(--panel-border);
-      border-radius: 12px;
-      padding: 40px;
-      position: relative;
-      overflow: hidden;
+    /* Architecture Blueprint Section */
+    .arch-section {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px 40px;
+      margin-bottom: 130px;
     }
-    .arch-frame::before {
-      content: 'SOVEREIGN SYSTEM ARCHITECTURE // LOCAL BOUNDARY';
-      position: absolute;
-      top: 14px;
-      left: 20px;
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--cyan);
-      letter-spacing: 1px;
-    }
-    .arch-frame img {
+    .arch-section img {
       width: 100%;
       height: auto;
       display: block;
-      margin-top: 10px;
+      margin-top: 32px;
+      border-radius: 8px;
     }
 
-    /* Sovereign Philosophy Monolith */
-    .monolith {
+    /* Founder & Philosophy */
+    .editorial {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      padding: 80px 0;
-      border-top: 1px solid var(--panel-border);
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 56px;
+      padding-bottom: 120px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 100px;
     }
     @media (max-width: 860px) {
-      .monolith { grid-template-columns: 1fr; }
+      .editorial {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
     }
-    .monolith h2 {
+    .editorial-content h2 {
+      font-family: var(--font-display);
       font-size: 2.2rem;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -1px;
-      line-height: 1.15;
-      margin-bottom: 20px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin-bottom: 22px;
     }
-    .monolith p {
+    .editorial-content p {
       font-size: 1.05rem;
-      color: var(--text-muted);
-      line-height: 1.7;
+      color: var(--text-secondary);
       margin-bottom: 20px;
+      line-height: 1.7;
     }
-    .quote-stripe {
-      border-left: 2px solid var(--cyan);
-      padding: 16px 20px;
+    .editorial-quote {
+      border-left: 2px solid var(--accent-blue);
+      padding: 14px 22px;
       font-style: italic;
-      color: #fff;
-      background: rgba(0, 240, 255, 0.03);
+      color: var(--text-primary);
+      font-size: 1.05rem;
+      margin: 28px 0;
+      background: rgba(255, 255, 255, 0.02);
       border-radius: 0 8px 8px 0;
-      margin: 24px 0;
     }
 
-    /* Direct Contact HUD */
-    .contact-monolith {
-      background: linear-gradient(180deg, rgba(14, 20, 32, 0.8) 0%, rgba(5, 7, 12, 0.95) 100%);
-      border: 1px solid rgba(0, 240, 255, 0.3);
+    .credentials-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 60px 40px;
-      text-align: center;
-      margin: 60px 0 100px;
-      box-shadow: 0 0 50px rgba(0, 240, 255, 0.1);
+      padding: 32px 28px;
+      height: fit-content;
     }
-    .contact-monolith h2 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 14px;
-      letter-spacing: -0.5px;
-    }
-    .contact-monolith p {
+    .credentials-card h4 {
+      font-family: var(--font-display);
       font-size: 1.1rem;
-      color: var(--text-muted);
-      max-width: 580px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+    .cred-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+    .cred-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .cred-list svg {
+      flex-shrink: 0;
+      margin-top: 3px;
+      color: var(--accent-emerald);
+    }
+
+    /* Contact Section */
+    .contact-section {
+      text-align: center;
+      padding: 40px 0 120px;
+    }
+    .contact-section h2 {
+      font-family: var(--font-display);
+      font-size: 2.6rem;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+    .contact-section p {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 540px;
       margin: 0 auto 36px;
     }
-    .contact-links-grid {
+    .contact-actions {
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 18px;
       flex-wrap: wrap;
-      margin-bottom: 30px;
     }
-    .c-badge {
+    .contact-pill {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      font-family: var(--font-mono);
-      font-size: 1rem;
-      color: #fff;
-      background: #090e18;
-      border: 1px solid rgba(0, 240, 255, 0.3);
-      padding: 14px 26px;
-      border-radius: 6px;
+      gap: 10px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
       text-decoration: none;
-      transition: all 0.2s;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      padding: 14px 26px;
+      border-radius: 9px;
+      transition: all 0.2s ease;
     }
-    .c-badge:hover {
-      border-color: var(--cyan);
-      background: var(--cyan-dim);
-      box-shadow: 0 0 20px var(--cyan-glow);
+    .contact-pill:hover {
+      border-color: var(--border-hover);
+      background: var(--bg-subtle);
+      transform: translateY(-2px);
     }
 
+    /* Footer */
     footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 30px 0;
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--text-dim);
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-tertiary);
+    }
+    .footer-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .footer-links a {
+      color: var(--text-tertiary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover {
+      color: var(--text-primary);
     }
   </style>
 </head>
 <body>
 
-  <!-- Dynamic Particle Grid Canvas -->
-  <canvas id="hud-canvas"></canvas>
+  <!-- Navigation -->
+  <header>
+    <div class="container nav-inner">
+      <a href="#" class="brand">
+        <img src="assets/twu-logo.svg" alt="TWU Studio" class="brand-logo">
+        <div>
+          <span class="brand-text">Tech Wizards United</span>
+          <span class="brand-location">Mesa, Arizona</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#services">Capabilities</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#about">Studio</a></li>
+        <li><a href="#contact" class="btn-nav">Get in Touch</a></li>
+      </ul>
+    </div>
+  </header>
 
-  <div class="wrap">
-    
-    <!-- Top System Ticker -->
-    <div class="hud-ticker">
-      <div class="hud-ticker-left">
-        <span><span class="hud-dot"></span> NODE: <span class="hud-val">ONLINE</span></span>
-        <span>DEPLOYMENT: <span class="hud-val">SOVEREIGN AIR-GAP</span></span>
-        <span>ENGINE: <span id="wasm-status-val" class="hud-val" style="color:var(--cyan);">RUST WASM (wasm32)</span></span>
-        <span>CLOUD LEAKAGE: <span class="hud-val" style="color:var(--emerald);">0%</span></span>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Independent Systems & Software Studio</span>
       </div>
-      <div>
-        <span>BASE: <span class="hud-val">MESA, AZ</span></span>
+      <h1>
+        Software you own.<br>
+        <span class="gradient">Freedom from subscriptions.</span>
+      </h1>
+      <p class="hero-p">
+        We build bespoke internal tools, on-site hardware infrastructure, and private offline AI that run directly on your own computers. Zero monthly seat licenses. 100% sovereign code.
+      </p>
+      <div class="hero-actions">
+        <a href="tel:6102071917" class="btn-primary">Call or Text: (610) 207-1917</a>
+        <a href="#services" class="btn-secondary">Explore Capabilities</a>
       </div>
     </div>
+  </section>
 
-    <!-- Main Navigation Header -->
-    <header>
-      <div class="nav-bar">
-        <a href="#" class="brand-mark">
-          <img src="assets/twu-logo.svg" alt="TWU Monogram">
-          <div>
-            <div class="brand-title">Tech Wizards United</div>
-            <div class="brand-subtitle">SOVEREIGN TECH · LOCAL AI ENGINE</div>
-          </div>
-        </a>
-        <div class="nav-actions">
-          <a href="#workstation" class="nav-link">Matrix</a>
-          <a href="#architecture" class="nav-link">Architecture</a>
-          <a href="#philosophy" class="nav-link">Founder</a>
-          <a href="#contact" class="hud-btn">
-            <span>Direct Channel</span>
-            <span>→</span>
-          </a>
-        </div>
+  <!-- Trust Strip -->
+  <div class="container">
+    <div class="trust-bar">
+      <div class="trust-cell">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Registered Arizona Entity · Mesa, AZ</span>
       </div>
-    </header>
+      <div class="trust-cell">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>Level 1 Fingerprint Cleared</span>
+      </div>
+      <div class="trust-cell">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        <span>Private, Offline-First Architecture</span>
+      </div>
+      <div class="trust-cell">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        <span>Mesa Public Library Community Partner</span>
+      </div>
+    </div>
+  </div>
 
-    <!-- Bleeding-Edge Hero Split -->
-    <section class="hero-split">
-      <div>
-        <div class="hero-kicker">
-          <span>⚡</span>
-          <span>AUTONOMOUS WORKFLOWS // BESPOKE ENGINEERING</span>
+  <!-- Capabilities Grid -->
+  <section id="services" class="container">
+    <div class="section-head">
+      <span class="section-label">Core Capabilities</span>
+      <h2 class="section-title">Engineered for independence.</h2>
+      <p class="section-subtitle">
+        Whether your team needs a clean custom tool to replace a messy spreadsheet or on-site computer infrastructure that never fails, we deliver working results you own completely.
+      </p>
+    </div>
+
+    <div class="services-grid">
+      <!-- 1: Bespoke Software -->
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         </div>
-        <h1 class="hero-title">
-          Software you own.<br>
-          <span>Zero cloud seats.</span>
-        </h1>
-        <p class="hero-summary">
-          TWU LLC engineers private AI systems, high-speed custom software, and on-site hardware infrastructure for local businesses and schools. No monthly user fees. 100% sovereign code.
+        <h3>Bespoke Internal Tools</h3>
+        <p>
+          Custom software designed specifically for how your team operates. Automated scheduling, job checklists, intake forms, and database bridges—built so you never pay monthly per-user seat licenses again.
         </p>
-        <div class="hero-cta-group">
-          <a href="tel:6102071917" class="btn-solid">
-            <span>(610) 207-1917</span>
-            <span>⚡</span>
-          </a>
-          <a href="#workstation" class="btn-ghost">Inspect Capability Matrix</a>
-        </div>
+        <div class="service-tag">Native Desktop · Offline PWA · Zero User Subscriptions</div>
       </div>
 
-      <!-- Live Interactive Terminal -->
-      <div>
-        <div class="terminal-console">
-          <div class="terminal-bar">
-            <div class="t-dots">
-              <span class="t-dot" style="background:#ef4444;"></span>
-              <span class="t-dot" style="background:#eab308;"></span>
-              <span class="t-dot" style="background:#10b981;"></span>
-            </div>
-            <span>twu@host:~/sovereign-lab</span>
-            <span style="color:var(--emerald);">ACTIVE</span>
-          </div>
-          <div class="terminal-body" id="term-output">
-            <p><span class="t-prompt">twu-core:~$</span> ./bin/twu-status --verify-perimeter</p>
-            <p class="t-dim">// Initializing sovereign hardware audit...</p>
-            <p class="t-success">[✓] Air-Gapped Model Broker: Ready ($0.00 cloud spend)</p>
-            <p class="t-success">[✓] Local Documents Indexed: Complete (Air-gapped memory)</p>
-            <p class="t-success">[✓] Invariant Security Defense: 100 rules enforced</p>
-            <p class="t-accent">[i] Status: Operational for East Valley enterprises & schools.</p>
-            <p style="margin-top:10px;"><span class="t-prompt">twu-core:~$</span> <span id="cursor">_</span></p>
-          </div>
-          <div class="terminal-quick-runs">
-            <span class="cmd-pill" onclick="runCommand('model-bench')">run: local-ai-bench</span>
-            <span class="cmd-pill" onclick="runCommand('audit-leak')">run: test-airgap</span>
-            <span class="cmd-pill" onclick="runCommand('stack-info')">run: stack-specs</span>
-          </div>
+      <!-- 2: Private Offline AI -->
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
         </div>
-      </div>
-    </section>
-
-    <!-- THE CAPABILITY MATRIX WORKSTATION -->
-    <section class="matrix-section" id="workstation">
-      <div class="matrix-header">
-        <div>
-          <h2 class="matrix-title">Sovereign Capability Matrix</h2>
-        </div>
-        <div class="matrix-desc">// CLICK CHANNELS TO INSPECT SPECS</div>
+        <h3>Private Offline AI Models</h3>
+        <p>
+          State-of-the-art AI models tuned to execute directly on your own hardware. Search and analyze sensitive contracts, patient records, or internal archives with absolute data privacy and zero cloud bills.
+        </p>
+        <div class="service-tag">100% Local Inference · Zero Third-Party Telemetry</div>
       </div>
 
-      <div class="workstation">
-        <!-- Capability Selector List -->
-        <div class="cap-list">
-          <div class="cap-item active" onclick="selectCapability(0)">
-            <div class="cap-item-top">
-              <img src="assets/icon-software.svg" alt="Software">
-              <div class="cap-name">Bespoke Software</div>
-            </div>
-            <div class="cap-summary">Custom tools built in plain English to replace clunky SaaS subscriptions.</div>
-          </div>
-
-          <div class="cap-item" onclick="selectCapability(1)">
-            <div class="cap-item-top">
-              <img src="assets/icon-ai.svg" alt="AI">
-              <div class="cap-name">Private Offline AI</div>
-            </div>
-            <div class="cap-summary">On-premise document models running on local hardware with zero API billing.</div>
-          </div>
-
-          <div class="cap-item" onclick="selectCapability(2)">
-            <div class="cap-item-top">
-              <img src="assets/icon-it.svg" alt="IT">
-              <div class="cap-name">Mobile IT & Systems</div>
-            </div>
-            <div class="cap-summary">On-site computer triage, high-speed networks, and air-gapped backups in Mesa.</div>
-          </div>
-
-          <div class="cap-item" onclick="selectCapability(3)">
-            <div class="cap-item-top">
-              <img src="assets/icon-education.svg" alt="Education">
-              <div class="cap-name">Community Education</div>
-            </div>
-            <div class="cap-summary">Hands-on AI scam defense workshops and collegiate programming cohorts.</div>
-          </div>
+      <!-- 3: Mobile IT Systems -->
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
         </div>
-
-        <!-- Dynamic Inspector Pane -->
-        <div class="inspector-pane" id="inspector">
-          <div>
-            <span class="inspector-tag" id="ins-tag">ARCHITECTURE CHANNEL // 01</span>
-            <h3 class="inspector-title" id="ins-title">Custom Software & Internal Tools</h3>
-            <p class="inspector-body" id="ins-body">
-              Most businesses spend thousands every year on rigid software that forces staff to jump through 15 hoops for simple tasks. We build sleek, tailored single-purpose applications you own forever.
-            </p>
-            <div class="spec-matrix" id="ins-specs">
-              <div>
-                <div class="spec-key">Execution Mode</div>
-                <div class="spec-val cyan">Local Native / PWA</div>
-              </div>
-              <div>
-                <div class="spec-key">Data Ownership</div>
-                <div class="spec-val green">100% Client Owned</div>
-              </div>
-              <div>
-                <div class="spec-key">Monthly Licensing</div>
-                <div class="spec-val green">$0.00 / user</div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <a href="tel:6102071917" class="btn-solid" id="ins-action">Scope A Custom Tool →</a>
-          </div>
-        </div>
+        <h3>On-Site Systems & IT Support</h3>
+        <p>
+          Hands-on hardware triage, high-speed Wi-Fi mesh routing, air-gapped backup vaults, and system performance tuning delivered directly to your shop, clinic, or facility in the East Valley.
+        </p>
+        <div class="service-tag">Mesa · Gilbert · Tempe · East Valley On-Site</div>
       </div>
-    </section>
 
-    <!-- Architecture Blueprint Schematic -->
-    <section class="arch-frame" id="architecture">
-      <img src="assets/architecture-schematic.svg" alt="Sovereign Architecture Schematic">
-    </section>
+      <!-- 4: Community Education -->
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Hands-On Tech Workshops</h3>
+        <p>
+          Demystifying technology for the community. Free public workshops on voice-cloning scam defense at Mesa Public Library, collegiate programming cohorts at MCC, and interactive staff training.
+        </p>
+        <div class="service-tag">Public Library Partner · Community College Cohorts</div>
+      </div>
+    </div>
+  </section>
 
-    <!-- Founder Philosophy Monolith -->
-    <section class="monolith" id="philosophy">
-      <div>
+  <!-- Architecture Section -->
+  <section id="architecture" class="container">
+    <div class="arch-section">
+      <span class="section-label">Engineering Baseline</span>
+      <h2 class="section-title">The Sovereign Offline Architecture</h2>
+      <p class="section-subtitle">
+        How our tools operate inside your facility with zero external dependencies and zero cloud data leaks.
+      </p>
+      <img src="assets/architecture-schematic.svg" alt="TWU Sovereign Architecture Diagram">
+    </div>
+  </section>
+
+  <!-- Studio Philosophy & Founder -->
+  <section id="about" class="container">
+    <div class="editorial">
+      <div class="editorial-content">
         <h2>"Anything is possible if you can articulate your thoughts."</h2>
-        <div class="quote-stripe">
+        <div class="editorial-quote">
           "When my 7-year-old daughter asked for a game that combined Minecraft and aliens, I extracted creature models from Spore, ported them into Minecraft, and by that evening we were flying spaceships alongside friendly aliens in a world that had never seen either."
         </div>
         <p>
-          I founded TWU LLC on a simple principle: computers work for people, not software monopolists. You shouldn't have to surrender your workflow or your data to massive cloud conglomerates.
+          I founded TWU LLC on a simple principle: computers are meant to empower people, not entrap them in perpetual software subscriptions. 
         </p>
-      </div>
-      <div>
-        <h3 style="font-size:1.4rem; color:#fff; margin-bottom:14px; font-weight:700;">Verified Technical Baseline</h3>
         <p>
-          Lead engineer <strong>Ethan Paul Kilmer</strong> brings healthcare-grade precision, Level 1 Fingerprint security clearance, and hands-on Linux/cluster systems practice to every client problem.
+          You shouldn't have to bend your business workflows around rigid corporate software. We craft bespoke tools that adapt to you, run on the hardware you already own, and remain under your sovereign control forever.
         </p>
-        <div style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:20px; font-family:var(--font-mono); font-size:0.82rem; margin-top:20px;">
-          <p style="color:var(--cyan); margin-bottom:8px;">// CREDENTIAL VERIFICATION</p>
-          <p>• Arizona Registered Entity: Tech Wizards United LLC</p>
-          <p>• Lead Engineer: Ethan Paul Kilmer (Mesa, AZ)</p>
-          <p>• Specialization: Air-Gapped Model Runtimes & Full-Stack Tooling</p>
-          <p>• Active Community Partner: Mesa Public Library & MCC AI Club</p>
-        </div>
       </div>
-    </section>
 
-    <!-- Direct Contact HUD -->
-    <section class="contact-monolith" id="contact">
-      <h2>Initialize Direct Contact</h2>
-      <p>Have a bottleneck in your office, a broken network, or want to deploy private AI in your workflow? Connect directly.</p>
-      <div class="contact-links-grid">
-        <a href="tel:6102071917" class="c-badge">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-          <span>(610) 207-1917</span>
-        </a>
-        <a href="mailto:ethan@twu.software" class="c-badge">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-          <span>ethan@twu.software</span>
-        </a>
+      <div class="credentials-card">
+        <h4>Technical Baseline</h4>
+        <ul class="cred-list">
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span><strong>Ethan Paul Kilmer</strong>, Lead Engineer</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Arizona Registered Entity: Tech Wizards United LLC</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Arizona Level 1 Fingerprint Clearance Card</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Data Analytics & Programming Scholar (MCC, 4.0 GPA)</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>Zero-Telemetry & Air-Gapped Model Specialist</span>
+          </li>
+        </ul>
       </div>
-      <div style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-muted);">
-        Operating on-site across Mesa, Gilbert, Tempe, and the greater Phoenix East Valley.
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer>
-      <div>© 2026 TWU LLC (Tech Wizards United). Sovereign Tech & Private AI.</div>
-      <div>Mesa, Arizona · ethan@twu.software</div>
-    </footer>
+  <!-- Direct Contact -->
+  <section id="contact" class="container contact-section">
+    <h2>Let’s build something durable.</h2>
+    <p>
+      Have a broken workflow, an expensive software bill, or want to deploy private AI in your office? Reach out directly.
+    </p>
+    <div class="contact-actions">
+      <a href="tel:6102071917" class="contact-pill">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>(610) 207-1917</span>
+      </a>
+      <a href="mailto:ethan@twu.software" class="contact-pill">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span>ethan@twu.software</span>
+      </a>
+    </div>
+  </section>
 
-  </div>
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-inner">
+      <div>© 2026 TWU LLC (Tech Wizards United). Sovereign Software & Systems · Mesa, Arizona</div>
+      <ul class="footer-links">
+        <li><a href="#services">Capabilities</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#about">Studio</a></li>
+        <li><a href="https://github.com/Ethan-da-Tech-Wizard" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </div>
+  </footer>
 
-  <script>
-    // Sovereign WebAssembly Hardware Accelerator
-    const canvas = document.getElementById('hud-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let particles = [];
-    let mouse = { x: -1000, y: -1000 };
-
-    let wasmExports = null;
-    let wasmMemory = null;
-    let lastTime = performance.now();
-
-    async function initWasmEngine() {
-      try {
-        const resp = await fetch('assets/twu_engine.wasm');
-        if (!resp.ok) throw new Error('WASM binary load status ' + resp.status);
-        const bytes = await resp.arrayBuffer();
-        const { instance } = await WebAssembly.instantiate(bytes, {});
-        wasmExports = instance.exports;
-        wasmMemory = wasmExports.memory;
-        
-        wasmExports.init_engine(window.innerWidth, window.innerHeight);
-        const kernel = wasmExports.verify_sovereign_kernel();
-        console.log(`[TWU SOVEREIGN] Native Rust WASM Engine Active. Kernel: ${kernel}`);
-        const statusEl = document.getElementById('wasm-status-val');
-        if (statusEl) statusEl.innerText = 'RUST WASM ACTIVE (60FPS)';
-      } catch (err) {
-        console.info('[TWU] Fallback canvas runner:', err.message);
-        const statusEl = document.getElementById('wasm-status-val');
-        if (statusEl) statusEl.innerText = 'CANVAS STANDBY';
-      }
-    }
-
-    function initCanvas() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      particles = [];
-      const count = Math.floor((width * height) / 14000);
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          radius: Math.random() * 1.5 + 0.5
-        });
-      }
-      if (wasmExports) {
-        wasmExports.init_engine(width, height);
-      }
-    }
-
-    function renderCanvas() {
-      ctx.clearRect(0, 0, width, height);
-
-      if (wasmExports && wasmMemory) {
-        const now = performance.now();
-        const dt = Math.min((now - lastTime) / 1000, 0.05);
-        lastTime = now;
-
-        const ptr = wasmExports.update_simulation(mouse.x, mouse.y, dt);
-        const count = wasmExports.get_particle_count();
-        const fields = wasmExports.get_fields_per_particle();
-        const heap = new Float32Array(wasmMemory.buffer, ptr, count * fields);
-
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.45)';
-        ctx.strokeStyle = 'rgba(0, 240, 255, 0.04)';
-
-        for (let i = 0; i < count; i++) {
-          const off = i * fields;
-          const x = heap[off];
-          const y = heap[off + 1];
-          const r = heap[off + 4];
-          const pulse = heap[off + 5];
-
-          ctx.beginPath();
-          ctx.arc(x, y, r * (0.8 + 0.3 * Math.sin(pulse)), 0, Math.PI * 2);
-          ctx.fill();
-
-          for (let j = i + 1; j < count; j++) {
-            const off2 = j * fields;
-            const x2 = heap[off2];
-            const y2 = heap[off2 + 1];
-            const d = Math.hypot(x - x2, y - y2);
-            if (d < 110) {
-              ctx.beginPath();
-              ctx.moveTo(x, y);
-              ctx.lineTo(x2, y2);
-              ctx.stroke();
-            }
-          }
-        }
-      } else {
-        // Fallback software loop
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.4)';
-        ctx.strokeStyle = 'rgba(0, 240, 255, 0.04)';
-
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-          if (p.x < 0) p.x = width;
-          if (p.x > width) p.x = 0;
-          if (p.y < 0) p.y = height;
-          if (p.y > height) p.y = 0;
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fill();
-
-          for (let j = i + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-            if (dist < 110) {
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.stroke();
-            }
-          }
-
-          const mDist = Math.hypot(p.x - mouse.x, p.y - mouse.y);
-          if (mDist < 140) {
-            ctx.strokeStyle = `rgba(0, 240, 255, ${0.2 * (1 - mDist / 140)})`;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.stroke();
-            ctx.strokeStyle = 'rgba(0, 240, 255, 0.04)';
-          }
-        }
-      }
-
-      requestAnimationFrame(renderCanvas);
-    }
-
-    window.addEventListener('resize', initCanvas);
-    window.addEventListener('mousemove', e => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
-    initCanvas();
-    renderCanvas();
-    initWasmEngine();
-
-    // Capability Matrix Data & State Switching
-    const capabilities = [
-      {
-        tag: "ARCHITECTURE CHANNEL // 01",
-        title: "Bespoke Software & Internal Tools",
-        body: "Stop paying $50/user every month for software bloated with features you never use. We build lean, high-velocity internal tools that solve your exact bottlenecks—automatic scheduling, inventory calculators, and paperless job tracking—owned completely by your firm.",
-        specs: [
-          { k: "Execution Mode", v: "Local Native / Offline PWA", c: "cyan" },
-          { k: "Monthly Licensing", v: "$0.00 / month", c: "green" },
-          { k: "Intellectual Property", v: "100% Client Owned", c: "green" }
-        ],
-        cta: "Scope A Custom Tool →"
-      },
-      {
-        tag: "ARCHITECTURE CHANNEL // 02",
-        title: "Private Offline AI Models",
-        body: "Analyze sensitive contracts, health records, or confidential company archives using state-of-the-art AI running 100% on your own local workstation. Zero data sent to OpenAI or cloud servers. Zero monthly API bills.",
-        specs: [
-          { k: "Network Perimeter", v: "Air-Gapped / Isolated", c: "green" },
-          { k: "Hardware Requirements", v: "Standard Laptop GPU / Mac", c: "cyan" },
-          { k: "Cloud Leaks", v: "0.000% Verified", c: "green" }
-        ],
-        cta: "Deploy Offline AI →"
-      },
-      {
-        tag: "ARCHITECTURE CHANNEL // 03",
-        title: "Mobile IT & Systems Support",
-        body: "Fast, on-site diagnostics and repairs across Mesa and the East Valley. High-performance Wi-Fi mesh routing, automated offline backup safes, hardware upgrades, and malware decontamination that comes directly to your facility.",
-        specs: [
-          { k: "Response Coverage", v: "Mesa, Gilbert, Tempe", c: "cyan" },
-          { k: "Security Clearance", v: "AZ Level 1 Fingerprinted", c: "green" },
-          { k: "Emergency Dispatch", v: "Direct Founder Cell", c: "violet" }
-        ],
-        cta: "Request Systems Triage →"
-      },
-      {
-        tag: "ARCHITECTURE CHANNEL // 04",
-        title: "Community Tech Education",
-        body: "Demystifying technology for real people. Free public workshops on surviving AI voice-cloning scams, collegiate programming cohorts at Mesa Community College, and live staff coaching sessions where employees build working tools in an hour.",
-        specs: [
-          { k: "Community Partner", v: "Mesa Public Library", c: "cyan" },
-          { k: "Academic Nexus", v: "MCC AI Programming Club", c: "violet" },
-          { k: "Workshop Cost", v: "100% Free / Public", c: "green" }
-        ],
-        cta: "Join The Next Cohort →"
-      }
-    ];
-
-    function selectCapability(index) {
-      document.querySelectorAll('.cap-item').forEach((item, idx) => {
-        item.classList.toggle('active', idx === index);
-      });
-      const cap = capabilities[index];
-      document.getElementById('ins-tag').innerText = cap.tag;
-      document.getElementById('ins-title').innerText = cap.title;
-      document.getElementById('ins-body').innerText = cap.body;
-      document.getElementById('ins-action').innerText = cap.cta;
-
-      const specsContainer = document.getElementById('ins-specs');
-      specsContainer.innerHTML = cap.specs.map(s => `
-        <div>
-          <div class="spec-key">${s.k}</div>
-          <div class="spec-val ${s.c}">${s.v}</div>
-        </div>
-      `).join('');
-    }
-
-    // Interactive Terminal Runner
-    function runCommand(type) {
-      const term = document.getElementById('term-output');
-      if (type === 'model-bench') {
-        term.innerHTML += `
-          <p><span class="t-prompt">twu-core:~$</span> ./bin/benchmark-local-model</p>
-          <p class="t-dim">[⚡] Quantized 20B Neural Model loaded in 7.4GB VRAM</p>
-          <p class="t-success">[✓] Inference Speed: 34.2 tokens/sec</p>
-          <p class="t-success">[✓] Remote Network Packets: 0 (True Offline)</p>
-        `;
-      } else if (type === 'audit-leak') {
-        term.innerHTML += `
-          <p><span class="t-prompt">twu-core:~$</span> ./bin/audit-airgap --strict</p>
-          <p class="t-dim">[🔒] Testing DNS exfiltration vectors...</p>
-          <p class="t-success">[✓] Inbound Block: Active</p>
-          <p class="t-success">[✓] Outbound Telemetry: Blocked</p>
-          <p class="t-accent">[✓] Client Data Invariant 100/100 Secured</p>
-        `;
-      } else if (type === 'stack-info') {
-        term.innerHTML += `
-          <p><span class="t-prompt">twu-core:~$</span> ./bin/stack-specs</p>
-          <p class="t-dim">[OS] Dual Workstation Mesh: macOS Darwin + Arch Linux</p>
-          <p class="t-success">[Language Matrix] Python 3.12, Rust, TypeScript, C++</p>
-          <p class="t-accent">[License Model] 100% Client Ownership. Zero SaaS entrapment.</p>
-        `;
-      }
-      term.scrollTop = term.scrollHeight;
-    }
-  </script>
 </body>
 </html>
