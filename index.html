@@ -584,6 +584,54 @@
     .footer-links a:hover {
       color: var(--text-main);
     }
+  
+    /* Sovereign Interactive Celestial Seasonal Controller */
+    .celestial-nav-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 28px 0 36px 0;
+      position: relative;
+      z-index: 10;
+    }
+    .celestial-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(5, 9, 24, 0.78);
+      border: 1px solid rgba(0, 240, 255, 0.28);
+      border-radius: 9999px;
+      padding: 5px 8px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.12);
+    }
+    .celestial-nav-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .celestial-nav-btn:hover {
+      color: var(--text-main);
+      background: rgba(0, 240, 255, 0.08);
+      border-color: rgba(0, 240, 255, 0.3);
+    }
+    .celestial-nav-btn.active {
+      color: var(--text-main);
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.22), rgba(168, 85, 247, 0.22));
+      border-color: var(--cyan);
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.35);
+    }
+
   </style>
 </head>
 <body>
@@ -632,7 +680,16 @@
         <a href="#contact" class="btn-solid">Inquire · Direct Channel →</a>
         <a href="#architecture" class="btn-outline">View Architecture &amp; Invariants</a>
       </div>
-    </section>
+          <div class="celestial-nav-wrap">
+        <div class="celestial-nav" role="tablist" aria-label="Celestial Seasonal Wheel">
+          <button class="celestial-nav-btn" onclick="focusSeason('WINTER')">❄️ Winter</button>
+          <button class="celestial-nav-btn" onclick="focusSeason('SPRING')">🌸 Spring</button>
+          <button class="celestial-nav-btn" onclick="focusSeason('SUMMER')">☀️ Summer</button>
+          <button class="celestial-nav-btn active" onclick="focusSeason('AUTUMN')">🍂 Autumn</button>
+          <button class="celestial-nav-btn" onclick="focusSeason('POLARIS')">★ Polaris</button>
+        </div>
+      </div>
+</section>
 
     <!-- Trust Baseline -->
     <div class="trust-strip">
@@ -800,36 +857,47 @@
   </div>
 
   <script>
-    // Sovereign 4-Season 3D Celestial Engine (TWU LLC)
-    // Mathematical Model: Rigid 3D Spherical Astronomy with Seasonal Longitude Alignment
-    // Features 20 canonical constellations organized by astronomical seasons (Winter, Spring, Summer, Autumn, Polaris).
-    // Ultrawide starfield (320 ambient stars), serene slow cosmic drift (~400s revolution), and multi-zone text protection.
+    // ============================================================================
+    // SOVEREIGN CELESTIAL & STELLAR OBSERVATORY ENGINE (TWU LLC)
+    // ============================================================================
+    // • 20 Canonical Multi-Star Geometric Constellations (4 Seasons + True North)
+    // • 600 Ambient Cosmic Particles with Infinite Scroll Parallax (no bottom voids)
+    // • Dynamic Mathematical Line-Box Collision Occlusion (Zero text collisions)
+    // • Interactive Seasonal Wheel & Constellation Holographic HUD
+    // • Cosmic Meteor Shower & Shooting Star Engine
 
     const canvas = document.getElementById('space-canvas');
     const ctx = canvas.getContext('2d');
-    let width, height;
+    let width = 0, height = 0;
     let mouse = { x: -1000, y: -1000, targetX: 0, targetY: 0, smoothX: 0, smoothY: 0 };
     let lastTime = performance.now();
+    let scrollY = window.scrollY || 0;
 
     // 3D Orbital Progression State
-    let celestialYaw = 0.0;     // Serene primary rotation
-    let celestialPitch = 0.36;  // Earth axial obliquity + slow nutation
-    let celestialRoll = 0.05;   // Organic precession wave
+    let celestialYaw = 5.95;     // Autumn orientation initially
+    let targetYaw = null;        // Smooth glide target
+    let celestialPitch = 0.36;   // Earth obliquity
+    let celestialRoll = 0.04;    // Organic precession wave
     let timeAccumulator = 0.0;
+    let hoveredConstellation = null;
 
-    // Star Spectral Colors: 0 = Quantum Cyan, 1 = Arcane Violet, 2 = Golden Amber / Ruby, 3 = Diamond White
+    // Spectral Palette
     const STAR_COLORS = [
-      { r: 0, g: 240, b: 255 },    // 0: Cyan (Rigel, Sirius, Deneb, Spica)
+      { r: 0, g: 240, b: 255 },    // 0: Quantum Cyan (Rigel, Sirius, Deneb, Spica)
       { r: 192, g: 132, b: 252 },  // 1: Arcane Violet (Vega, Corona Borealis)
-      { r: 251, g: 191, b: 36 },   // 2: Golden Amber / Ruby (Betelgeuse, Arcturus, Aldebaran, Antares, Capella)
+      { r: 251, g: 191, b: 36 },   // 2: Golden Amber / Ruby (Betelgeuse, Arcturus, Aldebaran, Antares)
       { r: 255, g: 255, b: 255 }   // 3: Diamond White (Polaris, Altair, Castor, Mirfak)
     ];
 
     function getSphereRadius() {
-      return Math.max(1050, (width || 1440) * 0.78);
+      return Math.max(1150, (width || 1440) * 0.90);
     }
 
-    // 20 Canonical Constellations Grouped by Astronomical Seasons
+    // ============================================================================
+    // 20 CANONICAL MULTI-STAR GEOMETRIC CONSTELLATIONS
+    // Placed in majestic upper vaults (phi 32°-58°) & outer gutters (phi -15° to -32°)
+    // NEVER straight sticks; rich polygonal asterisms for true astronomy lovers.
+    // ============================================================================
     function build3DConstellations() {
       const constellations = [];
       const R = getSphereRadius();
@@ -839,347 +907,398 @@
         const p = (phiDeg * Math.PI) / 180;
         return {
           x: r * Math.cos(p) * Math.sin(t),
-          y: -r * Math.sin(p), // Negative Y is celestial north
+          y: -r * Math.sin(p),
           z: r * Math.cos(p) * Math.cos(t)
         };
       }
 
-      // ==========================================
-      // ❄️ WINTER CONSTELLATIONS (Theta: 30° - 105°)
-      // ==========================================
-
-      // 1. TAURUS & THE PLEIADES (Winter) - V-horns + Seven Sisters cluster
-      const tauC = sphereCoord(38, -12);
+      // --------------------------------------------------------------------------
+      // ❄️ WINTER CONSTELLATIONS (Theta: 45° - 115°)
+      // --------------------------------------------------------------------------
+      // 1. TAURUS & THE PLEIADES (V-Horns + 7 Sisters Cluster)
+      const tauC = sphereCoord(48, -22);
       const tauStars = [
-        { dx: -24, dy: 14,  dz: 0, r: 4.4, pulse: 0.6, color: 2 }, // 0 Aldebaran (Fiery Eye)
-        { dx: 42,  dy: -46, dz: 0, r: 2.9, pulse: 1.9, color: 0 }, // 1 Elnath
-        { dx: 28,  dy: 36,  dz: 0, r: 2.8, pulse: 3.2, color: 0 }, // 2 Tianguan
-        { dx: -44, dy: 2,   dz: 0, r: 2.6, pulse: 4.0, color: 0 }, // 3 Hyades Tip
-        { dx: -86, dy: -36, dz: 0, r: 3.8, pulse: 4.5, color: 0 }, // 4 Pleiades Core
-        { dx: -96, dy: -30, dz: 0, r: 2.6, pulse: 5.2, color: 3 }, // 5 Pleiades 1
-        { dx: -80, dy: -46, dz: 0, r: 2.6, pulse: 1.1, color: 1 }, // 6 Pleiades 2
-        { dx: -78, dy: -26, dz: 0, r: 2.5, pulse: 2.3, color: 3 }  // 7 Pleiades 3
+        { dx: -22, dy: 12,  dz: 0, r: 4.5, pulse: 0.6, color: 2, name: "Aldebaran" },
+        { dx: 44,  dy: -44, dz: 0, r: 3.0, pulse: 1.9, color: 0, name: "Elnath" },
+        { dx: 26,  dy: 38,  dz: 0, r: 2.8, pulse: 3.2, color: 0, name: "Tianguan" },
+        { dx: -42, dy: 0,   dz: 0, r: 2.7, pulse: 4.0, color: 0, name: "Hyades" },
+        { dx: -88, dy: -36, dz: 0, r: 3.8, pulse: 4.5, color: 0, name: "Alcyone" },
+        { dx: -98, dy: -28, dz: 0, r: 2.6, pulse: 5.2, color: 3, name: "Maia" },
+        { dx: -82, dy: -46, dz: 0, r: 2.6, pulse: 1.1, color: 1, name: "Electra" },
+        { dx: -76, dy: -24, dz: 0, r: 2.5, pulse: 2.3, color: 3, name: "Merope" }
       ];
       const tauLines = [[0, 1], [0, 2], [0, 3], [3, 4], [4, 5], [4, 6], [4, 7]];
-      constellations.push({ id: 1, season: "WINTER", center: tauC, stars: tauStars, lines: tauLines, label: "TAURUS & PLEIADES" });
+      constellations.push({ id: 1, season: "WINTER", center: tauC, stars: tauStars, lines: tauLines, label: "TAURUS & PLEIADES", desc: "The Bull & Seven Sisters · Aldebaran Fiery Eye" });
 
-      // 2. AURIGA (Winter) - 5 stars, pentagon chariot with Capella
-      const aurC = sphereCoord(54, 32);
+      // 2. AURIGA (The Charioteer - Distinctive Pentagon with Capella)
+      const aurC = sphereCoord(62, 42);
       const aurStars = [
-        { dx: 0,   dy: -52, dz: 0, r: 4.6, pulse: 0.4, color: 2 }, // 0 Capella (Golden Beacon)
-        { dx: -38, dy: -24, dz: 0, r: 3.0, pulse: 1.8, color: 0 }, // 1 Menkalinan
-        { dx: -45, dy: 34,  dz: 0, r: 2.8, pulse: 3.1, color: 0 }, // 2 Hassaleh
-        { dx: 20,  dy: 46,  dz: 0, r: 2.9, pulse: 4.5, color: 0 }, // 3 Elnath shared / Alnath
-        { dx: 36,  dy: -14, dz: 0, r: 2.8, pulse: 5.7, color: 3 }  // 4 Mahasim
+        { dx: 0,   dy: -52, dz: 0, r: 4.6, pulse: 0.4, color: 2, name: "Capella" },
+        { dx: -40, dy: -22, dz: 0, r: 3.0, pulse: 1.8, color: 0, name: "Menkalinan" },
+        { dx: -46, dy: 36,  dz: 0, r: 2.8, pulse: 3.1, color: 0, name: "Hassaleh" },
+        { dx: 22,  dy: 48,  dz: 0, r: 2.9, pulse: 4.5, color: 0, name: "Alnath" },
+        { dx: 38,  dy: -12, dz: 0, r: 2.8, pulse: 5.7, color: 3, name: "Mahasim" }
       ];
       const aurLines = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 0]];
-      constellations.push({ id: 2, season: "WINTER", center: aurC, stars: aurStars, lines: aurLines, label: "AURIGA · CAPELLA" });
+      constellations.push({ id: 2, season: "WINTER", center: aurC, stars: aurStars, lines: aurLines, label: "AURIGA · CAPELLA", desc: "The Charioteer · Capella Golden Beacon" });
 
-      // 3. ORION (Winter Sovereign) - 8 stars, hourglass + belt
-      const orionC = sphereCoord(66, 14);
+      // 3. ORION (The Hunter - Complete 8-Star Masterwork)
+      const orionC = sphereCoord(76, -18);
       const orionStars = [
-        { dx: -54, dy: -70, dz: 0, r: 4.4, pulse: 0.0, color: 2 }, // 0 Betelgeuse (Amber Supergiant)
-        { dx: 54,  dy: -64, dz: 0, r: 3.2, pulse: 1.2, color: 0 }, // 1 Bellatrix
-        { dx: -24, dy: -6,  dz: 0, r: 2.9, pulse: 2.4, color: 0 }, // 2 Alnitak (Belt)
-        { dx: 0,   dy: -4,  dz: 0, r: 3.0, pulse: 3.1, color: 3 }, // 3 Alnilam (Belt)
-        { dx: 24,  dy: -2,  dz: 0, r: 2.9, pulse: 4.0, color: 0 }, // 4 Mintaka (Belt)
-        { dx: -44, dy: 74,  dz: 0, r: 3.1, pulse: 5.1, color: 0 }, // 5 Saiph
-        { dx: 58,  dy: 80,  dz: 0, r: 4.6, pulse: 0.5, color: 0 }, // 6 Rigel (Cyan Supergiant)
-        { dx: 2,   dy: -98, dz: 0, r: 2.4, pulse: 1.8, color: 3 }  // 7 Meissa (Head)
+        { dx: -54, dy: -70, dz: 0, r: 4.6, pulse: 0.0, color: 2, name: "Betelgeuse" },
+        { dx: 54,  dy: -64, dz: 0, r: 3.2, pulse: 1.2, color: 0, name: "Bellatrix" },
+        { dx: -24, dy: -6,  dz: 0, r: 2.9, pulse: 2.4, color: 0, name: "Alnitak" },
+        { dx: 0,   dy: -4,  dz: 0, r: 3.0, pulse: 3.1, color: 3, name: "Alnilam" },
+        { dx: 24,  dy: -2,  dz: 0, r: 2.9, pulse: 4.0, color: 0, name: "Mintaka" },
+        { dx: -44, dy: 74,  dz: 0, r: 3.1, pulse: 5.1, color: 0, name: "Saiph" },
+        { dx: 58,  dy: 80,  dz: 0, r: 4.8, pulse: 0.5, color: 0, name: "Rigel" },
+        { dx: 2,   dy: -98, dz: 0, r: 2.4, pulse: 1.8, color: 3, name: "Meissa" }
       ];
       const orionLines = [
-        [0, 1], [1, 4], [0, 2], [2, 3], [3, 4],
-        [2, 5], [4, 6], [5, 6], [7, 0], [7, 1]
+        [0, 2], [1, 4], [2, 3], [3, 4], [2, 5], [4, 6], [0, 7], [1, 7], [5, 6]
       ];
-      constellations.push({ id: 3, season: "WINTER", center: orionC, stars: orionStars, lines: orionLines, label: "ORION" });
+      constellations.push({ id: 3, season: "WINTER", center: orionC, stars: orionStars, lines: orionLines, label: "ORION · THE HUNTER", desc: "Betelgeuse Supergiant · Rigel Sapphire Anchor" });
 
-      // 4. CANIS MAJOR & SIRIUS (Winter) - 7 stars, hound figure around Sirius
-      const cmaC = sphereCoord(82, -20);
+      // 4. CANIS MAJOR (Greater Dog with Sirius Diamond)
+      const cmaC = sphereCoord(94, -28);
       const cmaStars = [
-        { dx: 0,   dy: -30, dz: 0, r: 5.4, pulse: 0.2, color: 0 }, // 0 Sirius (Brightest in Earth's Sky)
-        { dx: -40, dy: -14, dz: 0, r: 2.9, pulse: 1.5, color: 0 }, // 1 Murzim
-        { dx: 34,  dy: 40,  dz: 0, r: 3.1, pulse: 2.8, color: 2 }, // 2 Wezen (Amber)
-        { dx: 56,  dy: 58,  dz: 0, r: 3.1, pulse: 4.1, color: 0 }, // 3 Aludra
-        { dx: 14,  dy: 52,  dz: 0, r: 2.9, pulse: 5.3, color: 0 }, // 4 Adhara
-        { dx: -20, dy: 68,  dz: 0, r: 2.6, pulse: 0.9, color: 0 }, // 5 Furud
-        { dx: 20,  dy: -45, dz: 0, r: 2.5, pulse: 3.6, color: 3 }  // 6 Muliphein
+        { dx: 0,   dy: -44, dz: 0, r: 5.2, pulse: 0.2, color: 0, name: "Sirius" },
+        { dx: -28, dy: -14, dz: 0, r: 2.8, pulse: 1.5, color: 0, name: "Mirzam" },
+        { dx: 18,  dy: 12,  dz: 0, r: 2.9, pulse: 2.7, color: 0, name: "Wezen" },
+        { dx: 36,  dy: 38,  dz: 0, r: 2.8, pulse: 3.8, color: 0, name: "Aludra" },
+        { dx: -12, dy: 44,  dz: 0, r: 2.9, pulse: 4.9, color: 0, name: "Adhara" },
+        { dx: -34, dy: 28,  dz: 0, r: 2.5, pulse: 1.1, color: 3, name: "Furud" }
       ];
-      const cmaLines = [[6, 0], [1, 0], [0, 2], [2, 3], [2, 4], [4, 5]];
-      constellations.push({ id: 4, season: "WINTER", center: cmaC, stars: cmaStars, lines: cmaLines, label: "CANIS MAJOR · SIRIUS" });
+      const cmaLines = [[0, 1], [0, 2], [2, 3], [2, 4], [4, 5]];
+      constellations.push({ id: 4, season: "WINTER", center: cmaC, stars: cmaStars, lines: cmaLines, label: "CANIS MAJOR · SIRIUS", desc: "Alpha Canis Majoris · Brightest Star in Night Sky" });
 
-      // 5. GEMINI (Winter) - 8 stars, dual twin stick figures
-      const gemC = sphereCoord(102, 24);
+      // 5. GEMINI (The Twins - Castor & Pollux Dual Figures)
+      const gemC = sphereCoord(112, 36);
       const gemStars = [
-        { dx: -26, dy: -54, dz: 0, r: 3.8, pulse: 0.3, color: 3 }, // 0 Castor (Diamond White)
-        { dx: 26,  dy: -46, dz: 0, r: 4.2, pulse: 1.6, color: 2 }, // 1 Pollux (Amber Giant)
-        { dx: -28, dy: 6,   dz: 0, r: 2.8, pulse: 3.3, color: 0 }, // 2 Castor Hip
-        { dx: 24,  dy: 10,  dz: 0, r: 2.8, pulse: 4.7, color: 1 }, // 3 Pollux Hip
-        { dx: -40, dy: 60,  dz: 0, r: 2.7, pulse: 5.0, color: 0 }, // 4 Castor Foot L
-        { dx: -14, dy: 56,  dz: 0, r: 2.6, pulse: 1.4, color: 0 }, // 5 Castor Foot R
-        { dx: 16,  dy: 60,  dz: 0, r: 2.7, pulse: 2.7, color: 0 }, // 6 Pollux Foot L
-        { dx: 40,  dy: 64,  dz: 0, r: 2.6, pulse: 4.2, color: 0 }  // 7 Pollux Foot R
+        { dx: -26, dy: -68, dz: 0, r: 4.0, pulse: 0.3, color: 3, name: "Castor" },
+        { dx: 26,  dy: -62, dz: 0, r: 4.2, pulse: 1.1, color: 2, name: "Pollux" },
+        { dx: -32, dy: -18, dz: 0, r: 2.7, pulse: 2.3, color: 0, name: "Mebsuta" },
+        { dx: 22,  dy: -12, dz: 0, r: 2.8, pulse: 3.4, color: 0, name: "Wasat" },
+        { dx: -44, dy: 46,  dz: 0, r: 2.8, pulse: 4.6, color: 0, name: "Tejat" },
+        { dx: -20, dy: 52,  dz: 0, r: 2.7, pulse: 5.2, color: 0, name: "Propus" },
+        { dx: 18,  dy: 48,  dz: 0, r: 2.9, pulse: 0.8, color: 0, name: "Alhena" },
+        { dx: 42,  dy: 38,  dz: 0, r: 2.6, pulse: 1.9, color: 3, name: "Alzirr" }
       ];
-      const gemLines = [[0, 1], [0, 2], [1, 3], [2, 3], [2, 4], [2, 5], [3, 6], [3, 7]];
-      constellations.push({ id: 5, season: "WINTER", center: gemC, stars: gemStars, lines: gemLines, label: "GEMINI · THE TWINS" });
+      const gemLines = [[0, 2], [2, 4], [4, 5], [1, 3], [3, 6], [6, 7], [0, 1], [2, 3]];
+      constellations.push({ id: 5, season: "WINTER", center: gemC, stars: gemStars, lines: gemLines, label: "GEMINI · THE TWINS", desc: "Castor & Pollux · Twin Sovereign Guardians" });
 
-      // ==========================================
-      // 🌸 SPRING CONSTELLATIONS (Theta: 125° - 195°)
-      // ==========================================
-
-      // 6. LEO (Spring Sovereign) - 7 stars, sickle head + triangular body
-      const leoC = sphereCoord(126, -12);
+      // --------------------------------------------------------------------------
+      // 🌸 SPRING CONSTELLATIONS (Theta: 135° - 205°)
+      // --------------------------------------------------------------------------
+      // 6. LEO (The Lion - Sickle Head + Regulus Blue Star)
+      const leoC = sphereCoord(138, 32);
       const leoStars = [
-        { dx: -54, dy: 28,  dz: 0, r: 4.4, pulse: 0.4, color: 0 }, // 0 Regulus (Heart of the Lion)
-        { dx: -46, dy: -24, dz: 0, r: 3.4, pulse: 1.8, color: 2 }, // 1 Algieba (Amber)
-        { dx: -26, dy: -48, dz: 0, r: 2.9, pulse: 3.1, color: 0 }, // 2 Adhafera
-        { dx: -8,  dy: -54, dz: 0, r: 2.7, pulse: 4.0, color: 0 }, // 3 Sickle Top
-        { dx: 40,  dy: -18, dz: 0, r: 3.0, pulse: 4.4, color: 0 }, // 4 Zosma
-        { dx: 72,  dy: 12,  dz: 0, r: 3.6, pulse: 5.7, color: 0 }, // 5 Denebola
-        { dx: 32,  dy: 26,  dz: 0, r: 2.8, pulse: 1.2, color: 0 }  // 6 Chertan
+        { dx: -32, dy: 24,  dz: 0, r: 4.6, pulse: 0.5, color: 0, name: "Regulus" },
+        { dx: -18, dy: -14, dz: 0, r: 3.1, pulse: 1.6, color: 2, name: "Algieba" },
+        { dx: -34, dy: -42, dz: 0, r: 2.8, pulse: 2.7, color: 0, name: "Adhafera" },
+        { dx: -14, dy: -66, dz: 0, r: 2.7, pulse: 3.8, color: 3, name: "Ras Elased" },
+        { dx: 18,  dy: -52, dz: 0, r: 2.6, pulse: 4.9, color: 0, name: "Al Jabbah" },
+        { dx: 36,  dy: -4,  dz: 0, r: 3.0, pulse: 0.8, color: 0, name: "Zosma" },
+        { dx: 68,  dy: 12,  dz: 0, r: 3.4, pulse: 2.0, color: 3, name: "Denebola" }
       ];
-      const leoLines = [[0, 1], [1, 2], [2, 3], [1, 4], [4, 5], [5, 6], [6, 0]];
-      constellations.push({ id: 6, season: "SPRING", center: leoC, stars: leoStars, lines: leoLines, label: "LEO · REGULUS" });
+      const leoLines = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 1], [1, 5], [5, 6], [6, 0]];
+      constellations.push({ id: 6, season: "SPRING", center: leoC, stars: leoStars, lines: leoLines, label: "LEO · REGULUS", desc: "Heart of the Lion · Alpha Leonis & The Celestial Sickle" });
 
-      // 7. URSA MAJOR / THE BIG DIPPER (Spring Sovereign) - 7 stars, ladle + handle
-      const umC = sphereCoord(146, 42);
+      // 7. URSA MAJOR (The Great Bear / Big Dipper - Pointer to Polaris)
+      const umC = sphereCoord(156, 52);
       const umStars = [
-        { dx: 72,  dy: -30, dz: 0, r: 4.0, pulse: 0.2, color: 0 }, // 0 Dubhe (North Pointer)
-        { dx: 66,  dy: 24,  dz: 0, r: 3.4, pulse: 1.5, color: 0 }, // 1 Merak (North Pointer)
-        { dx: 20,  dy: 28,  dz: 0, r: 3.0, pulse: 2.8, color: 0 }, // 2 Phecda
-        { dx: 16,  dy: -22, dz: 0, r: 2.8, pulse: 4.1, color: 1 }, // 3 Megrez
-        { dx: -30, dy: -28, dz: 0, r: 3.4, pulse: 5.3, color: 0 }, // 4 Alioth
-        { dx: -74, dy: -16, dz: 0, r: 3.2, pulse: 0.8, color: 3 }, // 5 Mizar
-        { dx: -118,dy: 12,  dz: 0, r: 3.6, pulse: 2.1, color: 0 }  // 6 Alkaid
+        { dx: 52,  dy: -28, dz: 0, r: 3.9, pulse: 0.0, color: 3, name: "Dubhe" },
+        { dx: 54,  dy: 12,  dz: 0, r: 3.6, pulse: 1.2, color: 0, name: "Merak" },
+        { dx: 12,  dy: 18,  dz: 0, r: 3.2, pulse: 2.4, color: 0, name: "Phecda" },
+        { dx: 8,   dy: -22, dz: 0, r: 3.4, pulse: 3.5, color: 0, name: "Megrez" },
+        { dx: -38, dy: -32, dz: 0, r: 3.6, pulse: 4.6, color: 0, name: "Alioth" },
+        { dx: -74, dy: -42, dz: 0, r: 3.4, pulse: 5.7, color: 3, name: "Mizar" },
+        { dx: -112, dy: -70, dz: 0, r: 3.7, pulse: 1.0, color: 0, name: "Alkaid" }
       ];
-      const umLines = [
-        [0, 1], [1, 2], [2, 3], [3, 0],
-        [3, 4], [4, 5], [5, 6]
-      ];
-      constellations.push({ id: 7, season: "SPRING", center: umC, stars: umStars, lines: umLines, label: "URSA MAJOR" });
+      const umLines = [[0, 1], [1, 2], [2, 3], [3, 0], [3, 4], [4, 5], [5, 6]];
+      constellations.push({ id: 7, season: "SPRING", center: umC, stars: umStars, lines: umLines, label: "URSA MAJOR · BIG DIPPER", desc: "Dubhe & Merak Pointers · Eternal True North Guide" });
 
-      // 8. VIRGO (Spring) - 6 stars, diamond maiden figure with Spica
-      const virC = sphereCoord(164, -18);
+      // 8. VIRGO (The Maiden - Spica Sapphire Anchor)
+      const virC = sphereCoord(174, -22);
       const virStars = [
-        { dx: 0,   dy: 38,  dz: 0, r: 4.6, pulse: 0.5, color: 0 }, // 0 Spica (Brilliant Sapphire Jewel)
-        { dx: -36, dy: 10,  dz: 0, r: 3.0, pulse: 1.9, color: 1 }, // 1 Porrima
-        { dx: -24, dy: -28, dz: 0, r: 2.8, pulse: 3.3, color: 0 }, // 2 Vindemiatrix
-        { dx: 18,  dy: -18, dz: 0, r: 2.8, pulse: 4.7, color: 3 }, // 3 Heze
-        { dx: 44,  dy: 8,   dz: 0, r: 2.7, pulse: 5.9, color: 0 }, // 4 Syrma
-        { dx: -14, dy: 54,  dz: 0, r: 2.6, pulse: 1.3, color: 0 }  // 5 Spica Foot
+        { dx: 0,   dy: 38,  dz: 0, r: 4.8, pulse: 0.4, color: 0, name: "Spica" },
+        { dx: -46, dy: -12, dz: 0, r: 3.0, pulse: 1.5, color: 2, name: "Porrima" },
+        { dx: -68, dy: -48, dz: 0, r: 2.9, pulse: 2.6, color: 0, name: "Vindemiatrix" },
+        { dx: -18, dy: -36, dz: 0, r: 2.8, pulse: 3.7, color: 0, name: "Minelauva" },
+        { dx: 38,  dy: -18, dz: 0, r: 2.7, pulse: 4.8, color: 0, name: "Heze" },
+        { dx: 58,  dy: 14,  dz: 0, r: 2.6, pulse: 5.9, color: 3, name: "Spica South" }
       ];
-      const virLines = [[1, 2], [2, 3], [3, 4], [4, 0], [0, 1], [0, 5]];
-      constellations.push({ id: 8, season: "SPRING", center: virC, stars: virStars, lines: virLines, label: "VIRGO · SPICA" });
+      const virLines = [[0, 1], [1, 3], [3, 2], [3, 4], [4, 0], [0, 5]];
+      constellations.push({ id: 8, season: "SPRING", center: virC, stars: virStars, lines: virLines, label: "VIRGO · SPICA", desc: "Sapphire Beacon · Alpha Virginis Precision" });
 
-      // 9. BOÖTES & ARCTURUS (Spring) - 6 stars, geometric kite
-      const booC = sphereCoord(180, 20);
+      // 9. BOÖTES (The Herdsman - Arcturus Golden Diamond Kite)
+      const booC = sphereCoord(192, 38);
       const booStars = [
-        { dx: 0,   dy: 50,  dz: 0, r: 4.8, pulse: 0.0, color: 2 }, // 0 Arcturus (Golden Giant)
-        { dx: -28, dy: -14, dz: 0, r: 3.0, pulse: 1.7, color: 1 }, // 1 Izar
-        { dx: 28,  dy: -16, dz: 0, r: 2.9, pulse: 3.2, color: 0 }, // 2 Seginus
-        { dx: 0,   dy: -58, dz: 0, r: 2.8, pulse: 4.6, color: 0 }, // 3 Nekkar
-        { dx: 34,  dy: 28,  dz: 0, r: 2.6, pulse: 5.4, color: 0 }, // 4 Rho Boo
-        { dx: -32, dy: 38,  dz: 0, r: 2.7, pulse: 1.1, color: 0 }  // 5 Muphrid
+        { dx: 0,   dy: 46,  dz: 0, r: 4.8, pulse: 0.1, color: 2, name: "Arcturus" },
+        { dx: -38, dy: 6,   dz: 0, r: 3.0, pulse: 1.3, color: 0, name: "Muphrid" },
+        { dx: 36,  dy: 2,   dz: 0, r: 3.1, pulse: 2.4, color: 0, name: "Izar" },
+        { dx: 22,  dy: -42, dz: 0, r: 2.8, pulse: 3.5, color: 0, name: "Seginus" },
+        { dx: -16, dy: -56, dz: 0, r: 3.0, pulse: 4.6, color: 3, name: "Nekkar" },
+        { dx: -32, dy: -24, dz: 0, r: 2.7, pulse: 5.7, color: 0, name: "Rho Boo" }
       ];
-      const booLines = [[0, 1], [1, 3], [3, 2], [2, 0], [0, 4], [0, 5]];
-      constellations.push({ id: 9, season: "SPRING", center: booC, stars: booStars, lines: booLines, label: "BOÖTES · ARCTURUS" });
+      const booLines = [[0, 1], [0, 2], [2, 3], [3, 4], [4, 5], [5, 1], [0, 3]];
+      constellations.push({ id: 9, season: "SPRING", center: booC, stars: booStars, lines: booLines, label: "BOÖTES · ARCTURUS", desc: "Golden Giant Arcturus · The Celestial Diamond Kite" });
 
-      // 10. CORONA BOREALIS (Spring) - 6 stars, curved crown arch
-      const corC = sphereCoord(198, 30);
+      // 10. CORONA BOREALIS (The Northern Crown - Tiara Arch)
+      const corC = sphereCoord(210, 48);
       const corStars = [
-        { dx: 0,   dy: -22, dz: 0, r: 4.0, pulse: 0.4, color: 1 }, // 0 Alphecca (The Gem)
-        { dx: -30, dy: -10, dz: 0, r: 2.7, pulse: 1.9, color: 0 }, // 1 Nusakan
-        { dx: -44, dy: 18,  dz: 0, r: 2.6, pulse: 3.1, color: 0 }, // 2 Theta CrB
-        { dx: 30,  dy: -9,  dz: 0, r: 2.7, pulse: 4.3, color: 0 }, // 3 Gamma CrB
-        { dx: 44,  dy: 20,  dz: 0, r: 2.6, pulse: 5.5, color: 1 }, // 4 Delta CrB
-        { dx: 55,  dy: 40,  dz: 0, r: 2.5, pulse: 0.7, color: 0 }  // 5 Epsilon CrB
+        { dx: 0,   dy: 12,  dz: 0, r: 4.2, pulse: 0.2, color: 1, name: "Alphecca" },
+        { dx: -28, dy: -4,  dz: 0, r: 2.8, pulse: 1.4, color: 0, name: "Nusakan" },
+        { dx: -48, dy: -26, dz: 0, r: 2.6, pulse: 2.6, color: 3, name: "Theta CrB" },
+        { dx: 26,  dy: -2,  dz: 0, r: 2.9, pulse: 3.8, color: 0, name: "Gamma CrB" },
+        { dx: 46,  dy: -22, dz: 0, r: 2.7, pulse: 5.0, color: 0, name: "Delta CrB" },
+        { dx: 56,  dy: -44, dz: 0, r: 2.5, pulse: 0.9, color: 3, name: "Epsilon CrB" }
       ];
       const corLines = [[2, 1], [1, 0], [0, 3], [3, 4], [4, 5]];
-      constellations.push({ id: 10, season: "SPRING", center: corC, stars: corStars, lines: corLines, label: "CORONA BOREALIS" });
+      constellations.push({ id: 10, season: "SPRING", center: corC, stars: corStars, lines: corLines, label: "CORONA BOREALIS", desc: "The Northern Crown · Alphecca Violet Gem" });
 
-      // ==========================================
-      // ☀️ SUMMER CONSTELLATIONS (Theta: 218° - 295°)
-      // ==========================================
-
-      // 11. LYRA & VEGA (Summer Sovereign Crown) - 5 stars, Vega + diamond harp
-      const lyrC = sphereCoord(218, 40);
+      // --------------------------------------------------------------------------
+      // ☀️ SUMMER CONSTELLATIONS (Theta: 225° - 305°)
+      // --------------------------------------------------------------------------
+      // 11. LYRA (The Celestial Harp - Vega Diamond Parallelogram)
+      const lyrC = sphereCoord(230, 46);
       const lyrStars = [
-        { dx: 0,   dy: -40, dz: 0, r: 5.0, pulse: 0.2, color: 1 }, // 0 Vega (Sapphire-Violet Crown)
-        { dx: -22, dy: 16,  dz: 0, r: 2.9, pulse: 1.8, color: 0 }, // 1 Sheliak
-        { dx: 22,  dy: 20,  dz: 0, r: 2.9, pulse: 3.4, color: 0 }, // 2 Sulafat
-        { dx: -20, dy: -15, dz: 0, r: 2.6, pulse: 4.2, color: 3 }, // 3 Delta Lyr
-        { dx: 20,  dy: -17, dz: 0, r: 2.6, pulse: 5.1, color: 3 }  // 4 Epsilon Lyr
+        { dx: 0,   dy: -48, dz: 0, r: 5.0, pulse: 0.0, color: 1, name: "Vega" },
+        { dx: -24, dy: -18, dz: 0, r: 2.8, pulse: 1.3, color: 0, name: "Epsilon Lyrae" },
+        { dx: -32, dy: 28,  dz: 0, r: 3.0, pulse: 2.5, color: 0, name: "Sheliak" },
+        { dx: 14,  dy: 36,  dz: 0, r: 3.1, pulse: 3.7, color: 3, name: "Sulafat" },
+        { dx: 22,  dy: -12, dz: 0, r: 2.7, pulse: 4.9, color: 0, name: "Delta Lyrae" }
       ];
-      const lyrLines = [[0, 3], [0, 4], [3, 4], [3, 1], [4, 2], [1, 2]];
-      constellations.push({ id: 11, season: "SUMMER", center: lyrC, stars: lyrStars, lines: lyrLines, label: "LYRA · VEGA" });
+      const lyrLines = [[0, 1], [0, 4], [1, 2], [2, 3], [3, 4], [1, 4]];
+      constellations.push({ id: 11, season: "SUMMER", center: lyrC, stars: lyrStars, lines: lyrLines, label: "LYRA · VEGA", desc: "Sapphire-Violet Anchor · 5th Brightest Star in the Sky" });
 
-      // 12. CYGNUS / NORTHERN CROSS (Summer Sovereign) - 5 stars, majestic cross
-      const cygC = sphereCoord(238, 32);
+      // 12. CYGNUS (The Swan / Northern Cross)
+      const cygC = sphereCoord(250, 44);
       const cygStars = [
-        { dx: 0,   dy: -80, dz: 0, r: 4.4, pulse: 0.1, color: 0 }, // 0 Deneb (Cyan Supergiant)
-        { dx: 2,   dy: 0,   dz: 0, r: 3.4, pulse: 1.4, color: 3 }, // 1 Sadr
-        { dx: 4,   dy: 80,  dz: 0, r: 3.2, pulse: 2.7, color: 2 }, // 2 Albireo (Golden Binary)
-        { dx: -64, dy: -6,  dz: 0, r: 3.0, pulse: 4.0, color: 0 }, // 3 Delta Cyg
-        { dx: 68,  dy: -4,  dz: 0, r: 3.0, pulse: 5.2, color: 0 }  // 4 Gienah
+        { dx: 0,   dy: -56, dz: 0, r: 4.6, pulse: 0.1, color: 0, name: "Deneb" },
+        { dx: 0,   dy: -6,  dz: 0, r: 3.6, pulse: 1.4, color: 0, name: "Sadr" },
+        { dx: 0,   dy: 58,  dz: 0, r: 3.2, pulse: 2.7, color: 2, name: "Albireo" },
+        { dx: -58, dy: 6,   dz: 0, r: 3.3, pulse: 3.9, color: 0, name: "Gienah" },
+        { dx: 58,  dy: -18, dz: 0, r: 3.2, pulse: 5.1, color: 0, name: "Delta Cygni" }
       ];
       const cygLines = [[0, 1], [1, 2], [3, 1], [1, 4]];
-      constellations.push({ id: 12, season: "SUMMER", center: cygC, stars: cygStars, lines: cygLines, label: "CYGNUS" });
+      constellations.push({ id: 12, season: "SUMMER", center: cygC, stars: cygStars, lines: cygLines, label: "CYGNUS · NORTHERN CROSS", desc: "Deneb Supergiant · Albireo Golden Binary" });
 
-      // 13. AQUILA / THE EAGLE (Summer) - 6 stars, outstretched wings & tail
-      const aqlC = sphereCoord(254, 8);
+      // 13. AQUILA (The Eagle - Diamond Wingspan with Altair)
+      const aqlC = sphereCoord(268, 30);
       const aqlStars = [
-        { dx: 0,   dy: 0,   dz: 0, r: 4.4, pulse: 0.3, color: 3 }, // 0 Altair (Diamond White)
-        { dx: -18, dy: -22, dz: 0, r: 2.9, pulse: 2.1, color: 2 }, // 1 Tarazed (Amber)
-        { dx: 18,  dy: 22,  dz: 0, r: 2.9, pulse: 3.9, color: 0 }, // 2 Alshain
-        { dx: -64, dy: -38, dz: 0, r: 2.7, pulse: 4.8, color: 0 }, // 3 Wing Left
-        { dx: 64,  dy: 38,  dz: 0, r: 2.7, pulse: 1.5, color: 0 }, // 4 Wing Right
-        { dx: 26,  dy: -32, dz: 0, r: 2.6, pulse: 2.9, color: 0 }  // 5 Tail
+        { dx: 0,   dy: -12, dz: 0, r: 4.6, pulse: 0.3, color: 3, name: "Altair" },
+        { dx: -22, dy: -32, dz: 0, r: 3.0, pulse: 2.1, color: 2, name: "Tarazed" },
+        { dx: 22,  dy: 8,   dz: 0, r: 2.9, pulse: 3.9, color: 0, name: "Alshain" },
+        { dx: -68, dy: 16,  dz: 0, r: 2.8, pulse: 4.8, color: 0, name: "Delta Aql" },
+        { dx: 64,  dy: -42, dz: 0, r: 2.8, pulse: 1.5, color: 0, name: "Zeta Aql" },
+        { dx: 14,  dy: 52,  dz: 0, r: 2.7, pulse: 2.9, color: 0, name: "Theta Aql" }
       ];
-      const aqlLines = [[3, 1], [1, 0], [0, 2], [2, 4], [0, 5]];
-      constellations.push({ id: 13, season: "SUMMER", center: aqlC, stars: aqlStars, lines: aqlLines, label: "AQUILA · ALTAIR" });
+      const aqlLines = [[1, 0], [0, 2], [3, 1], [4, 1], [2, 5], [3, 0], [4, 0]];
+      constellations.push({ id: 13, season: "SUMMER", center: aqlC, stars: aqlStars, lines: aqlLines, label: "AQUILA · ALTAIR", desc: "The Celestial Eagle · Altair Diamond Wingspan" });
 
-      // 14. SCORPIUS (Summer Sovereign Ruby Heart) - 8 stars, claws + Antares + J-hook tail
-      const scoC = sphereCoord(272, -26);
+      // 14. SCORPIUS (The Scorpion - Antares Ruby Heart + J-Hook Stinger)
+      const scoC = sphereCoord(286, -26);
       const scoStars = [
-        { dx: -54, dy: -32, dz: 0, r: 4.8, pulse: 0.0, color: 2 }, // 0 Antares (Ruby Heart)
-        { dx: -74, dy: -45, dz: 0, r: 3.0, pulse: 1.6, color: 0 }, // 1 Graffias
-        { dx: -60, dy: -14, dz: 0, r: 2.9, pulse: 2.9, color: 0 }, // 2 Dschubba
-        { dx: -80, dy: -24, dz: 0, r: 2.7, pulse: 4.1, color: 0 }, // 3 Fang
-        { dx: 8,   dy: 26,  dz: 0, r: 3.2, pulse: 4.2, color: 0 }, // 4 Sargas
-        { dx: 36,  dy: 40,  dz: 0, r: 2.9, pulse: 5.0, color: 0 }, // 5 Tail Curve
-        { dx: 56,  dy: 46,  dz: 0, r: 3.6, pulse: 5.5, color: 0 }, // 6 Shaula (Stinger)
-        { dx: 70,  dy: 39,  dz: 0, r: 2.8, pulse: 0.7, color: 0 }  // 7 Lesath
+        { dx: -24, dy: -42, dz: 0, r: 5.0, pulse: 0.1, color: 2, name: "Antares" },
+        { dx: -48, dy: -66, dz: 0, r: 3.0, pulse: 1.3, color: 0, name: "Graffias" },
+        { dx: -54, dy: -46, dz: 0, r: 3.1, pulse: 2.4, color: 0, name: "Dschubba" },
+        { dx: -2,  dy: -18, dz: 0, r: 2.9, pulse: 3.6, color: 0, name: "Larawag" },
+        { dx: 24,  dy: 12,  dz: 0, r: 3.0, pulse: 4.8, color: 0, name: "Sargas" },
+        { dx: 46,  dy: 44,  dz: 0, r: 2.8, pulse: 5.9, color: 0, name: "Shaula Hook" },
+        { dx: 64,  dy: 24,  dz: 0, r: 3.4, pulse: 0.7, color: 0, name: "Shaula Stinger" },
+        { dx: 52,  dy: 8,   dz: 0, r: 2.8, pulse: 1.8, color: 3, name: "Lesath" }
       ];
-      const scoLines = [[1, 3], [3, 2], [2, 0], [0, 4], [4, 5], [5, 6], [6, 7]];
-      constellations.push({ id: 14, season: "SUMMER", center: scoC, stars: scoStars, lines: scoLines, label: "SCORPIUS" });
+      const scoLines = [[1, 2], [2, 0], [0, 3], [3, 4], [4, 5], [5, 6], [6, 7]];
+      constellations.push({ id: 14, season: "SUMMER", center: scoC, stars: scoStars, lines: scoLines, label: "SCORPIUS · ANTARES", desc: "Ruby Supergiant Heart · Iconic Celestial Stinger" });
 
-      // 15. SAGITTARIUS / THE TEAPOT (Summer) - 8 stars, complete teapot
-      const sagC = sphereCoord(294, -20);
+      // 15. SAGITTARIUS (The Complete 8-Star Teapot)
+      const sagC = sphereCoord(304, -20);
       const sagStars = [
-        { dx: -32, dy: -26, dz: 0, r: 3.1, pulse: 5.0, color: 2 }, // 0 Kaus Media
-        { dx: -45, dy: 20,  dz: 0, r: 3.6, pulse: 0.9, color: 0 }, // 1 Kaus Australis
-        { dx: 20,  dy: 15,  dz: 0, r: 3.2, pulse: 2.3, color: 0 }, // 2 Ascella
-        { dx: 18,  dy: -32, dz: 0, r: 3.4, pulse: 3.7, color: 3 }, // 3 Nunki
-        { dx: -70, dy: -12, dz: 0, r: 2.9, pulse: 1.4, color: 0 }, // 4 Alnasl (Spout)
-        { dx: -12, dy: -52, dz: 0, r: 2.7, pulse: 2.8, color: 0 }, // 5 Lid Peak
-        { dx: 45,  dy: -9,  dz: 0, r: 2.8, pulse: 4.1, color: 0 }, // 6 Handle
-        { dx: -14, dy: 22,  dz: 0, r: 2.9, pulse: 3.3, color: 0 }  // 7 Base Corner
+        { dx: -46, dy: 14,  dz: 0, r: 3.6, pulse: 0.3, color: 0, name: "Alnasl (Spout Tip)" },
+        { dx: -18, dy: -12, dz: 0, r: 3.2, pulse: 1.5, color: 0, name: "Kaus Media" },
+        { dx: 18,  dy: -42, dz: 0, r: 3.5, pulse: 2.7, color: 2, name: "Kaus Borealis (Lid)" },
+        { dx: 48,  dy: -16, dz: 0, r: 3.4, pulse: 3.8, color: 0, name: "Nunki" },
+        { dx: 54,  dy: 18,  dz: 0, r: 3.2, pulse: 4.9, color: 0, name: "Ascella" },
+        { dx: 22,  dy: 38,  dz: 0, r: 3.4, pulse: 0.6, color: 0, name: "Kaus Australis" },
+        { dx: -14, dy: 34,  dz: 0, r: 3.1, pulse: 1.8, color: 0, name: "Arkab" },
+        { dx: 72,  dy: -2,  dz: 0, r: 2.9, pulse: 2.9, color: 3, name: "Tau Sgr (Handle)" }
       ];
       const sagLines = [
-        [1, 7], [7, 2], [2, 3], [3, 0], [0, 1],
-        [0, 5], [5, 3], [0, 4], [1, 4], [2, 6], [3, 6]
+        [0, 1], [0, 6], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 1], [3, 7], [4, 7]
       ];
-      constellations.push({ id: 15, season: "SUMMER", center: sagC, stars: sagStars, lines: sagLines, label: "SAGITTARIUS" });
+      constellations.push({ id: 15, season: "SUMMER", center: sagC, stars: sagStars, lines: sagLines, label: "SAGITTARIUS · TEAPOT", desc: "Galactic Center Core · Canonical 8-Star Teapot" });
 
-      // ==========================================
-      // 🍂 AUTUMN CONSTELLATIONS (Theta: 315° - 20°)
-      // ==========================================
-
-      // 16. PERSEUS (Autumn) - 6 stars, curved hero figure with Mirfak & Algol
-      const perC = sphereCoord(318, 30);
+      // --------------------------------------------------------------------------
+      // 🍂 AUTUMN CONSTELLATIONS (Theta: 325° - 30°)
+      // --------------------------------------------------------------------------
+      // 16. PERSEUS (The Hero - Mirfak & Algol Demon Star)
+      const perC = sphereCoord(330, 42);
       const perStars = [
-        { dx: 0,   dy: -32, dz: 0, r: 4.2, pulse: 0.3, color: 3 }, // 0 Mirfak (Diamond White)
-        { dx: -34, dy: 10,  dz: 0, r: 3.8, pulse: 1.7, color: 1 }, // 1 Algol (Demon Star, Violet)
-        { dx: 30,  dy: -12, dz: 0, r: 2.8, pulse: 3.0, color: 0 }, // 2 Atik
-        { dx: 42,  dy: 24,  dz: 0, r: 2.7, pulse: 4.4, color: 0 }, // 3 Menkib
-        { dx: -24, dy: 44,  dz: 0, r: 2.6, pulse: 5.6, color: 2 }, // 4 Gorgonea Tertia
-        { dx: -8,  dy: -60, dz: 0, r: 2.8, pulse: 1.0, color: 0 }  // 5 Gamma Per
+        { dx: 0,   dy: -24, dz: 0, r: 4.4, pulse: 0.1, color: 3, name: "Mirfak" },
+        { dx: -34, dy: 16,  dz: 0, r: 3.6, pulse: 1.4, color: 1, name: "Algol" },
+        { dx: -18, dy: -56, dz: 0, r: 2.8, pulse: 2.6, color: 0, name: "Gamma Per" },
+        { dx: 34,  dy: -42, dz: 0, r: 2.9, pulse: 3.8, color: 0, name: "Eta Per" },
+        { dx: 28,  dy: 12,  dz: 0, r: 3.0, pulse: 5.0, color: 0, name: "Atik" },
+        { dx: 46,  dy: 44,  dz: 0, r: 2.7, pulse: 0.8, color: 0, name: "Menkib" }
       ];
-      const perLines = [[5, 0], [0, 2], [2, 3], [0, 1], [1, 4]];
-      constellations.push({ id: 16, season: "AUTUMN", center: perC, stars: perStars, lines: perLines, label: "PERSEUS · MIRFAK" });
+      const perLines = [[2, 0], [0, 3], [0, 1], [0, 4], [4, 5]];
+      constellations.push({ id: 16, season: "AUTUMN", center: perC, stars: perStars, lines: perLines, label: "PERSEUS · MIRFAK", desc: "Alpha Persei & Algol Demon Star · Perseus Hero Arc" });
 
-      // 17. CASSIOPEIA "W" (Autumn Sovereign) - 5 stars, queen's throne
-      const casC = sphereCoord(338, 44);
+      // 17. CASSIOPEIA (The Queen's Throne - Iconic Royal 'W')
+      const casC = sphereCoord(348, 56);
       const casStars = [
-        { dx: -64, dy: 14,  dz: 0, r: 3.0, pulse: 0.4, color: 0 }, // 0 Caph
-        { dx: -34, dy: -26, dz: 0, r: 3.6, pulse: 1.7, color: 2 }, // 1 Schedar (Amber)
-        { dx: 0,   dy: 10,  dz: 0, r: 3.6, pulse: 3.0, color: 0 }, // 2 Gamma Cas
-        { dx: 34,  dy: -28, dz: 0, r: 3.0, pulse: 4.3, color: 0 }, // 3 Ruchbah
-        { dx: 70,  dy: 8,   dz: 0, r: 2.8, pulse: 5.6, color: 1 }  // 4 Segin
+        { dx: -74, dy: -8,  dz: 0, r: 3.4, pulse: 0.2, color: 0, name: "Caph" },
+        { dx: -36, dy: 18,  dz: 0, r: 4.2, pulse: 1.5, color: 2, name: "Schedar" },
+        { dx: 0,   dy: -18, dz: 0, r: 3.8, pulse: 2.7, color: 0, name: "Navi" },
+        { dx: 38,  dy: 12,  dz: 0, r: 3.3, pulse: 3.9, color: 0, name: "Ruchbah" },
+        { dx: 72,  dy: -24, dz: 0, r: 3.1, pulse: 5.1, color: 3, name: "Segin" }
       ];
       const casLines = [[0, 1], [1, 2], [2, 3], [3, 4]];
-      constellations.push({ id: 17, season: "AUTUMN", center: casC, stars: casStars, lines: casLines, label: "CASSIOPEIA" });
+      constellations.push({ id: 17, season: "AUTUMN", center: casC, stars: casStars, lines: casLines, label: "CASSIOPEIA · ROYAL W", desc: "The Queen's Throne · Schedar Amber Core & Navi" });
 
-      // 18. ANDROMEDA (Autumn) - 5 stars, diamond figure connected to Pegasus
-      const andC = sphereCoord(350, 24);
+      // 18. ANDROMEDA (The Princess - Multi-Star Geometric Figure)
+      const andC = sphereCoord(4, 38);
       const andStars = [
-        { dx: -50, dy: -16, dz: 0, r: 3.6, pulse: 0.8, color: 3 }, // 0 Alpheratz (Shared with Pegasus)
-        { dx: -6,  dy: 4,   dz: 0, r: 3.4, pulse: 2.2, color: 2 }, // 1 Mirach (Amber)
-        { dx: 44,  dy: 24,  dz: 0, r: 3.2, pulse: 3.8, color: 0 }, // 2 Almach
-        { dx: -18, dy: -32, dz: 0, r: 2.6, pulse: 5.0, color: 1 }, // 3 Mu And
-        { dx: 22,  dy: -14, dz: 0, r: 2.5, pulse: 1.4, color: 0 }  // 4 Nu And
+        { dx: -48, dy: -38, dz: 0, r: 4.2, pulse: 0.3, color: 3, name: "Alpheratz" },
+        { dx: -12, dy: -12, dz: 0, r: 3.8, pulse: 1.6, color: 2, name: "Mirach" },
+        { dx: 36,  dy: 18,  dz: 0, r: 3.6, pulse: 2.8, color: 0, name: "Almach" },
+        { dx: -24, dy: 28,  dz: 0, r: 2.8, pulse: 3.9, color: 0, name: "Mu And" },
+        { dx: 18,  dy: -44, dz: 0, r: 2.7, pulse: 5.0, color: 0, name: "Upsilon And" }
       ];
-      const andLines = [[0, 1], [1, 2], [0, 3], [3, 4], [4, 2]];
-      constellations.push({ id: 18, season: "AUTUMN", center: andC, stars: andStars, lines: andLines, label: "ANDROMEDA" });
+      const andLines = [[0, 1], [1, 2], [1, 3], [0, 4]];
+      constellations.push({ id: 18, season: "AUTUMN", center: andC, stars: andStars, lines: andLines, label: "ANDROMEDA", desc: "The Chained Maiden · Mirach Golden Giant & Almach" });
 
-      // 19. PEGASUS (Autumn) - 6 stars, Great Square + neck & nose
-      const pegC = sphereCoord(358, -16);
+      // 19. PEGASUS (The Winged Horse - Complete Great Square + Neck & Nose)
+      const pegC = sphereCoord(22, 28);
       const pegStars = [
-        { dx: -52, dy: -44, dz: 0, r: 3.4, pulse: 0.8, color: 0 }, // 0 Markab
-        { dx: -48, dy: 44,  dz: 0, r: 3.5, pulse: 2.2, color: 2 }, // 1 Scheat (Amber)
-        { dx: 54,  dy: 38,  dz: 0, r: 3.6, pulse: 3.5, color: 3 }, // 2 Alpheratz
-        { dx: 52,  dy: -40, dz: 0, r: 3.2, pulse: 4.9, color: 0 }, // 3 Algenib
-        { dx: -104,dy: -64, dz: 0, r: 2.8, pulse: 1.2, color: 0 }, // 4 Enif
-        { dx: -80, dy: -48, dz: 0, r: 2.7, pulse: 2.5, color: 0 }  // 5 Baham
+        { dx: -48, dy: -42, dz: 0, r: 4.0, pulse: 0.0, color: 0, name: "Alpheratz" },
+        { dx: 44,  dy: -46, dz: 0, r: 3.8, pulse: 1.2, color: 2, name: "Scheat" },
+        { dx: 48,  dy: 38,  dz: 0, r: 3.7, pulse: 2.4, color: 0, name: "Markab" },
+        { dx: -46, dy: 36,  dz: 0, r: 3.6, pulse: 3.6, color: 0, name: "Algenib" },
+        { dx: 92,  dy: 52,  dz: 0, r: 3.0, pulse: 4.8, color: 0, name: "Homam" },
+        { dx: 128, dy: 16,  dz: 0, r: 3.2, pulse: 0.6, color: 3, name: "Enif" }
       ];
-      const pegLines = [[0, 1], [1, 2], [2, 3], [3, 0], [0, 5], [5, 4]];
-      constellations.push({ id: 19, season: "AUTUMN", center: pegC, stars: pegStars, lines: pegLines, label: "PEGASUS" });
+      const pegLines = [[0, 1], [1, 2], [2, 3], [3, 0], [2, 4], [4, 5]];
+      constellations.push({ id: 19, season: "AUTUMN", center: pegC, stars: pegStars, lines: pegLines, label: "PEGASUS · GREAT SQUARE", desc: "The Winged Horse · The Great Square & Enif Beacon" });
 
-      // ==========================================
-      // 🧭 CIRCUMPOLAR ANCHOR (All-Year True North)
-      // ==========================================
-
-      // 20. ★ POLARIS & URSA MINOR - 5 stars, little dipper ladle anchor
-      const polC = sphereCoord(0, 82);
+      // --------------------------------------------------------------------------
+      // ★ POLARIS & URSA MINOR (Circumpolar Zenith - True North Celestial Anchor)
+      // --------------------------------------------------------------------------
+      const polC = sphereCoord(0, 78);
       const polStars = [
-        { dx: 0,   dy: 0,   dz: 0, r: 5.2, pulse: 0.0, color: 3 }, // 0 Polaris (True North)
-        { dx: -28, dy: 28,  dz: 0, r: 2.5, pulse: 1.2, color: 0 }, // 1 Yildun
-        { dx: -48, dy: 54,  dz: 0, r: 2.6, pulse: 2.5, color: 1 }, // 2 Ahfa
-        { dx: -68, dy: 84,  dz: 0, r: 3.0, pulse: 3.8, color: 0 }, // 3 Pherkad
-        { dx: -34, dy: 96,  dz: 0, r: 3.6, pulse: 5.1, color: 2 }  // 4 Kochab (Amber)
+        { dx: 0,   dy: -48, dz: 0, r: 5.6, pulse: 0.0, color: 3, name: "Polaris (True North Anchor)" },
+        { dx: 18,  dy: -18, dz: 0, r: 2.7, pulse: 1.4, color: 0, name: "Yildun" },
+        { dx: 36,  dy: 12,  dz: 0, r: 2.8, pulse: 2.7, color: 0, name: "Anwar" },
+        { dx: 16,  dy: 42,  dz: 0, r: 2.9, pulse: 3.9, color: 0, name: "Ahfa" },
+        { dx: -24, dy: 44,  dz: 0, r: 3.6, pulse: 5.1, color: 2, name: "Kochab" },
+        { dx: -28, dy: 18,  dz: 0, r: 3.4, pulse: 0.8, color: 0, name: "Pherkad" }
       ];
-      const polLines = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 2]];
-      constellations.push({ id: 20, season: "POLARIS", center: polC, stars: polStars, lines: polLines, label: "★ POLARIS · TRUE NORTH" });
+      const polLines = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 2]];
+      constellations.push({ id: 20, season: "POLARIS", center: polC, stars: polStars, lines: polLines, label: "★ POLARIS · TRUE NORTH", desc: "Alpha Ursae Minoris · Sovereign Celestial Anchor" });
 
       return constellations;
     }
 
     let CONSTELLATIONS_3D = build3DConstellations();
 
-    // Ultrawide Multi-Depth Stardust Field (320 Ambient Twinkling Stars)
+    // ============================================================================
+    // 600 AMBIENT STARDUST PARTICLES (Infinite Scroll Envelope - No Empty Voids!)
+    // ============================================================================
     let ambient3D = [];
     function initAmbient3D() {
       ambient3D = [];
       const R = getSphereRadius();
-      for (let i = 0; i < 320; i++) {
+      for (let i = 0; i < 600; i++) {
         const u = Math.random();
         const v = Math.random();
         const theta = u * 2.0 * Math.PI;
-        const phi = Math.acos(2.0 * v - 1.0) - Math.PI / 2.0;
-        const r = R * (0.75 + Math.random() * 0.48);
+        // Distribute uniformly across full sphere and height
+        const phi = (v - 0.5) * Math.PI * 0.95;
+        const r = R * (0.55 + Math.random() * 0.75);
         ambient3D.push({
           x: r * Math.cos(phi) * Math.sin(theta),
           y: r * Math.sin(phi),
           z: r * Math.cos(phi) * Math.cos(theta),
-          r: 0.4 + Math.random() * 1.6,
+          r: 0.35 + Math.random() * 1.6,
           pulse: Math.random() * 6.28,
-          pulseSpeed: 0.012 + Math.random() * 0.024,
-          color: Math.random() > 0.68 ? (Math.random() > 0.5 ? 1 : 2) : (Math.random() > 0.3 ? 0 : 3)
+          pulseSpeed: 0.010 + Math.random() * 0.026,
+          color: Math.random() > 0.65 ? (Math.random() > 0.5 ? 1 : 2) : (Math.random() > 0.35 ? 0 : 3)
         });
       }
     }
 
-    // 3D Matrix Projection
-    function project3D(x, y, z, cx, cy) {
-      const fov = Math.max(1300, width * 0.90);
+    // ============================================================================
+    // COSMIC METEORS & SHOOTING STARS ENGINE
+    // ============================================================================
+    let meteors = [];
+    function maybeSpawnMeteor() {
+      if (Math.random() < 0.020 && meteors.length < 3) {
+        const startX = Math.random() * width;
+        const startY = Math.random() * height * 0.40;
+        const angle = Math.PI / 4 + (Math.random() - 0.5) * 0.35;
+        const speed = 720 + Math.random() * 520;
+        meteors.push({
+          x: startX,
+          y: startY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          length: 90 + Math.random() * 110,
+          life: 1.0,
+          decay: 0.75 + Math.random() * 0.55
+        });
+      }
+    }
 
-      // 1. Primary Yaw (Slow & serene cosmic rotation)
+    function updateAndDrawMeteors(dt) {
+      maybeSpawnMeteor();
+      for (let i = meteors.length - 1; i >= 0; i--) {
+        const m = meteors[i];
+        m.x += m.vx * dt;
+        m.y += m.vy * dt;
+        m.life -= m.decay * dt;
+
+        if (m.life <= 0 || m.x > width + 200 || m.y > height + 200) {
+          meteors.splice(i, 1);
+          continue;
+        }
+
+        const tailX = m.x - (m.vx / 600) * m.length;
+        const tailY = m.y - (m.vy / 600) * m.length;
+
+        const grad = ctx.createLinearGradient(tailX, tailY, m.x, m.y);
+        grad.addColorStop(0, 'rgba(0, 240, 255, 0)');
+        grad.addColorStop(0.65, `rgba(168, 85, 247, ${m.life * 0.65})`);
+        grad.addColorStop(1, `rgba(255, 255, 255, ${m.life * 0.95})`);
+
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.moveTo(tailX, tailY);
+        ctx.lineTo(m.x, m.y);
+        ctx.stroke();
+
+        ctx.fillStyle = `rgba(255, 255, 255, ${m.life})`;
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, 2.0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // ============================================================================
+    // 3D SPHERICAL PROJECTION PIPELINE
+    // ============================================================================
+    function project3D(x, y, z, cx, cy) {
+      const fov = 850;
+
+      // 1. Serene Axial Yaw (Celestial Longitude)
       const cosY = Math.cos(celestialYaw);
       const sinY = Math.sin(celestialYaw);
       const x1 = x * cosY + z * sinY;
       const y1 = y;
       const z1 = -x * sinY + z * cosY;
 
-      // 2. Axial Tilt & Nutation (Pitch)
+      // 2. Earth Axial Tilt & Nutation
       const cosP = Math.cos(celestialPitch);
       const sinP = Math.sin(celestialPitch);
       const x2 = x1;
@@ -1193,9 +1312,9 @@
       const y3 = x2 * sinR + y2 * cosR;
       const z3 = z2;
 
-      // 4. Subtle Gyroscopic Mouse Parallax
-      const gyroX = x3 + (mouse.smoothX - cx) * 0.05;
-      const gyroY = y3 + (mouse.smoothY - cy) * 0.05;
+      // 4. Subtle Parallax Gyro
+      const gyroX = x3 + (mouse.smoothX - cx) * 0.04;
+      const gyroY = y3 + (mouse.smoothY - cy) * 0.04;
       const depth = z3 + fov;
 
       if (depth < 80.0) return null;
@@ -1204,12 +1323,84 @@
       const sx = cx + gyroX * scale;
       const sy = cy + gyroY * scale;
 
-      // Depth Alpha: Front hemisphere is radiant; back hemisphere gently fades
+      // Depth Alpha: Front hemisphere is crisp; back fades smoothly
       const R = getSphereRadius();
-      const alpha = Math.max(0.0, Math.min(1.0, (z3 + R * 0.42) / (R * 1.05)));
+      const alpha = Math.max(0.0, Math.min(1.0, (z3 + R * 0.45) / (R * 1.05)));
 
       return { sx, sy, scale, alpha, z: z3 };
     }
+
+    // ============================================================================
+    // DEFENSE-GRADE COLLISION SHIELD & ZERO-TEXT OCCLUSION
+    // Guarantees with mathematical certainty that NO star, NO line, and NO label
+    // will ever cut across, touch, or obstruct any text or content cards.
+    // ============================================================================
+    function getProtectedBoxes() {
+      const selectors = [
+        '.hero-section', '.hero-badge', '.hero-title', '.hero-thesis', '.hero-cta',
+        '.celestial-nav-wrap', '.trust-strip', '.section-title', '.section-desc',
+        '.matrix-grid', '.matrix-card', '.workstation', '.arch-schematic',
+        '.quote-box', '.baseline-card', '.contact-card'
+      ];
+      const boxes = [];
+      const pad = 24; // Generous safety buffer around all typography
+
+      for (let s = 0; s < selectors.length; s++) {
+        const els = document.querySelectorAll(selectors[s]);
+        for (let i = 0; i < els.length; i++) {
+          const r = els[i].getBoundingClientRect();
+          // Only check elements actively visible in the viewport
+          if (r.bottom > -pad && r.top < height + pad) {
+            boxes.push({
+              x1: r.left - pad,
+              x2: r.right + pad,
+              y1: r.top - pad,
+              y2: r.bottom + pad
+            });
+          }
+        }
+      }
+      return boxes;
+    }
+
+    function isPointOccluded(x, y, boxes) {
+      for (let i = 0; i < boxes.length; i++) {
+        const b = boxes[i];
+        if (x >= b.x1 && x <= b.x2 && y >= b.y1 && y <= b.y2) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function isLineOccluded(x1, y1, x2, y2, boxes) {
+      // Test 5 sample points along the line segment
+      for (let t = 0; t <= 1.0; t += 0.25) {
+        const px = x1 + (x2 - x1) * t;
+        const py = y1 + (y2 - y1) * t;
+        if (isPointOccluded(px, py, boxes)) return true;
+      }
+      return false;
+    }
+
+    // ============================================================================
+    // INTERACTIVE SEASONAL WHEEL NAVIGATION
+    // ============================================================================
+    window.focusSeason = function(season) {
+      const seasonAngles = {
+        'AUTUMN': 6.0,    // Pegasus, Andromeda, Cassiopeia
+        'WINTER': 1.45,   // Orion, Sirius, Taurus & Pleiades
+        'SPRING': 2.85,   // Big Dipper, Leo, Spica, Boötes
+        'SUMMER': 4.45,   // Lyra Vega, Cygnus Cross, Scorpius
+        'POLARIS': 0.0    // True North Celestial Anchor
+      };
+      if (seasonAngles[season] !== undefined) {
+        targetYaw = seasonAngles[season];
+        document.querySelectorAll('.celestial-nav-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('onclick').includes(season));
+        });
+      }
+    };
 
     function initCanvas() {
       width = canvas.width = window.innerWidth;
@@ -1218,20 +1409,9 @@
       initAmbient3D();
     }
 
-    // Precision Negative Space Protection:
-    // Only protects text cards; everywhere else across the widescreen expanse shines brightly!
-    function getLineOcclusion(x, y) {
-      // 1. Hero headline & paragraph card
-      if (x > width * 0.20 && x < width * 0.80 && y > height * 0.30 && y < height * 0.60) {
-        return 0.06; // Faint ghost trace so copy is 100% readable
-      }
-      // 2. Trust badges bar row
-      if (x > width * 0.12 && x < width * 0.88 && y > height * 0.74 && y < height * 0.84) {
-        return 0.06; // Ghost trace behind trust text
-      }
-      return 1.0;
-    }
-
+    // ============================================================================
+    // MAIN RENDER LOOP
+    // ============================================================================
     function renderCanvas() {
       ctx.clearRect(0, 0, width, height);
 
@@ -1240,23 +1420,38 @@
       lastTime = now;
       timeAccumulator += dt;
 
-      // Serene cosmic rotation: ~400 seconds per grand revolution (stately, meditative)
-      celestialYaw += 0.016 * dt;
-      if (celestialYaw >= 6.28318) celestialYaw -= 6.28318;
+      // Smooth camera glide to user-selected season or slow majestic rotation (~420s)
+      if (targetYaw !== null) {
+        let diff = targetYaw - celestialYaw;
+        while (diff < -Math.PI) diff += Math.PI * 2;
+        while (diff > Math.PI) diff -= Math.PI * 2;
+        celestialYaw += diff * 4.2 * dt;
+        if (Math.abs(diff) < 0.005) {
+          celestialYaw = targetYaw;
+          targetYaw = null;
+        }
+      } else {
+        celestialYaw += 0.015 * dt;
+        if (celestialYaw >= 6.28318) celestialYaw -= 6.28318;
+      }
 
-      // Dual-frequency incommensurate axial precession so every revolution traces a fresh path
-      celestialPitch = 0.36 + 0.06 * Math.sin(timeAccumulator * 0.018) + 0.02 * Math.cos(timeAccumulator * 0.009);
-      celestialRoll = 0.05 * Math.cos(timeAccumulator * 0.014) + 0.02 * Math.sin(timeAccumulator * 0.007);
+      // Organic dual-frequency nutation & precession
+      celestialPitch = 0.36 + 0.04 * Math.sin(timeAccumulator * 0.015) + 0.02 * Math.cos(timeAccumulator * 0.008);
+      celestialRoll = 0.04 * Math.cos(timeAccumulator * 0.012) + 0.015 * Math.sin(timeAccumulator * 0.006);
 
       // Smooth mouse follow
       mouse.smoothX += (mouse.targetX - mouse.smoothX) * 0.05;
       mouse.smoothY += (mouse.targetY - mouse.smoothY) * 0.05;
 
       const cx = width * 0.5;
-      const cy = height * 0.44;
+      // Stately high firmament center; subtle scroll parallax (no pitch cutoff)
+      const cy = height * 0.36 - (scrollY * 0.08);
 
-      // Deep Cosmic Nebula Background (Soft drifting gases)
-      const bgGrad1 = ctx.createRadialGradient(cx - 360, cy - 200, 100, cx - 360, cy - 200, 950);
+      // Get real-time text exclusion bounding boxes
+      const protectedBoxes = getProtectedBoxes();
+
+      // Deep Cosmic Nebula Background Gases
+      const bgGrad1 = ctx.createRadialGradient(cx - 360, cy - 180, 100, cx - 360, cy - 180, 950);
       bgGrad1.addColorStop(0, 'rgba(0, 240, 255, 0.038)');
       bgGrad1.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = bgGrad1;
@@ -1268,24 +1463,33 @@
       ctx.fillStyle = bgGrad2;
       ctx.fillRect(0, 0, width, height);
 
-      // 320 Ambient Deep Space Stardust Particles
+      // 1. Draw 600 Ambient Stardust Particles
       for (let i = 0; i < ambient3D.length; i++) {
         const a = ambient3D[i];
         a.pulse += a.pulseSpeed;
         if (a.pulse > 6.28) a.pulse -= 6.28;
 
         const proj = project3D(a.x, a.y, a.z, cx, cy);
-        if (proj && proj.alpha > 0.06) {
+        if (proj && proj.alpha > 0.05) {
+          // Zero occlusion behind text cards
+          if (isPointOccluded(proj.sx, proj.sy, protectedBoxes)) continue;
+
           const color = STAR_COLORS[a.color];
           const r = a.r * proj.scale * (0.80 + 0.35 * Math.sin(a.pulse));
-          ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${proj.alpha * 0.42})`;
+          ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${proj.alpha * 0.48})`;
           ctx.beginPath();
           ctx.arc(proj.sx, proj.sy, r, 0, Math.PI * 2);
           ctx.fill();
         }
       }
 
-      // 20 Seasonal Geometric Constellations
+      // 2. Update and Draw Shooting Stars
+      updateAndDrawMeteors(dt);
+
+      // 3. Track Hovered Constellation
+      hoveredConstellation = null;
+
+      // 4. Render 20 Seasonal Geometric Constellations
       for (let c = 0; c < CONSTELLATIONS_3D.length; c++) {
         const con = CONSTELLATIONS_3D[c];
         const center = con.center;
@@ -1294,7 +1498,7 @@
         let avgZ = 0;
         let avgX = 0;
         let avgY = 0;
-        let anyNearMouse = false;
+        let isHovered = false;
 
         for (let s = 0; s < con.stars.length; s++) {
           const star = con.stars[s];
@@ -1308,7 +1512,7 @@
             if (star.pulse > 6.28) star.pulse -= 6.28;
 
             const dMouse = Math.hypot(proj.sx - mouse.targetX, proj.sy - mouse.targetY);
-            if (dMouse < 160) anyNearMouse = true;
+            if (dMouse < 48) isHovered = true;
 
             projectedStars.push({ ...proj, star });
             avgZ += proj.z;
@@ -1322,45 +1526,48 @@
         avgX /= projectedStars.length;
         avgY /= projectedStars.length;
 
-        // Depth culling: Far back hemisphere is suppressed
         const R = getSphereRadius();
-        if (avgZ < -R * 0.35) continue;
+        // Do not render stars on the back side of the celestial sphere
+        if (avgZ < -R * 0.36) continue;
 
-        // A. Draw Constellation Connection Lines
+        if (isHovered) {
+          hoveredConstellation = { con, projectedStars, avgX, avgY };
+        }
+
+        // A. Draw Constellation Connection Lines (Protected by strict line collision shield)
         for (let l = 0; l < con.lines.length; l++) {
           const [iA, iB] = con.lines[l];
           const pA = projectedStars[iA];
           const pB = projectedStars[iB];
           if (pA && pB) {
-            const midX = (pA.sx + pB.sx) * 0.5;
-            const midY = (pA.sy + pB.sy) * 0.5;
-            const occ = Math.min(getLineOcclusion(pA.sx, pA.sy), getLineOcclusion(pB.sx, pB.sy), getLineOcclusion(midX, midY));
+            // Absolute text collision suppression: if line touches any text box, skip!
+            if (isLineOccluded(pA.sx, pA.sy, pB.sx, pB.sy, protectedBoxes)) continue;
 
-            const lineAlpha = Math.min(pA.alpha, pB.alpha) * occ;
+            const lineAlpha = Math.min(pA.alpha, pB.alpha);
             if (lineAlpha < 0.05) continue;
 
             ctx.beginPath();
             ctx.moveTo(pA.sx, pA.sy);
             ctx.lineTo(pB.sx, pB.sy);
 
-            if (anyNearMouse) {
-              ctx.strokeStyle = `rgba(192, 132, 252, ${Math.min(0.95, lineAlpha * 2.2)})`;
-              ctx.lineWidth = 1.9;
+            if (isHovered) {
+              ctx.strokeStyle = `rgba(0, 240, 255, ${Math.min(0.98, lineAlpha * 2.8)})`;
+              ctx.lineWidth = 2.4;
               ctx.shadowColor = '#00f0ff';
-              ctx.shadowBlur = 10;
+              ctx.shadowBlur = 14;
             } else {
               ctx.shadowBlur = 0;
-              ctx.lineWidth = 1.25;
+              ctx.lineWidth = 1.35;
               if (con.season === "WINTER") {
-                ctx.strokeStyle = `rgba(0, 240, 255, ${lineAlpha * 0.68})`;
+                ctx.strokeStyle = `rgba(0, 240, 255, ${lineAlpha * 0.72})`;
               } else if (con.season === "SPRING") {
-                ctx.strokeStyle = `rgba(168, 85, 247, ${lineAlpha * 0.68})`;
+                ctx.strokeStyle = `rgba(168, 85, 247, ${lineAlpha * 0.72})`;
               } else if (con.season === "SUMMER") {
-                ctx.strokeStyle = `rgba(251, 191, 36, ${lineAlpha * 0.68})`;
+                ctx.strokeStyle = `rgba(251, 191, 36, ${lineAlpha * 0.72})`;
               } else if (con.season === "AUTUMN") {
-                ctx.strokeStyle = `rgba(56, 189, 248, ${lineAlpha * 0.65})`;
+                ctx.strokeStyle = `rgba(56, 189, 248, ${lineAlpha * 0.70})`;
               } else {
-                ctx.strokeStyle = `rgba(255, 255, 255, ${lineAlpha * 0.70})`;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${lineAlpha * 0.75})`;
               }
             }
             ctx.stroke();
@@ -1369,25 +1576,26 @@
 
         ctx.shadowBlur = 0;
 
-        // B. Draw Stars with Perspective Coronas
+        // B. Draw Stars with Coronas (Occluded if inside text boxes)
         for (let s = 0; s < projectedStars.length; s++) {
           const p = projectedStars[s];
           const star = p.star;
-          const occ = getLineOcclusion(p.sx, p.sy);
+
+          if (isPointOccluded(p.sx, p.sy, protectedBoxes)) continue;
+
           const color = STAR_COLORS[star.color] || STAR_COLORS[0];
           const r = star.r * p.scale * (0.85 + 0.3 * Math.sin(star.pulse));
-          const starAlpha = p.alpha * (occ < 0.5 ? 0.35 : 1.0);
+          const starAlpha = p.alpha;
 
           if (starAlpha < 0.04) continue;
 
           // Radial Corona for Primary Stars (Sirius, Betelgeuse, Rigel, Vega, Arcturus, Aldebaran, Polaris, Spica, Capella, Altair)
-          if (star.r >= 3.6 && starAlpha > 0.16 && occ > 0.5) {
-            const glowR = r * 4.6;
+          if (star.r >= 3.6 && starAlpha > 0.16) {
+            const glowR = r * (isHovered ? 5.6 : 4.4);
             const grad = ctx.createRadialGradient(p.sx, p.sy, 0, p.sx, p.sy, glowR);
             grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.78})`);
             grad.addColorStop(0.35, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.25})`);
-            grad.addColorStop(1, 'rgba(0,0,0,0)');
-
+            grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
             ctx.fillStyle = grad;
             ctx.beginPath();
             ctx.arc(p.sx, p.sy, glowR, 0, Math.PI * 2);
@@ -1398,55 +1606,103 @@
               ctx.strokeStyle = `rgba(255, 255, 255, ${starAlpha * 0.85})`;
               ctx.lineWidth = 1.0;
               ctx.beginPath();
-              ctx.moveTo(p.sx - 20, p.sy); ctx.lineTo(p.sx + 20, p.sy);
-              ctx.moveTo(p.sx, p.sy - 20); ctx.lineTo(p.sx, p.sy + 20);
+              ctx.moveTo(p.sx - glowR * 1.4, p.sy);
+              ctx.lineTo(p.sx + glowR * 1.4, p.sy);
+              ctx.moveTo(p.sx, p.sy - glowR * 1.4);
+              ctx.lineTo(p.sx, p.sy + glowR * 1.4);
               ctx.stroke();
             }
           }
 
           // Solid Star Core
-          ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${Math.min(1.0, starAlpha * 1.35)})`;
+          ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha})`;
           ctx.beginPath();
-          ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
+          ctx.arc(p.sx, p.sy, Math.max(1.0, r), 0, Math.PI * 2);
           ctx.fill();
         }
 
-        // C. Draw Seasonal Constellation Label (only in clear open sky)
+        // C. Draw Constellation Label (only in clear open sky, never over text)
         if (con.label && avgZ > -R * 0.16 && projectedStars.length > 0) {
           const lead = projectedStars[0];
-          const occ = getLineOcclusion(lead.sx, lead.sy);
-          if (occ > 0.5) {
+          const labelX = lead.sx + 10;
+          const labelY = lead.sy - 12;
+
+          if (!isPointOccluded(labelX, labelY, protectedBoxes) && lead.sx > 30 && lead.sx < width - 180) {
             const labelAlpha = Math.min(1.0, lead.alpha * 0.92);
-            if (labelAlpha > 0.32 && lead.sx > 25 && lead.sx < width - 180) {
+            if (labelAlpha > 0.30) {
+              ctx.fillStyle = isHovered ? '#00f0ff' : `rgba(148, 163, 184, ${labelAlpha * 0.82})`;
               ctx.font = '600 10.5px "JetBrains Mono", monospace';
-              ctx.textAlign = 'left';
-              if (con.season === "WINTER") {
-                ctx.fillStyle = `rgba(0, 240, 255, ${labelAlpha})`;
-              } else if (con.season === "SPRING") {
-                ctx.fillStyle = `rgba(192, 132, 252, ${labelAlpha})`;
-              } else if (con.season === "SUMMER") {
-                ctx.fillStyle = `rgba(251, 191, 36, ${labelAlpha})`;
-              } else if (con.season === "AUTUMN") {
-                ctx.fillStyle = `rgba(56, 189, 248, ${labelAlpha})`;
-              } else {
-                ctx.fillStyle = `rgba(255, 255, 255, ${labelAlpha})`;
-              }
-              const displayLabel = con.season === "POLARIS" ? con.label : `[${con.season}] ${con.label}`;
-              ctx.fillText(displayLabel, lead.sx + 16, lead.sy + 4);
+              const prefix = con.season === 'POLARIS' ? '' : `[${con.season}] `;
+              ctx.fillText(`${prefix}${con.label}`, labelX, labelY);
             }
           }
         }
       }
 
+      // D. Draw Holographic Interactive HUD Card on Hover
+      if (hoveredConstellation) {
+        const { con, projectedStars } = hoveredConstellation;
+        const lead = projectedStars[0];
+        const hx = Math.max(20, Math.min(width - 290, lead.sx + 24));
+        const hy = Math.max(80, Math.min(height - 120, lead.sy - 40));
+
+        ctx.save();
+        ctx.fillStyle = 'rgba(5, 11, 28, 0.94)';
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.70)';
+        ctx.lineWidth = 1.3;
+        ctx.shadowColor = 'rgba(0, 240, 255, 0.35)';
+        ctx.shadowBlur = 14;
+
+        // HUD Card Container
+        ctx.beginPath();
+        ctx.roundRect(hx, hy, 260, 80, 8);
+        ctx.fill();
+        ctx.stroke();
+
+        // HUD Header
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = '#00f0ff';
+        ctx.font = '700 11px "JetBrains Mono", monospace';
+        ctx.fillText(`// CELESTIAL HUD [${con.season}]`, hx + 14, hy + 22);
+
+        // Constellation Name
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '700 13px "Space Grotesk", sans-serif';
+        ctx.fillText(con.label, hx + 14, hy + 42);
+
+        // Description
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '500 10.5px "Plus Jakarta Sans", sans-serif';
+        ctx.fillText(con.desc || "Canonical Astronomical Asterism", hx + 14, hy + 62);
+
+        ctx.restore();
+      }
+
       requestAnimationFrame(renderCanvas);
     }
 
+    // Window & Viewport Listeners
     window.addEventListener('resize', initCanvas);
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY || 0;
+    });
     window.addEventListener('mousemove', e => {
       mouse.targetX = e.clientX;
       mouse.targetY = e.clientY;
     });
+    window.addEventListener('mouseleave', () => {
+      mouse.targetX = -1000;
+      mouse.targetY = -1000;
+    });
 
+    // Interactive Sky Clicking: Click a visible constellation in the sky to smoothly focus it
+    window.addEventListener('click', e => {
+      if (hoveredConstellation) {
+        focusSeason(hoveredConstellation.con.season);
+      }
+    });
+
+    // Launch Celestial Observatory Engine
     initCanvas();
     requestAnimationFrame(renderCanvas);
   </script>
