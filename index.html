@@ -585,54 +585,7 @@
       color: var(--text-main);
     }
   
-    /* Sovereign Interactive Celestial Seasonal Controller */
-    .celestial-nav-wrap {
-      display: flex;
-      justify-content: center;
-      margin: 28px 0 36px 0;
-      position: relative;
-      z-index: 10;
-    }
-    .celestial-nav {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(5, 9, 24, 0.78);
-      border: 1px solid rgba(0, 240, 255, 0.28);
-      border-radius: 9999px;
-      padding: 5px 8px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.12);
-    }
-    .celestial-nav-btn {
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--text-muted);
-      font-family: var(--font-mono);
-      font-size: 0.74rem;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .celestial-nav-btn:hover {
-      color: var(--text-main);
-      background: rgba(0, 240, 255, 0.08);
-      border-color: rgba(0, 240, 255, 0.3);
-    }
-    .celestial-nav-btn.active {
-      color: var(--text-main);
-      background: linear-gradient(135deg, rgba(0, 240, 255, 0.22), rgba(168, 85, 247, 0.22));
-      border-color: var(--cyan);
-      box-shadow: 0 0 14px rgba(0, 240, 255, 0.35);
-    }
-
-  </style>
+    </style>
 </head>
 <body>
 
@@ -679,15 +632,6 @@
       <div class="hero-actions">
         <a href="#contact" class="btn-solid">Inquire · Direct Channel →</a>
         <a href="#architecture" class="btn-outline">View Architecture &amp; Invariants</a>
-      </div>
-          <div class="celestial-nav-wrap">
-        <div class="celestial-nav" role="tablist" aria-label="Celestial Seasonal Wheel">
-          <button class="celestial-nav-btn" onclick="focusSeason('WINTER')">❄️ Winter</button>
-          <button class="celestial-nav-btn" onclick="focusSeason('SPRING')">🌸 Spring</button>
-          <button class="celestial-nav-btn" onclick="focusSeason('SUMMER')">☀️ Summer</button>
-          <button class="celestial-nav-btn active" onclick="focusSeason('AUTUMN')">🍂 Autumn</button>
-          <button class="celestial-nav-btn" onclick="focusSeason('POLARIS')">★ Polaris</button>
-        </div>
       </div>
 </section>
 
@@ -876,20 +820,8 @@
     let lastTime = performance.now();
     let scrollY = window.scrollY || 0;
 
-    // Seasonal Longitudes
-    const SEASON_YAW = {
-      'SUMMER': 4.55,
-      'AUTUMN': 6.00,
-      'WINTER': 1.45,
-      'SPRING': 2.95,
-      'POLARIS': 0.00
-    };
-
-    // Random Initial Season Selection
-    const SEASON_KEYS = ['SUMMER', 'AUTUMN', 'WINTER', 'SPRING'];
-    const chosenInitialSeason = SEASON_KEYS[Math.floor(Math.random() * SEASON_KEYS.length)];
-
-    let celestialYaw = SEASON_YAW[chosenInitialSeason] + (Math.random() - 0.5) * 0.20;
+    // Completely random celestial starting angle on each session (0 to 2*PI)
+    let celestialYaw = Math.random() * Math.PI * 2.0;
     let targetYaw = null;
     let celestialPitch = 0.36;
     let celestialRoll = 0.04;
@@ -1521,7 +1453,7 @@
 
       // 2. Individual content elements, headings, cards, and buttons
       const selectors = [
-        '.hero-badge', '.hero-title', '.hero-thesis', '.hero-cta', '.celestial-nav-wrap',
+        '.hero-badge', '.hero-title', '.hero-thesis', '.hero-cta',
         '.trust-strip', '.section-title', '.section-desc',
         '.matrix-grid', '.matrix-card', '.workstation', '.arch-schematic',
         '.quote-box', '.baseline-card', '.contact-card'
@@ -1563,27 +1495,14 @@
       return false;
     }
 
-    // ============================================================================
-    // INTERACTIVE SEASONAL WHEEL NAVIGATION
-    // ============================================================================
-    window.focusSeason = function(season) {
-      if (SEASON_YAW[season] !== undefined) {
-        targetYaw = SEASON_YAW[season];
-        document.querySelectorAll('.celestial-nav-btn').forEach(btn => {
-          btn.classList.toggle('active', btn.getAttribute('onclick').includes(season));
-        });
-      }
-    };
+    
 
     function initCanvas() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
       CONSTELLATIONS_3D = build3DConstellations();
       initAmbient3D();
-      // Highlight initial random season in navigation
-      document.querySelectorAll('.celestial-nav-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('onclick').includes(chosenInitialSeason));
-      });
+      
     }
 
     // ============================================================================
