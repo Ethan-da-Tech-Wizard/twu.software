@@ -800,215 +800,336 @@
   </div>
 
   <script>
-    // Sovereign WebAssembly Hardware Celestial Simulation Engine (TWU LLC)
+    // Sovereign 3D Spherical Celestial & Seasonal Flow Engine (TWU LLC)
+    // Mathematical Model: Rigid 3D Spherical Astronomy with Dual-Frequency Organic Precession
+    // Features 18 canonical astronomical constellations, authentic spectral star types,
+    // rigid non-deforming geometry, and dynamic negative-space text protection.
+
     const canvas = document.getElementById('space-canvas');
     const ctx = canvas.getContext('2d');
     let width, height;
-    let mouse = { x: -1000, y: -1000 };
-
-    let wasmExports = null;
-    let wasmMemory = null;
+    let mouse = { x: -1000, y: -1000, targetX: 0, targetY: 0, smoothX: 0, smoothY: 0 };
     let lastTime = performance.now();
-    let celestialScroll = 0.0;
 
-    // Embedded 100% Offline Sovereign Rust WebAssembly Kernel (Zero Network Overhead)
-    const WASM_KERNEL_B64 = "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ACALIAZrIQ1BACEBQQAhCwJAAkACQCAHQR12QQNxDgQCAAEAAgsgDSELDAELIA1B/v8DcUEBdiELCyAHQf///wBxIQYgACgCBCEJIAAoAgAhCgNAIAFB//8DcSALQf//A3FPDQJBASEMIAFBAWohASAKIAYgCSgCEBGAgICAAICAgIAARQ0ADAULCyAAIAApAggiDqdBgICA/3lxQbCAgIACcjYCCEEBIQwgACgCACIKIAAoAgQiCSAIIAIgAxCOgICAAA0DQQAhASALIAZrQf//A3EhAgNAIAFB//8DcSACTw0CQQEhDCABQQFqIQEgCkEwIAkoAhARgICAgACAgICAAEUNAAwECwtBASEMIAogCSAIIAIgAxCOgICAAA0CIAogBCAFIAkoAgwRgYCAgACAgICAAA0CQQAhASANIAtrQf//A3EhAANAIAFB//8DcSICIABJIQwgAiAATw0DIAFBAWohASAKIAYgCSgCEBGAgICAAICAgIAARQ0ADAMLC0EBIQwgCiAEIAUgCSgCDBGBgICAAICAgIAADQEgACAONwIIQQAPC0EBIQwgACgCACIBIAAoAgQiCiAIIAIgAxCOgICAAA0AIAEgBCAFIAooAgwRgYCAgACAgICAACEMCyAMC8EEAQl/IAAhAyACIQQCQCAAQegHSQ0AIAFBfGohBUEAIQYgACEHAkACQANAIAcgB0GQzgBuIgNBkM4AbGsiCEH//wNxQeQAbiEJAkACQCACIAZqIgRBfGogAk8NACAFIAJqIgogCUEBdCILLQC0mMCAADoAACAEQX1qIAJJDQEgBEF9aiACQfyZwIAAEIyAgIAAAAsgBEF8aiACQfyZwIAAEIyAgIAAAAsgCkEBaiALQbWYwIAAai0AADoAAAJAIARBfmogAk8NACAKQQJqIAggCUHkAGxrQQF0Qf7/B3EiCS0AtJjAgAA6AAAgBEF/aiACTw0CIApBA2ogCUG1mMCAAGotAAA6AAAgBUF8aiEFIAZBfGohBiAHQf+s4gRLIQQgAyEHIARFDQMMAQsLIARBfmogAkH8mcCAABCMgICAAAALIARBf2ogAkH8mcCAABCMgICAAAALIAIgBmohBAsCQAJAIANBCUsNACADIQogBCEHDAELIANB//8DcUHkAG4hCgJAAkAgBEF+aiIHIAJPDQAgASAHaiADIApB5ABs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AACDAQAAEQAAADAwMDEwMjAzMDQwNTA2MDcwODA5MTAxMTEyMTMxNDE1MTYxNzE4MTkyMDIxMjIyMzI0MjUyNjI3MjgyOTMwMzEzMjMzMzQzNTM2MzczODM5NDA0MTQyNDM0NDQ1NDY0NzQ4NDk1MDUxNTI1MzU0NTU1NjU3NTg1OTYwNjE2MjYzNjQ2NTY2Njc2ODY5NzA3MTcyNzM3NDc1NzY3Nzc4Nzk4MDgxODI4Mzg0ODU4Njg3ODg4OTkwOTE5MjkzOTQ5NTk2OTc5ODk5awsQAEsAAABXAgAABQAAAABBjJrAAAsM2Sk1AQAA8EQAAIdEAIgGBG5hbWUAFRR0d3Vfd2FzbV9lbmdpbmUud2FzbQHCBRAALl9STnZDczVRS2RlN1NjUjRIXzdfX19ydXN0YzE3cnVzdF9iZWdpbl91bndpbmQBFGdldF9jZWxlc3RpYWxfc2Nyb2xsAh1nZXRfY29uc3RlbGxhdGlvbl9saW5lc19jb3VudAMbZ2V0X2NvbnN0ZWxsYXRpb25fbGluZXNfcHRyBBdnZXRfZmllbGRzX3Blcl9wYXJ0aWNsZQUSZ2V0X3BhcnRpY2xlX2NvdW50Bgtpbml0X2VuZ2luZQcRdXBkYXRlX3NpbXVsYXRpb24IF3ZlcmlmeV9zb3ZlcmVpZ25fa2VybmVsCThfWk40Y29yZTNmbXQ5Rm9ybWF0dGVyMTJwYWRfaW50ZWdyYWwxN2hjMTYwYzQ5NGY0MmY1Yzg3RQpLX1pONGNvcmUzZm10M251bTNpbXAyMV8kTFQkaW1wbCR1MjAkdTMyJEdUJDEwX2ZtdF9pbm5lcjE3aDY4OWZiN2M2YzBkYTc5YzNFCzBfWk40Y29yZTlwYW5pY2tpbmc5cGFuaWNfZm10MTdoYjhiYWRiOWE5MzljY2Y3YUUMOl9aTjRjb3JlOXBhbmlja2luZzE4cGFuaWNfYm91bmRzX2NoZWNrMTdoNzU3OWVhZjcyNDM3YzY4ZEUNYl9aTjRjb3JlM2ZtdDNudW0zaW1wNTJfJExUJGltcGwkdTIwJGNvcmUuLmZtdC4uRGlzcGxheSR1MjAkZm9yJHUyMCR1MzIkR1QkM2ZtdDE3aDdhYWE2ZDUxMGQwNDRlYTdFDkZfWk40Y29yZTNmbXQ5Rm9ybWF0dGVyMTJwYWRfaW50ZWdyYWwxMndyaXRlX3ByZWZpeDE3aGJhYzcyNjUwNmM0NjU0NTZFDzZfWk40Y29yZTNzdHI1Y291bnQxNGRvX2NvdW50X2NoYXJzMTdoNTNlZGE0NjkyNDUxMTY1OUUHEgEAD19fc3RhY2tfcG9pbnRlcgkRAgAHLnJvZGF0YQEFLmRhdGEATQlwcm9kdWNlcnMCCGxhbmd1YWdlAQRSdXN0AAxwcm9jZXNzZWQtYnkBBXJ1c3RjHTEuOTQuMCAoNGE0ZWY0OTNlIDIwMjYtMDMtMDIpAJQBD3RhcmdldF9mZWF0dXJlcwgrC2J1bGstbWVtb3J5Kw9idWxrLW1lbW9yeS1vcHQrFmNhbGwtaW5kaXJlY3Qtb3ZlcmxvbmcrCm11bHRpdmFsdWUrD211dGFibGUtZ2xvYmFscysTbm9udHJhcHBpbmctZnB0b2ludCsPcmVmZXJlbmNlLXR5cGVzKwhzaWduLWV4dA==";
+    // 3D Orbital Progression State
+    let celestialYaw = 0.0;     // Primary celestial sphere rotation
+    let celestialPitch = 0.38;  // Earth axial obliquity (23.5°) + nutation
+    let celestialRoll = 0.07;   // Precession wave
+    let timeAccumulator = 0.0;
 
-    // Spectral Classifications: 0 = Quantum Cyan, 1 = Arcane Violet, 2 = Amber/Red Giant, 3 = Diamond White
+    // Star Colors: 0 = Quantum Cyan, 1 = Arcane Violet, 2 = Golden Amber / Ruby, 3 = Diamond White
     const STAR_COLORS = [
-      { r: 0, g: 240, b: 255 },    // 0: Quantum Cyan (Rigel, Sirius, Deneb)
-      { r: 192, g: 132, b: 252 },  // 1: Arcane Violet (Vega, Spica)
-      { r: 251, g: 191, b: 36 },   // 2: Golden Amber (Betelgeuse, Arcturus, Aldebaran, Antares)
-      { r: 255, g: 255, b: 255 }   // 3: Diamond White (Polaris, Castor, Altair)
+      { r: 0, g: 240, b: 255 },    // 0: Cyan (Rigel, Sirius, Deneb, Spica)
+      { r: 192, g: 132, b: 252 },  // 1: Arcane Violet (Vega, Caph, Corona)
+      { r: 251, g: 191, b: 36 },   // 2: Golden Amber / Ruby (Betelgeuse, Arcturus, Aldebaran, Antares)
+      { r: 255, g: 255, b: 255 }   // 3: Diamond White (Polaris, Altair, Castor, Alpheratz)
     ];
 
-    const CONSTELLATION_NAMES = {
-      1: "CASSIOPEIA",
-      2: "PEGASUS",
-      3: "ANDROMEDA",
-      4: "ORION",
-      5: "TAURUS",
-      6: "CANIS MAJOR",
-      7: "GEMINI",
-      8: "URSA MAJOR",
-      9: "LEO",
-      10: "BOÖTES",
-      11: "VIRGO",
-      12: "CYGNUS",
-      13: "LYRA",
-      14: "AQUILA",
-      15: "SCORPIUS",
-      16: "★ POLARIS"
-    };
+    const CELESTIAL_SPHERE_RADIUS = 760;
 
-    // Canonical Seasonal Celestial Wheel Prototype
-    // ra in [0, 1] (Autumn: 0.0-0.25, Winter: 0.25-0.50, Spring: 0.50-0.75, Summer: 0.75-1.0)
-    // dec in [0, 1] (Upper sky: 0.08-0.34, Lower horizon: 0.68-0.92; Center 0.38-0.64 is kept clear)
-    const RAW_STARS = [
-      // Autumn: Cassiopeia (0..4)
-      { ra: 0.030, dec: 0.16, r: 2.5, pulse: 0.4, cid: 1, c: 0 },
-      { ra: 0.055, dec: 0.11, r: 2.8, pulse: 1.7, cid: 1, c: 2 },
-      { ra: 0.080, dec: 0.15, r: 2.9, pulse: 3.0, cid: 1, c: 0 },
-      { ra: 0.105, dec: 0.10, r: 2.4, pulse: 4.3, cid: 1, c: 0 },
-      { ra: 0.125, dec: 0.14, r: 2.3, pulse: 5.6, cid: 1, c: 1 },
-      // Autumn: Pegasus Great Square (5..8)
-      { ra: 0.060, dec: 0.72, r: 2.7, pulse: 0.8, cid: 2, c: 0 },
-      { ra: 0.065, dec: 0.86, r: 2.8, pulse: 2.2, cid: 2, c: 2 },
-      { ra: 0.150, dec: 0.84, r: 2.9, pulse: 3.5, cid: 2, c: 3 },
-      { ra: 0.145, dec: 0.70, r: 2.6, pulse: 4.9, cid: 2, c: 0 },
-      // Autumn: Andromeda (9..11)
-      { ra: 0.180, dec: 0.28, r: 2.6, pulse: 1.1, cid: 3, c: 2 },
-      { ra: 0.220, dec: 0.25, r: 2.7, pulse: 2.8, cid: 3, c: 0 },
-      { ra: 0.240, dec: 0.32, r: 2.2, pulse: 4.4, cid: 3, c: 1 },
-      // Winter: Orion (12..19)
-      { ra: 0.290, dec: 0.14, r: 3.6, pulse: 0.0, cid: 4, c: 2 }, // Betelgeuse
-      { ra: 0.355, dec: 0.15, r: 2.6, pulse: 1.2, cid: 4, c: 0 }, // Bellatrix
-      { ra: 0.315, dec: 0.24, r: 2.4, pulse: 2.4, cid: 4, c: 0 }, // Alnitak
-      { ra: 0.325, dec: 0.23, r: 2.5, pulse: 3.1, cid: 4, c: 3 }, // Alnilam
-      { ra: 0.335, dec: 0.22, r: 2.4, pulse: 4.0, cid: 4, c: 0 }, // Mintaka
-      { ra: 0.300, dec: 0.34, r: 2.7, pulse: 5.1, cid: 4, c: 0 }, // Saiph
-      { ra: 0.365, dec: 0.35, r: 3.6, pulse: 0.5, cid: 4, c: 0 }, // Rigel
-      { ra: 0.325, dec: 0.09, r: 2.0, pulse: 1.8, cid: 4, c: 3 }, // Meissa
-      // Winter: Taurus & Pleiades (20..24)
-      { ra: 0.270, dec: 0.74, r: 3.4, pulse: 0.6, cid: 5, c: 2 }, // Aldebaran
-      { ra: 0.285, dec: 0.85, r: 2.5, pulse: 1.9, cid: 5, c: 0 },
-      { ra: 0.250, dec: 0.78, r: 2.3, pulse: 3.2, cid: 5, c: 0 },
-      { ra: 0.230, dec: 0.72, r: 2.8, pulse: 4.5, cid: 5, c: 0 },
-      { ra: 0.235, dec: 0.70, r: 2.1, pulse: 5.2, cid: 5, c: 3 },
-      // Winter: Canis Major & Sirius (25..28)
-      { ra: 0.400, dec: 0.74, r: 4.2, pulse: 0.0, cid: 6, c: 0 }, // Sirius
-      { ra: 0.385, dec: 0.84, r: 2.5, pulse: 1.4, cid: 6, c: 0 },
-      { ra: 0.425, dec: 0.86, r: 2.7, pulse: 2.7, cid: 6, c: 2 },
-      { ra: 0.435, dec: 0.90, r: 2.4, pulse: 4.1, cid: 6, c: 0 },
-      // Winter: Gemini (29..32)
-      { ra: 0.430, dec: 0.15, r: 3.0, pulse: 0.3, cid: 7, c: 3 }, // Castor
-      { ra: 0.450, dec: 0.17, r: 3.2, pulse: 1.6, cid: 7, c: 2 }, // Pollux
-      { ra: 0.420, dec: 0.28, r: 2.4, pulse: 3.3, cid: 7, c: 0 },
-      { ra: 0.445, dec: 0.26, r: 2.3, pulse: 4.7, cid: 7, c: 1 },
-      // Spring: Ursa Major / Big Dipper (33..39)
-      { ra: 0.580, dec: 0.14, r: 3.0, pulse: 0.2, cid: 8, c: 0 }, // Dubhe
-      { ra: 0.585, dec: 0.23, r: 2.6, pulse: 1.5, cid: 8, c: 0 }, // Merak
-      { ra: 0.540, dec: 0.24, r: 2.5, pulse: 2.8, cid: 8, c: 0 }, // Phecda
-      { ra: 0.535, dec: 0.16, r: 2.3, pulse: 4.1, cid: 8, c: 1 }, // Megrez
-      { ra: 0.500, dec: 0.18, r: 2.8, pulse: 5.3, cid: 8, c: 0 }, // Alioth
-      { ra: 0.470, dec: 0.21, r: 2.7, pulse: 0.8, cid: 8, c: 3 }, // Mizar
-      { ra: 0.440, dec: 0.26, r: 2.9, pulse: 2.1, cid: 8, c: 0 }, // Alkaid
-      // Spring: Leo (40..44)
-      { ra: 0.540, dec: 0.82, r: 3.4, pulse: 0.4, cid: 9, c: 0 }, // Regulus
-      { ra: 0.535, dec: 0.72, r: 2.7, pulse: 1.8, cid: 9, c: 2 },
-      { ra: 0.550, dec: 0.68, r: 2.4, pulse: 3.1, cid: 9, c: 0 },
-      { ra: 0.590, dec: 0.74, r: 2.5, pulse: 4.4, cid: 9, c: 0 },
-      { ra: 0.615, dec: 0.78, r: 2.9, pulse: 5.7, cid: 9, c: 0 }, // Denebola
-      // Spring: Boötes & Arcturus (45..48)
-      { ra: 0.670, dec: 0.32, r: 3.8, pulse: 0.0, cid: 10, c: 2 }, // Arcturus
-      { ra: 0.655, dec: 0.22, r: 2.5, pulse: 1.7, cid: 10, c: 1 },
-      { ra: 0.685, dec: 0.21, r: 2.4, pulse: 3.2, cid: 10, c: 0 },
-      { ra: 0.670, dec: 0.15, r: 2.3, pulse: 4.6, cid: 10, c: 0 },
-      // Spring: Virgo & Spica (49..51)
-      { ra: 0.700, dec: 0.82, r: 3.5, pulse: 0.5, cid: 11, c: 0 }, // Spica
-      { ra: 0.680, dec: 0.72, r: 2.4, pulse: 2.0, cid: 11, c: 2 },
-      { ra: 0.725, dec: 0.75, r: 2.5, pulse: 3.8, cid: 11, c: 0 },
-      // Summer: Cygnus (52..56)
-      { ra: 0.800, dec: 0.13, r: 3.5, pulse: 0.1, cid: 12, c: 0 }, // Deneb
-      { ra: 0.805, dec: 0.22, r: 2.7, pulse: 1.4, cid: 12, c: 3 }, // Sadr
-      { ra: 0.810, dec: 0.32, r: 2.5, pulse: 2.7, cid: 12, c: 2 }, // Albireo
-      { ra: 0.765, dec: 0.20, r: 2.5, pulse: 4.0, cid: 12, c: 0 },
-      { ra: 0.845, dec: 0.21, r: 2.5, pulse: 5.2, cid: 12, c: 0 },
-      // Summer: Lyra & Vega (57..59)
-      { ra: 0.750, dec: 0.16, r: 3.8, pulse: 0.2, cid: 13, c: 1 }, // Vega
-      { ra: 0.745, dec: 0.25, r: 2.4, pulse: 1.8, cid: 13, c: 0 },
-      { ra: 0.760, dec: 0.26, r: 2.4, pulse: 3.4, cid: 13, c: 0 },
-      // Summer: Aquila (60..62)
-      { ra: 0.850, dec: 0.74, r: 3.4, pulse: 0.3, cid: 14, c: 3 }, // Altair
-      { ra: 0.840, dec: 0.71, r: 2.3, pulse: 2.1, cid: 14, c: 2 },
-      { ra: 0.860, dec: 0.77, r: 2.3, pulse: 3.9, cid: 14, c: 0 },
-      // Summer: Scorpius & Antares (63..68)
-      { ra: 0.920, dec: 0.75, r: 3.8, pulse: 0.0, cid: 15, c: 2 }, // Antares
-      { ra: 0.900, dec: 0.72, r: 2.5, pulse: 1.6, cid: 15, c: 0 },
-      { ra: 0.905, dec: 0.77, r: 2.4, pulse: 2.9, cid: 15, c: 0 },
-      { ra: 0.940, dec: 0.85, r: 2.5, pulse: 4.2, cid: 15, c: 0 },
-      { ra: 0.965, dec: 0.90, r: 2.8, pulse: 5.5, cid: 15, c: 0 },
-      { ra: 0.975, dec: 0.88, r: 2.2, pulse: 0.7, cid: 15, c: 0 },
-      // All-Year Circumpolar Anchor: Polaris & Ursa Minor (69..73)
-      { ra: 0.500, dec: 0.07, r: 4.0, pulse: 0.0, cid: 16, c: 3 }, // Polaris
-      { ra: 0.485, dec: 0.10, r: 2.0, pulse: 1.2, cid: 16, c: 0 },
-      { ra: 0.470, dec: 0.12, r: 2.1, pulse: 2.5, cid: 16, c: 1 },
-      { ra: 0.450, dec: 0.15, r: 2.4, pulse: 3.8, cid: 16, c: 0 },
-      { ra: 0.465, dec: 0.17, r: 2.7, pulse: 5.1, cid: 16, c: 2 }
-    ];
+    // 18 Canonical Constellations with Rigid Astronomical Coordinates
+    function build3DConstellations() {
+      const constellations = [];
 
-    const RAW_LINES = [
-      // Cassiopeia
-      [0, 1, 1], [1, 2, 1], [2, 3, 1], [3, 4, 1],
-      // Pegasus
-      [5, 6, 2], [6, 7, 2], [7, 8, 2], [8, 5, 2],
-      // Andromeda
-      [7, 9, 3], [9, 10, 3], [10, 11, 3],
-      // Orion
-      [12, 13, 4], [13, 16, 4], [12, 14, 4], [14, 15, 4], [15, 16, 4],
-      [14, 17, 4], [16, 18, 4], [17, 18, 4], [19, 12, 4], [19, 13, 4],
-      // Taurus & Pleiades
-      [20, 21, 5], [20, 22, 5], [22, 23, 5], [23, 24, 5],
-      // Canis Major
-      [25, 26, 6], [25, 27, 6], [27, 28, 6],
-      // Gemini
-      [29, 30, 7], [29, 31, 7], [30, 32, 7],
-      // Ursa Major / Big Dipper
-      [33, 34, 8], [34, 35, 8], [35, 36, 8], [36, 33, 8],
-      [36, 37, 8], [37, 38, 8], [38, 39, 8],
-      // Leo
-      [40, 41, 9], [41, 42, 9], [41, 43, 9], [43, 44, 9], [44, 40, 9],
-      // Boötes
-      [45, 46, 10], [46, 47, 10], [47, 48, 10],
-      // Virgo
-      [49, 50, 11], [50, 51, 11],
-      // Cygnus
-      [52, 53, 12], [53, 54, 12], [55, 53, 12], [53, 56, 12],
-      // Lyra
-      [57, 58, 13], [58, 59, 13], [59, 57, 13],
-      // Aquila
-      [60, 61, 14], [60, 62, 14],
-      // Scorpius
-      [63, 64, 15], [64, 65, 15], [63, 66, 15], [66, 67, 15], [67, 68, 15],
-      // Polaris & Ursa Minor
-      [69, 70, 16], [70, 71, 16], [71, 72, 16], [72, 73, 16], [73, 71, 16]
-    ];
+      function sphereCoord(thetaDeg, phiDeg, r = CELESTIAL_SPHERE_RADIUS) {
+        const t = (thetaDeg * Math.PI) / 180;
+        const p = (phiDeg * Math.PI) / 180;
+        return {
+          x: r * Math.cos(p) * Math.sin(t),
+          y: -r * Math.sin(p), // Negative Y is celestial north (up)
+          z: r * Math.cos(p) * Math.cos(t)
+        };
+      }
 
-    let ambientDust = [];
+      // 1. ORION (Winter Sovereign) - Betelgeuse, Rigel, Belt
+      const orionC = sphereCoord(48, 14);
+      const orionStars = [
+        { dx: -46, dy: -62, dz: 0, r: 4.0, pulse: 0.0, color: 2 }, // 0 Betelgeuse (Amber Supergiant)
+        { dx: 46,  dy: -56, dz: 0, r: 2.8, pulse: 1.2, color: 0 }, // 1 Bellatrix
+        { dx: -19, dy: -5,  dz: 0, r: 2.6, pulse: 2.4, color: 0 }, // 2 Alnitak (Belt)
+        { dx: 0,   dy: -3,  dz: 0, r: 2.7, pulse: 3.1, color: 3 }, // 3 Alnilam (Belt)
+        { dx: 19,  dy: -1,  dz: 0, r: 2.6, pulse: 4.0, color: 0 }, // 4 Mintaka (Belt)
+        { dx: -38, dy: 66,  dz: 0, r: 2.8, pulse: 5.1, color: 0 }, // 5 Saiph
+        { dx: 52,  dy: 72,  dz: 0, r: 4.2, pulse: 0.5, color: 0 }, // 6 Rigel (Radiant Cyan Supergiant)
+        { dx: 2,   dy: -88, dz: 0, r: 2.1, pulse: 1.8, color: 3 }  // 7 Meissa (Head)
+      ];
+      const orionLines = [
+        [0, 1], [1, 4], [0, 2], [2, 3], [3, 4],
+        [2, 5], [4, 6], [5, 6], [7, 0], [7, 1]
+      ];
+      constellations.push({ id: 1, center: orionC, stars: orionStars, lines: orionLines, label: "ORION" });
 
-    function initAmbientDust() {
-      ambientDust = [];
-      for (let i = 0; i < 45; i++) {
-        ambientDust.push({
-          ra: Math.random(),
-          dec: Math.random() > 0.5 ? Math.random() * 0.32 : 0.68 + Math.random() * 0.30,
-          r: 0.7 + Math.random() * 1.3,
+      // 2. CANIS MAJOR & SIRIUS (Brightest star in Earth's sky)
+      const cmaC = sphereCoord(62, -18);
+      const cmaStars = [
+        { dx: 0,   dy: -25, dz: 0, r: 5.0, pulse: 0.2, color: 0 }, // 0 Sirius (Cyan-White Beacon)
+        { dx: -35, dy: -8,  dz: 0, r: 2.6, pulse: 1.5, color: 0 }, // 1 Murzim
+        { dx: 28,  dy: 35,  dz: 0, r: 2.8, pulse: 2.8, color: 2 }, // 2 Wezen (Amber)
+        { dx: 45,  dy: 52,  dz: 0, r: 2.9, pulse: 4.1, color: 0 }, // 3 Aludra
+        { dx: 10,  dy: 45,  dz: 0, r: 2.7, pulse: 5.3, color: 0 }  // 4 Adhara
+      ];
+      const cmaLines = [[1, 0], [0, 2], [2, 3], [2, 4]];
+      constellations.push({ id: 2, center: cmaC, stars: cmaStars, lines: cmaLines, label: "CANIS MAJOR · SIRIUS" });
+
+      // 3. TAURUS & THE PLEIADES (Aldebaran + Seven Sisters)
+      const tauC = sphereCoord(22, -12);
+      const tauStars = [
+        { dx: -20, dy: 10,  dz: 0, r: 4.0, pulse: 0.6, color: 2 }, // 0 Aldebaran (Fiery Eye)
+        { dx: 32,  dy: -36, dz: 0, r: 2.6, pulse: 1.9, color: 0 }, // 1 Elnath
+        { dx: 22,  dy: 30,  dz: 0, r: 2.5, pulse: 3.2, color: 0 }, // 2 Tianguan
+        { dx: -68, dy: -28, dz: 0, r: 3.4, pulse: 4.5, color: 0 }, // 3 Pleiades Core
+        { dx: -60, dy: -36, dz: 0, r: 2.4, pulse: 5.2, color: 3 }, // 4 Pleiades Star
+        { dx: -74, dy: -22, dz: 0, r: 2.3, pulse: 1.1, color: 1 }  // 5 Pleiades Star
+      ];
+      const tauLines = [[0, 1], [0, 2], [0, 3], [3, 4], [3, 5]];
+      constellations.push({ id: 3, center: tauC, stars: tauStars, lines: tauLines, label: "TAURUS & PLEIADES" });
+
+      // 4. GEMINI / THE TWINS (Castor & Pollux)
+      const gemC = sphereCoord(82, 22);
+      const gemStars = [
+        { dx: -18, dy: -46, dz: 0, r: 3.4, pulse: 0.3, color: 3 }, // 0 Castor (Diamond White)
+        { dx: 18,  dy: -38, dz: 0, r: 3.8, pulse: 1.6, color: 2 }, // 1 Pollux (Amber Giant)
+        { dx: -26, dy: 36,  dz: 0, r: 2.5, pulse: 3.3, color: 0 }, // 2 Alhena
+        { dx: 24,  dy: 30,  dz: 0, r: 2.5, pulse: 4.7, color: 1 }  // 3 Wasat
+      ];
+      const gemLines = [[0, 1], [0, 2], [1, 3]];
+      constellations.push({ id: 4, center: gemC, stars: gemStars, lines: gemLines, label: "GEMINI" });
+
+      // 5. URSA MAJOR / THE BIG DIPPER (Spring Sovereign)
+      const umC = sphereCoord(142, 38);
+      const umStars = [
+        { dx: 64,  dy: -26, dz: 0, r: 3.5, pulse: 0.2, color: 0 }, // 0 Dubhe (North Pointer)
+        { dx: 58,  dy: 22,  dz: 0, r: 3.0, pulse: 1.5, color: 0 }, // 1 Merak (North Pointer)
+        { dx: 16,  dy: 26,  dz: 0, r: 2.7, pulse: 2.8, color: 0 }, // 2 Phecda
+        { dx: 14,  dy: -19, dz: 0, r: 2.5, pulse: 4.1, color: 1 }, // 3 Megrez
+        { dx: -26, dy: -24, dz: 0, r: 3.0, pulse: 5.3, color: 0 }, // 4 Alioth
+        { dx: -64, dy: -14, dz: 0, r: 2.9, pulse: 0.8, color: 3 }, // 5 Mizar
+        { dx: -102,dy: 11,  dz: 0, r: 3.2, pulse: 2.1, color: 0 }  // 6 Alkaid
+      ];
+      const umLines = [
+        [0, 1], [1, 2], [2, 3], [3, 0],
+        [3, 4], [4, 5], [5, 6]
+      ];
+      constellations.push({ id: 5, center: umC, stars: umStars, lines: umLines, label: "URSA MAJOR" });
+
+      // 6. POLARIS & URSA MINOR (True North Anchor, Near Zenith)
+      const polC = sphereCoord(0, 80);
+      const polStars = [
+        { dx: 0,   dy: 0,   dz: 0, r: 4.8, pulse: 0.0, color: 3 }, // 0 Polaris (True North)
+        { dx: -24, dy: 24,  dz: 0, r: 2.3, pulse: 1.2, color: 0 }, // 1 Yildun
+        { dx: -42, dy: 48,  dz: 0, r: 2.4, pulse: 2.5, color: 1 }, // 2 Ahfa
+        { dx: -60, dy: 76,  dz: 0, r: 2.7, pulse: 3.8, color: 0 }, // 3 Pherkad
+        { dx: -30, dy: 86,  dz: 0, r: 3.2, pulse: 5.1, color: 2 }  // 4 Kochab (Amber)
+      ];
+      const polLines = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 2]];
+      constellations.push({ id: 6, center: polC, stars: polStars, lines: polLines, label: "★ POLARIS" });
+
+      // 7. LEO / THE SICKLE (Spring Sovereign)
+      const leoC = sphereCoord(118, -14);
+      const leoStars = [
+        { dx: -48, dy: 26,  dz: 0, r: 4.0, pulse: 0.4, color: 0 }, // 0 Regulus (Heart of the Lion)
+        { dx: -40, dy: -20, dz: 0, r: 3.0, pulse: 1.8, color: 2 }, // 1 Algieba (Amber)
+        { dx: -22, dy: -42, dz: 0, r: 2.6, pulse: 3.1, color: 0 }, // 2 Adhafera
+        { dx: 32,  dy: -14, dz: 0, r: 2.7, pulse: 4.4, color: 0 }, // 3 Zosma
+        { dx: 62,  dy: 11,  dz: 0, r: 3.2, pulse: 5.7, color: 0 }  // 4 Denebola
+      ];
+      const leoLines = [[0, 1], [1, 2], [1, 3], [3, 4], [4, 0]];
+      constellations.push({ id: 7, center: leoC, stars: leoStars, lines: leoLines, label: "LEO" });
+
+      // 8. BOÖTES & ARCTURUS (Golden Giant of the Spring Sky)
+      const booC = sphereCoord(174, 19);
+      const booStars = [
+        { dx: 0,   dy: 44,  dz: 0, r: 4.4, pulse: 0.0, color: 2 }, // 0 Arcturus (Golden Giant)
+        { dx: -24, dy: -12, dz: 0, r: 2.7, pulse: 1.7, color: 1 }, // 1 Izar
+        { dx: 24,  dy: -14, dz: 0, r: 2.6, pulse: 3.2, color: 0 }, // 2 Seginus
+        { dx: 0,   dy: -52, dz: 0, r: 2.5, pulse: 4.6, color: 0 }  // 3 Nekkar
+      ];
+      const booLines = [[0, 1], [1, 3], [3, 2], [2, 0]];
+      constellations.push({ id: 8, center: booC, stars: booStars, lines: booLines, label: "BOÖTES · ARCTURUS" });
+
+      // 9. CORONA BOREALIS (The Northern Crown)
+      const corC = sphereCoord(195, 26);
+      const corStars = [
+        { dx: 0,   dy: -18, dz: 0, r: 3.6, pulse: 0.4, color: 1 }, // 0 Alphecca (The Gem)
+        { dx: -26, dy: -8,  dz: 0, r: 2.4, pulse: 1.9, color: 0 }, // 1 Nusakan
+        { dx: -38, dy: 14,  dz: 0, r: 2.3, pulse: 3.1, color: 0 }, // 2 Theta CrB
+        { dx: 26,  dy: -7,  dz: 0, r: 2.4, pulse: 4.3, color: 0 }, // 3 Gamma CrB
+        { dx: 38,  dy: 16,  dz: 0, r: 2.3, pulse: 5.5, color: 1 }  // 4 Delta CrB
+      ];
+      const corLines = [[2, 1], [1, 0], [0, 3], [3, 4]];
+      constellations.push({ id: 9, center: corC, stars: corStars, lines: corLines, label: "CORONA BOREALIS" });
+
+      // 10. CYGNUS / THE NORTHERN CROSS (Summer Sovereign)
+      const cygC = sphereCoord(232, 32);
+      const cygStars = [
+        { dx: 0,   dy: -70, dz: 0, r: 4.0, pulse: 0.1, color: 0 }, // 0 Deneb (Cyan Supergiant)
+        { dx: 2,   dy: 0,   dz: 0, r: 3.0, pulse: 1.4, color: 3 }, // 1 Sadr
+        { dx: 4,   dy: 70,  dz: 0, r: 2.8, pulse: 2.7, color: 2 }, // 2 Albireo (Golden Binary)
+        { dx: -56, dy: -6,  dz: 0, r: 2.7, pulse: 4.0, color: 0 }, // 3 Delta Cyg
+        { dx: 60,  dy: -4,  dz: 0, r: 2.7, pulse: 5.2, color: 0 }  // 4 Gienah
+      ];
+      const cygLines = [[0, 1], [1, 2], [3, 1], [1, 4]];
+      constellations.push({ id: 10, center: cygC, stars: cygStars, lines: cygLines, label: "CYGNUS" });
+
+      // 11. LYRA & VEGA (Summer Sovereign Crown)
+      const lyrC = sphereCoord(212, 36);
+      const lyrStars = [
+        { dx: 0,   dy: -32, dz: 0, r: 4.6, pulse: 0.2, color: 1 }, // 0 Vega (Sapphire-Violet Crown)
+        { dx: -20, dy: 16,  dz: 0, r: 2.6, pulse: 1.8, color: 0 }, // 1 Sheliak
+        { dx: 20,  dy: 20,  dz: 0, r: 2.6, pulse: 3.4, color: 0 }, // 2 Sulafat
+        { dx: 26,  dy: -24, dz: 0, r: 2.3, pulse: 4.8, color: 3 }  // 3 Epsilon Lyrae (Double Double)
+      ];
+      const lyrLines = [[0, 1], [1, 2], [2, 0], [0, 3]];
+      constellations.push({ id: 11, center: lyrC, stars: lyrStars, lines: lyrLines, label: "LYRA · VEGA" });
+
+      // 12. AQUILA & ALTAIR (The Celestial Eagle)
+      const aqlC = sphereCoord(248, 6);
+      const aqlStars = [
+        { dx: 0,   dy: 0,   dz: 0, r: 3.9, pulse: 0.3, color: 3 }, // 0 Altair (Diamond White)
+        { dx: -16, dy: -20, dz: 0, r: 2.6, pulse: 2.1, color: 2 }, // 1 Tarazed (Amber)
+        { dx: 16,  dy: 20,  dz: 0, r: 2.6, pulse: 3.9, color: 0 }  // 2 Alshain
+      ];
+      const aqlLines = [[1, 0], [0, 2]];
+      constellations.push({ id: 12, center: aqlC, stars: aqlStars, lines: aqlLines, label: "AQUILA" });
+
+      // 13. SCORPIUS (Summer Sovereign Ruby Heart)
+      const scoC = sphereCoord(268, -26);
+      const scoStars = [
+        { dx: -48, dy: -28, dz: 0, r: 4.4, pulse: 0.0, color: 2 }, // 0 Antares (Ruby Heart)
+        { dx: -64, dy: -38, dz: 0, r: 2.7, pulse: 1.6, color: 0 }, // 1 Graffias
+        { dx: -52, dy: -10, dz: 0, r: 2.6, pulse: 2.9, color: 0 }, // 2 Dschubba
+        { dx: 0,   dy: 22,  dz: 0, r: 2.8, pulse: 4.2, color: 0 }, // 3 Sargas
+        { dx: 48,  dy: 42,  dz: 0, r: 3.2, pulse: 5.5, color: 0 }, // 4 Shaula (Stinger)
+        { dx: 62,  dy: 35,  dz: 0, r: 2.5, pulse: 0.7, color: 0 }  // 5 Lesath
+      ];
+      const scoLines = [[1, 0], [0, 2], [2, 3], [3, 4], [4, 5]];
+      constellations.push({ id: 13, center: scoC, stars: scoStars, lines: scoLines, label: "SCORPIUS" });
+
+      // 14. SAGITTARIUS (The Teapot pointing to Galactic Core)
+      const sagC = sphereCoord(292, -20);
+      const sagStars = [
+        { dx: -38, dy: 16,  dz: 0, r: 3.2, pulse: 0.9, color: 0 }, // 0 Kaus Australis
+        { dx: 16,  dy: 13,  dz: 0, r: 2.9, pulse: 2.3, color: 0 }, // 1 Ascella
+        { dx: 14,  dy: -28, dz: 0, r: 3.1, pulse: 3.7, color: 3 }, // 2 Nunki
+        { dx: -28, dy: -22, dz: 0, r: 2.8, pulse: 5.0, color: 2 }, // 3 Kaus Media
+        { dx: -60, dy: -9,  dz: 0, r: 2.6, pulse: 1.4, color: 0 }  // 4 Alnasl (Spout)
+      ];
+      const sagLines = [[0, 1], [1, 2], [2, 3], [3, 0], [3, 4], [0, 4]];
+      constellations.push({ id: 14, center: sagC, stars: sagStars, lines: sagLines, label: "SAGITTARIUS" });
+
+      // 15. CASSIOPEIA "W" (Autumn Sovereign)
+      const casC = sphereCoord(334, 42);
+      const casStars = [
+        { dx: -58, dy: 13,  dz: 0, r: 2.7, pulse: 0.4, color: 0 }, // 0 Caph
+        { dx: -30, dy: -22, dz: 0, r: 3.2, pulse: 1.7, color: 2 }, // 1 Schedar (Amber)
+        { dx: 0,   dy: 9,   dz: 0, r: 3.2, pulse: 3.0, color: 0 }, // 2 Gamma Cas
+        { dx: 30,  dy: -24, dz: 0, r: 2.6, pulse: 4.3, color: 0 }, // 3 Ruchbah
+        { dx: 62,  dy: 7,   dz: 0, r: 2.5, pulse: 5.6, color: 1 }  // 4 Segin
+      ];
+      const casLines = [[0, 1], [1, 2], [2, 3], [3, 4]];
+      constellations.push({ id: 15, center: casC, stars: casStars, lines: casLines, label: "CASSIOPEIA" });
+
+      // 16. PEGASUS (Great Square of the Autumn Sky)
+      const pegC = sphereCoord(358, -16);
+      const pegStars = [
+        { dx: -44, dy: -38, dz: 0, r: 3.0, pulse: 0.8, color: 0 }, // 0 Markab
+        { dx: -42, dy: 38,  dz: 0, r: 3.1, pulse: 2.2, color: 2 }, // 1 Scheat (Amber)
+        { dx: 48,  dy: 32,  dz: 0, r: 3.2, pulse: 3.5, color: 3 }, // 2 Alpheratz
+        { dx: 46,  dy: -34, dz: 0, r: 2.8, pulse: 4.9, color: 0 }  // 3 Algenib
+      ];
+      const pegLines = [[0, 1], [1, 2], [2, 3], [3, 0]];
+      constellations.push({ id: 16, center: pegC, stars: pegStars, lines: pegLines, label: "PEGASUS" });
+
+      // 17. ANDROMEDA (Princess of the Heavens)
+      const andC = sphereCoord(342, 22);
+      const andStars = [
+        { dx: -42, dy: -12, dz: 0, r: 3.2, pulse: 1.0, color: 3 }, // 0 Alpheratz
+        { dx: 0,   dy: 6,   dz: 0, r: 3.0, pulse: 2.6, color: 2 }, // 1 Mirach (Amber)
+        { dx: 46,  dy: 24,  dz: 0, r: 2.8, pulse: 4.2, color: 0 }  // 2 Almach
+      ];
+      const andLines = [[0, 1], [1, 2]];
+      constellations.push({ id: 17, center: andC, stars: andStars, lines: andLines, label: "ANDROMEDA" });
+
+      // 18. ARIES (The Ram of the Zodiac)
+      const ariC = sphereCoord(315, 6);
+      const ariStars = [
+        { dx: 22,  dy: -12, dz: 0, r: 3.2, pulse: 0.7, color: 2 }, // 0 Hamal (Amber)
+        { dx: -8,  dy: 4,   dz: 0, r: 2.7, pulse: 2.4, color: 0 }, // 1 Sheratan
+        { dx: -24, dy: 14,  dz: 0, r: 2.4, pulse: 4.1, color: 3 }  // 2 Mesarthim
+      ];
+      const ariLines = [[0, 1], [1, 2]];
+      constellations.push({ id: 18, center: ariC, stars: ariStars, lines: ariLines, label: "ARIES" });
+
+      return constellations;
+    }
+
+    const CONSTELLATIONS_3D = build3DConstellations();
+
+    // Ambient 3D Stardust & Deep Cosmic Atmosphere
+    let ambient3D = [];
+    function initAmbient3D() {
+      ambient3D = [];
+      for (let i = 0; i < 110; i++) {
+        const u = Math.random();
+        const v = Math.random();
+        const theta = u * 2.0 * Math.PI;
+        const phi = Math.acos(2.0 * v - 1.0) - Math.PI / 2.0;
+        const r = CELESTIAL_SPHERE_RADIUS * (0.80 + Math.random() * 0.40);
+        ambient3D.push({
+          x: r * Math.cos(phi) * Math.sin(theta),
+          y: r * Math.sin(phi),
+          z: r * Math.cos(phi) * Math.cos(theta),
+          r: 0.6 + Math.random() * 1.5,
           pulse: Math.random() * 6.28,
-          color: Math.random() > 0.75 ? 1 : 0
+          color: Math.random() > 0.7 ? (Math.random() > 0.5 ? 1 : 2) : 0
         });
       }
     }
 
-    async function initWasmEngine() {
-      try {
-        const binary = Uint8Array.from(atob(WASM_KERNEL_B64), c => c.charCodeAt(0));
-        const { instance } = await WebAssembly.instantiate(binary, {});
-        wasmExports = instance.exports;
-        wasmMemory = wasmExports.memory;
-        wasmExports.init_engine(width, height);
-        console.log("[TWU SOVEREIGN CORE] Native Rust WebAssembly Active. 16 Astronomical Constellations Enlisted.");
-      } catch (err) {
-        console.info('[TWU] Fallback celestial engine running:', err.message);
-      }
+    // 3D Matrix Projection with Dual-Frequency Organic Precession
+    function project3D(x, y, z, cx, cy, fov = 1100.0) {
+      // 1. Primary Yaw (Constant smooth rotation)
+      const cosY = Math.cos(celestialYaw);
+      const sinY = Math.sin(celestialYaw);
+      const x1 = x * cosY + z * sinY;
+      const y1 = y;
+      const z1 = -x * sinY + z * cosY;
+
+      // 2. Axial Tilt & Nutation (Pitch)
+      const cosP = Math.cos(celestialPitch);
+      const sinP = Math.sin(celestialPitch);
+      const x2 = x1;
+      const y2 = y1 * cosP - z1 * sinP;
+      const z2 = y1 * sinP + z1 * cosP;
+
+      // 3. Precession Wave (Roll)
+      const cosR = Math.cos(celestialRoll);
+      const sinR = Math.cos(celestialRoll);
+      const x3 = x2 * cosR - y2 * sinR;
+      const y3 = x2 * sinR + y2 * cosR;
+      const z3 = z2;
+
+      // 4. Subtle Gyroscopic Mouse Interaction
+      const gyroX = x3 + (mouse.smoothX - cx) * 0.07;
+      const gyroY = y3 + (mouse.smoothY - cy) * 0.07;
+      const depth = z3 + fov;
+
+      if (depth < 80.0) return null;
+
+      const scale = fov / depth;
+      const sx = cx + gyroX * scale;
+      const sy = cy + gyroY * scale;
+
+      // Depth Alpha: Front hemisphere is radiant; back hemisphere gently fades into the void
+      const alpha = Math.max(0.0, Math.min(1.0, (z3 + 340.0) / 780.0));
+
+      return { sx, sy, scale, alpha, z: z3 };
     }
 
     function initCanvas() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
-      initAmbientDust();
-      if (wasmExports) {
-        wasmExports.init_engine(width, height);
-      }
+      initAmbient3D();
     }
 
     function renderCanvas() {
@@ -1017,213 +1138,205 @@
       const now = performance.now();
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
+      timeAccumulator += dt;
 
-      // Smooth Infinite Rolling Velocity (~0.00015 of the celestial sphere per frame)
-      celestialScroll += 0.008 * dt;
-      if (celestialScroll >= 1.0) celestialScroll -= 1.0;
+      // 1. Organic Spherical Celestial Progression (~110 seconds per grand revolution)
+      celestialYaw += 0.058 * dt;
+      if (celestialYaw >= 6.28318) celestialYaw -= 6.28318;
 
-      let stars = [];
-      let lines = [];
+      // Dual-frequency incommensurate axial precession waves
+      // This guarantees that EVERY revolution traces a fresh, non-repeating elliptical arc!
+      celestialPitch = 0.36 + 0.08 * Math.sin(timeAccumulator * 0.033) + 0.03 * Math.cos(timeAccumulator * 0.017);
+      celestialRoll = 0.06 * Math.cos(timeAccumulator * 0.027) + 0.02 * Math.sin(timeAccumulator * 0.013);
 
-      if (wasmExports && wasmMemory) {
-        const starPtr = wasmExports.update_simulation(mouse.x, mouse.y, dt);
-        const starCount = wasmExports.get_particle_count();
-        const starFields = wasmExports.get_fields_per_particle();
-        const rawWasmStars = new Float32Array(wasmMemory.buffer, starPtr, starCount * starFields);
+      // Smooth mouse follow
+      mouse.smoothX += (mouse.targetX - mouse.smoothX) * 0.05;
+      mouse.smoothY += (mouse.targetY - mouse.smoothY) * 0.05;
 
-        const linesPtr = wasmExports.get_constellation_lines_ptr();
-        const lineCount = wasmExports.get_constellation_lines_count();
-        const rawWasmLines = new Float32Array(wasmMemory.buffer, linesPtr, lineCount * 5);
+      const cx = width * 0.5;
+      const cy = height * 0.44;
 
-        for (let i = 0; i < starCount; i++) {
-          const off = i * starFields;
-          stars.push({
-            x: rawWasmStars[off],
-            y: rawWasmStars[off + 1],
-            r: rawWasmStars[off + 4],
-            pulse: rawWasmStars[off + 5],
-            cid: Math.floor(rawWasmStars[off + 6]),
-            color: Math.floor(rawWasmStars[off + 7]) % 4
-          });
-        }
+      // 2. Cosmic Background Glow / Subtle Tech-Wizard Nebula
+      const bgGrad1 = ctx.createRadialGradient(cx - 240, cy - 160, 50, cx - 240, cy - 160, 680);
+      bgGrad1.addColorStop(0, 'rgba(0, 240, 255, 0.035)');
+      bgGrad1.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = bgGrad1;
+      ctx.fillRect(0, 0, width, height);
 
-        for (let l = 0; l < lineCount; l++) {
-          const lOff = l * 5;
-          lines.push({
-            x1: rawWasmLines[lOff],
-            y1: rawWasmLines[lOff + 1],
-            x2: rawWasmLines[lOff + 2],
-            y2: rawWasmLines[lOff + 3],
-            cid: Math.floor(rawWasmLines[lOff + 4])
-          });
-        }
-      } else {
-        // Pure JS Rigid Seasonal Rolling Transform (Identical Math)
-        for (let i = 0; i < RAW_STARS.length; i++) {
-          const p = RAW_STARS[i];
-          let curRa = p.ra + celestialScroll;
-          if (curRa >= 1.0) curRa -= 1.0;
+      const bgGrad2 = ctx.createRadialGradient(cx + 320, cy + 180, 50, cx + 320, cy + 180, 720);
+      bgGrad2.addColorStop(0, 'rgba(168, 85, 247, 0.032)');
+      bgGrad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = bgGrad2;
+      ctx.fillRect(0, 0, width, height);
 
-          let sx = curRa * width;
-          let sy = p.dec * height;
+      // 3. Render Ambient Deep Space Stardust
+      for (let i = 0; i < ambient3D.length; i++) {
+        const a = ambient3D[i];
+        a.pulse += 0.02;
+        if (a.pulse > 6.28) a.pulse -= 6.28;
 
-          // Mouse gravity interaction
-          if (mouse.x >= 0 && mouse.y >= 0) {
-            const dx = sx - mouse.x;
-            const dy = sy - mouse.y;
-            const dist = Math.hypot(dx, dy);
-            if (dist < 160 && dist > 2) {
-              const force = (1 - dist / 160) * 10;
-              sx += (dx / dist) * force;
-              sy += (dy / dist) * force;
-            }
-          }
-
-          p.pulse += (p.cid === 16 && i === 69) ? 0.012 : 0.026;
-          if (p.pulse > 6.28) p.pulse -= 6.28;
-
-          stars.push({
-            x: sx,
-            y: sy,
-            r: p.r,
-            pulse: p.pulse,
-            cid: p.cid,
-            color: p.c
-          });
-        }
-
-        // Ambient stardust
-        for (let i = 0; i < ambientDust.length; i++) {
-          const a = ambientDust[i];
-          let curRa = a.ra + celestialScroll * 0.7;
-          if (curRa >= 1.0) curRa -= 1.0;
-          a.pulse += 0.02;
-          if (a.pulse > 6.28) a.pulse -= 6.28;
-          stars.push({
-            x: curRa * width,
-            y: a.dec * height,
-            r: a.r,
-            pulse: a.pulse,
-            cid: 0,
-            color: a.color
-          });
-        }
-
-        // Build Lines with boundary wrap awareness
-        for (let l = 0; l < RAW_LINES.length; l++) {
-          const [idxA, idxB, cid] = RAW_LINES[l];
-          if (stars[idxA] && stars[idxB]) {
-            const sA = stars[idxA];
-            const sB = stars[idxB];
-            const dx = Math.abs(sA.x - sB.x);
-            if (dx < width * 0.5) {
-              lines.push({
-                x1: sA.x,
-                y1: sA.y,
-                x2: sB.x,
-                y2: sB.y,
-                cid: cid
-              });
-            }
-          }
-        }
-      }
-
-      // 1. Draw Elegant Constellation Lines (Crisp 1.2px, never derpy or cluttered)
-      for (let l = 0; l < lines.length; l++) {
-        const line = lines[l];
-
-        // Check if passing through the central headline reading zone
-        const midY = (line.y1 + line.y2) * 0.5;
-        const isCenterEyeLevel = midY > height * 0.38 && midY < height * 0.62;
-
-        const d1 = Math.hypot(line.x1 - mouse.x, line.y1 - mouse.y);
-        const d2 = Math.hypot(line.x2 - mouse.x, line.y2 - mouse.y);
-        const isNear = d1 < 160 || d2 < 160;
-
-        ctx.beginPath();
-        ctx.moveTo(line.x1, line.y1);
-        ctx.lineTo(line.x2, line.y2);
-
-        if (isNear) {
-          ctx.strokeStyle = 'rgba(192, 132, 252, 0.90)';
-          ctx.lineWidth = 1.8;
-          ctx.shadowColor = '#00f0ff';
-          ctx.shadowBlur = 10;
-        } else {
-          ctx.shadowBlur = 0;
-          // Apply gentle opacity attenuation if passing behind primary hero text
-          const baseAlpha = isCenterEyeLevel ? 0.12 : 0.32;
-          ctx.lineWidth = 1.2;
-
-          if (line.cid === 4) { // Orion
-            ctx.strokeStyle = `rgba(0, 240, 255, ${baseAlpha + 0.10})`;
-          } else if (line.cid === 1 || line.cid === 13) { // Cassiopeia, Lyra
-            ctx.strokeStyle = `rgba(192, 132, 252, ${baseAlpha + 0.12})`;
-          } else if (line.cid === 8) { // Ursa Major
-            ctx.strokeStyle = `rgba(56, 189, 248, ${baseAlpha + 0.10})`;
-          } else if (line.cid === 15) { // Scorpius
-            ctx.strokeStyle = `rgba(251, 191, 36, ${baseAlpha + 0.10})`;
-          } else {
-            ctx.strokeStyle = `rgba(0, 240, 255, ${baseAlpha})`;
-          }
-        }
-        ctx.stroke();
-      }
-      ctx.shadowBlur = 0;
-
-      // 2. Draw Stars & Coronas
-      let labelCoords = {};
-
-      for (let i = 0; i < stars.length; i++) {
-        const s = stars[i];
-        const color = STAR_COLORS[s.color] || STAR_COLORS[0];
-        const r = s.r * (0.85 + 0.3 * Math.sin(s.pulse));
-
-        if (s.cid > 0 && !labelCoords[s.cid]) {
-          labelCoords[s.cid] = { x: s.x, y: s.y };
-        }
-
-        // Radial Corona for major stars
-        if (s.r > 2.2) {
-          const glowR = r * 4.2;
-          const grad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, glowR);
-          grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0.65)`);
-          grad.addColorStop(0.35, `rgba(${color.r}, ${color.g}, ${color.b}, 0.20)`);
-          grad.addColorStop(1, 'rgba(0,0,0,0)');
-
-          ctx.fillStyle = grad;
+        const proj = project3D(a.x, a.y, a.z, cx, cy);
+        if (proj && proj.alpha > 0.08) {
+          const color = STAR_COLORS[a.color];
+          const r = a.r * proj.scale * (0.85 + 0.3 * Math.sin(a.pulse));
+          ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${proj.alpha * 0.45})`;
           ctx.beginPath();
-          ctx.arc(s.x, s.y, glowR, 0, Math.PI * 2);
+          ctx.arc(proj.sx, proj.sy, r, 0, Math.PI * 2);
           ctx.fill();
+        }
+      }
 
-          // Polaris 4-Point Diffraction Cross
-          if (s.cid === 16 && i === 69) {
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
-            ctx.lineWidth = 1.0;
+      // 4. Render 18 Rigid 3D Constellations
+      for (let c = 0; c < CONSTELLATIONS_3D.length; c++) {
+        const con = CONSTELLATIONS_3D[c];
+        const center = con.center;
+
+        const projectedStars = [];
+        let avgZ = 0;
+        let avgX = 0;
+        let avgY = 0;
+        let anyNearMouse = false;
+
+        for (let s = 0; s < con.stars.length; s++) {
+          const star = con.stars[s];
+          const wx = center.x + star.dx;
+          const wy = center.y + star.dy;
+          const wz = center.z + star.dz;
+
+          const proj = project3D(wx, wy, wz, cx, cy);
+          if (proj) {
+            star.pulse += 0.026;
+            if (star.pulse > 6.28) star.pulse -= 6.28;
+
+            const dMouse = Math.hypot(proj.sx - mouse.targetX, proj.sy - mouse.targetY);
+            if (dMouse < 140) anyNearMouse = true;
+
+            projectedStars.push({ ...proj, star });
+            avgZ += proj.z;
+            avgX += proj.sx;
+            avgY += proj.sy;
+          }
+        }
+
+        if (projectedStars.length < 2) continue;
+        avgZ /= projectedStars.length;
+        avgX /= projectedStars.length;
+        avgY /= projectedStars.length;
+
+        // Depth culling: Far back hemisphere is hidden to avoid clutter
+        if (avgZ < -220) continue;
+
+        // Dynamic Negative Space Exclusion Zone:
+        // Protects the headline and thesis from line tangles and visual collision
+        const inCenterBand = (avgY > height * 0.31 && avgY < height * 0.65 && avgX > width * 0.16 && avgX < width * 0.84);
+        const textOcclusionFactor = inCenterBand ? 0.15 : 1.0;
+
+        // A. Draw Constellation Connection Lines
+        for (let l = 0; l < con.lines.length; l++) {
+          const [iA, iB] = con.lines[l];
+          const pA = projectedStars[iA];
+          const pB = projectedStars[iB];
+          if (pA && pB) {
+            // Check if midpoint passes directly behind center headline
+            const midX = (pA.sx + pB.sx) * 0.5;
+            const midY = (pA.sy + pB.sy) * 0.5;
+            const midInText = (midY > height * 0.31 && midY < height * 0.65 && midX > width * 0.16 && midX < width * 0.84);
+            const lineFactor = midInText ? 0.12 : textOcclusionFactor;
+
+            const lineAlpha = Math.min(pA.alpha, pB.alpha) * lineFactor;
+            if (lineAlpha < 0.06) continue;
+
             ctx.beginPath();
-            ctx.moveTo(s.x - 14, s.y); ctx.lineTo(s.x + 14, s.y);
-            ctx.moveTo(s.x, s.y - 14); ctx.lineTo(s.x, s.y + 14);
+            ctx.moveTo(pA.sx, pA.sy);
+            ctx.lineTo(pB.sx, pB.sy);
+
+            if (anyNearMouse) {
+              ctx.strokeStyle = `rgba(192, 132, 252, ${Math.min(0.95, lineAlpha * 2.2)})`;
+              ctx.lineWidth = 1.8;
+              ctx.shadowColor = '#00f0ff';
+              ctx.shadowBlur = 8;
+            } else {
+              ctx.shadowBlur = 0;
+              ctx.lineWidth = 1.2;
+              if (con.id === 1 || con.id === 2 || con.id === 10) { // Orion, Canis Major, Cygnus
+                ctx.strokeStyle = `rgba(0, 240, 255, ${lineAlpha * 0.65})`;
+              } else if (con.id === 9 || con.id === 11 || con.id === 15) { // Corona, Lyra, Cassiopeia
+                ctx.strokeStyle = `rgba(192, 132, 252, ${lineAlpha * 0.65})`;
+              } else if (con.id === 8 || con.id === 13) { // Boötes, Scorpius
+                ctx.strokeStyle = `rgba(251, 191, 36, ${lineAlpha * 0.65})`;
+              } else {
+                ctx.strokeStyle = `rgba(0, 240, 255, ${lineAlpha * 0.52})`;
+              }
+            }
             ctx.stroke();
           }
         }
 
-        // Solid star center
-        ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
-        ctx.fill();
-      }
+        ctx.shadowBlur = 0;
 
-      // 3. Draw Small-Caps Astronomical Constellation Labels
-      ctx.font = '600 10.5px "JetBrains Mono", monospace';
-      ctx.textAlign = 'left';
-      for (const [cidStr, pos] of Object.entries(labelCoords)) {
-        const cid = parseInt(cidStr);
-        const name = CONSTELLATION_NAMES[cid];
-        if (name && pos.x > 10 && pos.x < width - 100) {
-          ctx.fillStyle = cid === 1 || cid === 13 ? 'rgba(192, 132, 252, 0.70)' : (cid === 16 ? 'rgba(251, 191, 36, 0.85)' : 'rgba(0, 240, 255, 0.65)');
-          ctx.fillText(name, pos.x + 14, pos.y + 4);
+        // B. Draw Stars with Perspective Radial Coronas
+        for (let s = 0; s < projectedStars.length; s++) {
+          const p = projectedStars[s];
+          const star = p.star;
+          const starInText = (p.sy > height * 0.31 && p.sy < height * 0.65 && p.sx > width * 0.16 && p.sx < width * 0.84);
+          const sFactor = starInText ? 0.18 : textOcclusionFactor;
+
+          const color = STAR_COLORS[star.color] || STAR_COLORS[0];
+          const r = star.r * p.scale * (0.85 + 0.3 * Math.sin(star.pulse));
+          const starAlpha = p.alpha * sFactor;
+
+          if (starAlpha < 0.05) continue;
+
+          // Radial Corona for Primary Stars (Sirius, Betelgeuse, Rigel, Vega, Arcturus, Aldebaran, Polaris)
+          if (star.r >= 3.4 && starAlpha > 0.20 && !starInText) {
+            const glowR = r * 4.4;
+            const grad = ctx.createRadialGradient(p.sx, p.sy, 0, p.sx, p.sy, glowR);
+            grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.75})`);
+            grad.addColorStop(0.35, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.24})`);
+            grad.addColorStop(1, 'rgba(0,0,0,0)');
+
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(p.sx, p.sy, glowR, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 4-Point Diffraction Cross for Key Navigational Beacons (Polaris, Sirius)
+            if ((con.id === 6 && s === 0) || (con.id === 2 && s === 0)) {
+              ctx.strokeStyle = `rgba(255, 255, 255, ${starAlpha * 0.80})`;
+              ctx.lineWidth = 1.0;
+              ctx.beginPath();
+              ctx.moveTo(p.sx - 18, p.sy); ctx.lineTo(p.sx + 18, p.sy);
+              ctx.moveTo(p.sx, p.sy - 18); ctx.lineTo(p.sx, p.sy + 18);
+              ctx.stroke();
+            }
+          }
+
+          // Solid Star Core
+          ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${Math.min(1.0, starAlpha * 1.35)})`;
+          ctx.beginPath();
+          ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // C. Draw Constellation Label (only when on front hemisphere and outside headline exclusion zone)
+        if (con.label && avgZ > -70 && projectedStars.length > 0 && !inCenterBand) {
+          const lead = projectedStars[0];
+          const leadInText = (lead.sy > height * 0.31 && lead.sy < height * 0.65 && lead.sx > width * 0.16 && lead.sx < width * 0.84);
+          if (!leadInText) {
+            const labelAlpha = Math.min(1.0, lead.alpha * textOcclusionFactor * 0.90);
+            if (labelAlpha > 0.32 && lead.sx > 20 && lead.sx < width - 130) {
+              ctx.font = '600 10.5px "JetBrains Mono", monospace';
+              ctx.textAlign = 'left';
+              if (con.id === 9 || con.id === 11 || con.id === 15) {
+                ctx.fillStyle = `rgba(192, 132, 252, ${labelAlpha})`;
+              } else if (con.id === 8 || con.id === 13) {
+                ctx.fillStyle = `rgba(251, 191, 36, ${labelAlpha})`;
+              } else {
+                ctx.fillStyle = `rgba(0, 240, 255, ${labelAlpha})`;
+              }
+              ctx.fillText(con.label, lead.sx + 16, lead.sy + 4);
+            }
+          }
         }
       }
 
@@ -1232,79 +1345,12 @@
 
     window.addEventListener('resize', initCanvas);
     window.addEventListener('mousemove', e => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
+      mouse.targetX = e.clientX;
+      mouse.targetY = e.clientY;
     });
+
     initCanvas();
-    renderCanvas();
-    initWasmEngine();
-
-    // Capability Matrix Data & State Switching
-    const capabilities = [
-      {
-        tag: "ARCHITECTURE CHANNEL // 01",
-        title: "Bespoke Software & Internal Tools",
-        body: "Stop paying recurring seat subscriptions for bloated software. We build lean, high-velocity internal tools that solve your exact bottlenecks—automatic scheduling, inventory calculators, and paperless job tracking—owned completely by your firm.",
-        specs: [
-          { k: "Execution Mode", v: "Local Native / Offline PWA", c: "cyan" },
-          { k: "Monthly Licensing", v: "$0.00 / month", c: "green" },
-          { k: "Intellectual Property", v: "100% Client Owned", c: "green" }
-        ],
-        cta: "Scope A Custom Tool →"
-      },
-      {
-        tag: "ARCHITECTURE CHANNEL // 02",
-        title: "Private Offline AI Models",
-        body: "Analyze sensitive contracts, health records, or confidential company archives using state-of-the-art AI running 100% on your own local workstation. Zero data sent to OpenAI or cloud servers. Zero monthly API bills.",
-        specs: [
-          { k: "Network Perimeter", v: "Air-Gapped / Isolated", c: "green" },
-          { k: "Hardware Requirements", v: "Standard Laptop GPU / Mac", c: "cyan" },
-          { k: "Cloud Leaks", v: "0.000% Verified", c: "green" }
-        ],
-        cta: "Deploy Offline AI →"
-      },
-      {
-        tag: "ARCHITECTURE CHANNEL // 03",
-        title: "On-Site Systems & IT Support",
-        body: "Fast, on-site diagnostics and repairs across Mesa and the East Valley. High-performance Wi-Fi mesh routing, automated offline backup safes, hardware upgrades, and malware decontamination that comes directly to your facility.",
-        specs: [
-          { k: "Response Coverage", v: "Mesa, Gilbert, Tempe", c: "cyan" },
-          { k: "Code Ownership", v: "100% Client Owned", c: "green" },
-          { k: "Emergency Dispatch", v: "Direct Phone / Text", c: "violet" }
-        ],
-        cta: "Request Systems Triage →"
-      },
-      {
-        tag: "ARCHITECTURE CHANNEL // 04",
-        title: "Community Tech Education",
-        body: "Demystifying technology for real people. Practical workshops on surviving AI voice-cloning scams, collegiate programming cohorts, and live staff coaching sessions where teams build working tools in an hour.",
-        specs: [
-          { k: "Instruction Mode", v: "Hands-On Practical Lab", c: "cyan" },
-          { k: "Academic Nexus", v: "Student Tech Club", c: "violet" },
-          { k: "Community Access", v: "Free & Open Curriculum", c: "green" }
-        ],
-        cta: "Join The Next Cohort →"
-      }
-    ];
-
-    function selectCapability(index) {
-      document.querySelectorAll('.cap-item').forEach((item, idx) => {
-        item.classList.toggle('active', idx === index);
-      });
-      const cap = capabilities[index];
-      document.getElementById('ins-tag').innerText = cap.tag;
-      document.getElementById('ins-title').innerText = cap.title;
-      document.getElementById('ins-body').innerText = cap.body;
-      document.getElementById('ins-action').innerText = cap.cta;
-
-      const specsContainer = document.getElementById('ins-specs');
-      specsContainer.innerHTML = cap.specs.map(s => `
-        <div>
-          <div class="spec-key">${s.k}</div>
-          <div class="spec-val ${s.c}">${s.v}</div>
-        </div>
-      `).join('');
-    }
+    requestAnimationFrame(renderCanvas);
   </script>
 </body>
 </html>
