@@ -916,7 +916,7 @@
       // ❄️ WINTER CONSTELLATIONS (Theta: 45° - 115°)
       // --------------------------------------------------------------------------
       // 1. TAURUS & THE PLEIADES (V-Horns + 7 Sisters Cluster)
-      const tauC = sphereCoord(48, -22);
+      const tauC = sphereCoord(48, -38);
       const tauStars = [
         { dx: -22, dy: 12,  dz: 0, r: 4.5, pulse: 0.6, color: 2, name: "Aldebaran" },
         { dx: 44,  dy: -44, dz: 0, r: 3.0, pulse: 1.9, color: 0, name: "Elnath" },
@@ -943,7 +943,7 @@
       constellations.push({ id: 2, season: "WINTER", center: aurC, stars: aurStars, lines: aurLines, label: "AURIGA · CAPELLA", desc: "The Charioteer · Capella Golden Beacon" });
 
       // 3. ORION (The Hunter - Complete 8-Star Masterwork)
-      const orionC = sphereCoord(76, -18);
+      const orionC = sphereCoord(76, -34);
       const orionStars = [
         { dx: -54, dy: -70, dz: 0, r: 4.6, pulse: 0.0, color: 2, name: "Betelgeuse" },
         { dx: 54,  dy: -64, dz: 0, r: 3.2, pulse: 1.2, color: 0, name: "Bellatrix" },
@@ -960,7 +960,7 @@
       constellations.push({ id: 3, season: "WINTER", center: orionC, stars: orionStars, lines: orionLines, label: "ORION · THE HUNTER", desc: "Betelgeuse Supergiant · Rigel Sapphire Anchor" });
 
       // 4. CANIS MAJOR (Greater Dog with Sirius Diamond)
-      const cmaC = sphereCoord(94, -28);
+      const cmaC = sphereCoord(94, -42);
       const cmaStars = [
         { dx: 0,   dy: -44, dz: 0, r: 5.2, pulse: 0.2, color: 0, name: "Sirius" },
         { dx: -28, dy: -14, dz: 0, r: 2.8, pulse: 1.5, color: 0, name: "Mirzam" },
@@ -1019,7 +1019,7 @@
       constellations.push({ id: 7, season: "SPRING", center: umC, stars: umStars, lines: umLines, label: "URSA MAJOR · BIG DIPPER", desc: "Dubhe & Merak Pointers · Eternal True North Guide" });
 
       // 8. VIRGO (The Maiden - Spica Sapphire Anchor)
-      const virC = sphereCoord(174, -22);
+      const virC = sphereCoord(174, -36);
       const virStars = [
         { dx: 0,   dy: 38,  dz: 0, r: 4.8, pulse: 0.4, color: 0, name: "Spica" },
         { dx: -46, dy: -12, dz: 0, r: 3.0, pulse: 1.5, color: 2, name: "Porrima" },
@@ -1098,7 +1098,7 @@
       constellations.push({ id: 13, season: "SUMMER", center: aqlC, stars: aqlStars, lines: aqlLines, label: "AQUILA · ALTAIR", desc: "The Celestial Eagle · Altair Diamond Wingspan" });
 
       // 14. SCORPIUS (The Scorpion - Antares Ruby Heart + J-Hook Stinger)
-      const scoC = sphereCoord(286, -26);
+      const scoC = sphereCoord(286, -40);
       const scoStars = [
         { dx: -24, dy: -42, dz: 0, r: 5.0, pulse: 0.1, color: 2, name: "Antares" },
         { dx: -48, dy: -66, dz: 0, r: 3.0, pulse: 1.3, color: 0, name: "Graffias" },
@@ -1113,7 +1113,7 @@
       constellations.push({ id: 14, season: "SUMMER", center: scoC, stars: scoStars, lines: scoLines, label: "SCORPIUS · ANTARES", desc: "Ruby Supergiant Heart · Iconic Celestial Stinger" });
 
       // 15. SAGITTARIUS (The Complete 8-Star Teapot)
-      const sagC = sphereCoord(304, -20);
+      const sagC = sphereCoord(304, -38);
       const sagStars = [
         { dx: -46, dy: 14,  dz: 0, r: 3.6, pulse: 0.3, color: 0, name: "Alnasl (Spout Tip)" },
         { dx: -18, dy: -12, dz: 0, r: 3.2, pulse: 1.5, color: 0, name: "Kaus Media" },
@@ -1170,7 +1170,7 @@
       constellations.push({ id: 18, season: "AUTUMN", center: andC, stars: andStars, lines: andLines, label: "ANDROMEDA", desc: "The Chained Maiden · Mirach Golden Giant & Almach" });
 
       // 19. PEGASUS (The Winged Horse - Complete Great Square + Neck & Nose)
-      const pegC = sphereCoord(22, 28);
+      const pegC = sphereCoord(22, 34);
       const pegStars = [
         { dx: -48, dy: -42, dz: 0, r: 4.0, pulse: 0.0, color: 0, name: "Alpheratz" },
         { dx: 44,  dy: -46, dz: 0, r: 3.8, pulse: 1.2, color: 2, name: "Scheat" },
@@ -1335,21 +1335,39 @@
     // Guarantees with mathematical certainty that NO star, NO line, and NO label
     // will ever cut across, touch, or obstruct any text or content cards.
     // ============================================================================
+        // ============================================================================
+    // DEFENSE-GRADE CENTRAL SANCTUARY SHIELD & ZERO-TEXT COLLISION
+    // ============================================================================
     function getProtectedBoxes() {
+      const boxes = [];
+      const pad = 28;
+
+      // 1. Central Hero Reading Sanctuary (Badge through Seasonal Wheel)
+      const hero = document.querySelector('.hero-section');
+      if (hero) {
+        const r = hero.getBoundingClientRect();
+        // Shield the central column where user reads and clicks
+        const heroLeft = Math.max(0, r.left + (r.width > 900 ? (r.width - 880) * 0.5 : 0) - pad);
+        const heroRight = Math.min(width, r.right - (r.width > 900 ? (r.width - 880) * 0.5 : 0) + pad);
+        boxes.push({
+          x1: heroLeft,
+          x2: heroRight,
+          y1: r.top - pad,
+          y2: r.bottom + pad + 16
+        });
+      }
+
+      // 2. Individual content cards, trust strip, and headings on scroll
       const selectors = [
-        '.hero-section', '.hero-badge', '.hero-title', '.hero-thesis', '.hero-cta',
-        '.celestial-nav-wrap', '.trust-strip', '.section-title', '.section-desc',
-        '.matrix-grid', '.matrix-card', '.workstation', '.arch-schematic',
+        '.trust-strip', '.section-title', '.section-desc',
+        '.matrix-card', '.workstation', '.arch-schematic',
         '.quote-box', '.baseline-card', '.contact-card'
       ];
-      const boxes = [];
-      const pad = 24; // Generous safety buffer around all typography
 
       for (let s = 0; s < selectors.length; s++) {
         const els = document.querySelectorAll(selectors[s]);
         for (let i = 0; i < els.length; i++) {
           const r = els[i].getBoundingClientRect();
-          // Only check elements actively visible in the viewport
           if (r.bottom > -pad && r.top < height + pad) {
             boxes.push({
               x1: r.left - pad,
@@ -1369,6 +1387,15 @@
         if (x >= b.x1 && x <= b.x2 && y >= b.y1 && y <= b.y2) {
           return true;
         }
+      }
+      return false;
+    }
+
+    function isLineOccluded(x1, y1, x2, y2, boxes) {
+      for (let t = 0; t <= 1.0; t += 0.20) {
+        const px = x1 + (x2 - x1) * t;
+        const py = y1 + (y2 - y1) * t;
+        if (isPointOccluded(px, py, boxes)) return true;
       }
       return false;
     }
@@ -1470,13 +1497,14 @@
         if (a.pulse > 6.28) a.pulse -= 6.28;
 
         const proj = project3D(a.x, a.y, a.z, cx, cy);
-        if (proj && proj.alpha > 0.05) {
-          // Zero occlusion behind text cards
+        if (proj && proj.alpha > 0.04) {
           if (isPointOccluded(proj.sx, proj.sy, protectedBoxes)) continue;
 
           const color = STAR_COLORS[a.color];
-          const r = a.r * proj.scale * (0.80 + 0.35 * Math.sin(a.pulse));
-          ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${proj.alpha * 0.48})`;
+          const twinkle = 0.75 + 0.45 * Math.sin(a.pulse);
+          const r = Math.max(0.6, a.r * proj.scale * twinkle);
+          const starAlpha = Math.min(0.92, proj.alpha * (0.45 + 0.40 * Math.sin(a.pulse)));
+          ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha})`;
           ctx.beginPath();
           ctx.arc(proj.sx, proj.sy, r, 0, Math.PI * 2);
           ctx.fill();
