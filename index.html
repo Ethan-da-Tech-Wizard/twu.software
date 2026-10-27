@@ -3,30 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tech Wizards United | Sovereign Software & Local AI Systems</title>
-  <meta name="description" content="Independent software studio engineering bespoke internal tools, on-premise AI models, and resilient infrastructure. Founded in Mesa, Arizona.">
+  <title>TWU LLC | Tech Wizards United · Sovereign Software & Local AI Systems</title>
+  <meta name="description" content="Independent software studio engineering bespoke internal tools, on-premise AI models, and air-gapped sovereign infrastructure. Founded in Mesa, Arizona.">
   <link rel="icon" type="image/svg+xml" href="assets/twu-logo.svg">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #060911;
-      --panel-bg: rgba(12, 17, 29, 0.75);
-      --panel-border: rgba(255, 255, 255, 0.08);
-      --panel-border-active: rgba(0, 240, 255, 0.4);
+      --bg: #030712;
+      --bg-panel: rgba(8, 14, 28, 0.78);
+      --bg-card: rgba(13, 20, 38, 0.85);
+      --border-panel: rgba(255, 255, 255, 0.08);
+      --border-glow-cyan: rgba(0, 240, 255, 0.45);
+      --border-glow-violet: rgba(168, 85, 247, 0.45);
       --cyan: #00f0ff;
-      --cyan-dim: rgba(0, 240, 255, 0.1);
-      --cyan-glow: rgba(0, 240, 255, 0.25);
-      --violet: #8b5cf6;
+      --cyan-bright: #38bdf8;
+      --cyan-glow: rgba(0, 240, 255, 0.35);
+      --violet: #a855f7;
+      --violet-light: #c084fc;
+      --violet-glow: rgba(168, 85, 247, 0.35);
       --emerald: #10b981;
+      --amber: #fbbf24;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
-      --font-display: 'Plus Jakarta Sans', -apple-system, sans-serif;
-      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
 
@@ -47,7 +52,7 @@
       position: relative;
     }
 
-    /* Sovereign Dynamic Space Canvas (Compiled Rust WebAssembly) */
+    /* Sovereign Celestial Space Canvas (Compiled Rust WebAssembly) */
     #space-canvas {
       position: fixed;
       top: 0;
@@ -56,7 +61,7 @@
       height: 100vh;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.85;
+      opacity: 0.95;
     }
 
     .wrap {
@@ -69,9 +74,9 @@
 
     /* Navigation */
     header {
-      padding: 22px 0;
-      border-bottom: 1px solid var(--panel-border);
-      background: rgba(6, 9, 17, 0.8);
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-panel);
+      background: rgba(3, 7, 18, 0.82);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       position: sticky;
@@ -91,41 +96,51 @@
       color: var(--text-main);
     }
     .brand-mark img {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       display: block;
-      filter: drop-shadow(0 0 10px var(--cyan-glow));
+      filter: drop-shadow(0 0 12px var(--cyan-glow));
     }
     .brand-title {
       font-family: var(--font-display);
-      font-size: 1.15rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      letter-spacing: -0.4px;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .brand-title span.tag {
+      font-size: 0.82rem;
+      font-family: var(--font-body);
+      font-weight: 600;
+      color: var(--cyan-bright);
     }
     .brand-subtitle {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--cyan);
-      letter-spacing: 0.8px;
+      font-size: 0.68rem;
+      color: var(--violet-light);
+      letter-spacing: 1.2px;
     }
     .nav-actions {
       display: flex;
-      gap: 28px;
+      gap: 26px;
       align-items: center;
     }
     .nav-link {
       font-family: var(--font-body);
       font-size: 0.92rem;
+      font-weight: 500;
       color: var(--text-muted);
       text-decoration: none;
-      transition: color 0.2s;
+      transition: color 0.2s ease;
     }
     .nav-link:hover {
       color: var(--text-main);
     }
     .btn-nav {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--panel-border);
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.12), rgba(168, 85, 247, 0.12));
+      border: 1px solid var(--border-glow-cyan);
       color: var(--text-main) !important;
       font-family: var(--font-display);
       font-size: 0.88rem;
@@ -134,99 +149,108 @@
       border-radius: 8px;
       text-decoration: none;
       transition: all 0.2s ease;
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.15);
     }
     .btn-nav:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(168, 85, 247, 0.25));
+      border-color: var(--cyan);
+      transform: translateY(-1px);
     }
 
     /* Hero */
     .hero-container {
       padding: 110px 0 80px;
       text-align: center;
-      max-width: 900px;
+      max-width: 940px;
       margin: 0 auto;
     }
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--panel-border);
-      padding: 6px 14px;
+      gap: 10px;
+      background: rgba(168, 85, 247, 0.08);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      padding: 7px 18px;
       border-radius: 9999px;
       font-family: var(--font-mono);
       font-size: 0.78rem;
-      color: var(--cyan);
+      color: #e9d5ff;
       margin-bottom: 28px;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
     }
     .badge-dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: var(--emerald);
-      box-shadow: 0 0 8px var(--emerald);
+      background: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan);
     }
     .hero-title {
       font-family: var(--font-display);
-      font-size: clamp(2.6rem, 5.8vw, 4.4rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -1.5px;
+      font-size: clamp(2.8rem, 6.2vw, 4.6rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -1.8px;
       color: var(--text-main);
       margin-bottom: 26px;
     }
     .hero-title span.accent {
-      background: linear-gradient(135deg, #ffffff 40%, var(--cyan) 80%, var(--violet) 100%);
+      background: linear-gradient(135deg, #ffffff 20%, var(--cyan) 60%, var(--violet-light) 95%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      display: inline-block;
+      filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.3));
     }
     .hero-thesis {
-      font-size: 1.2rem;
+      font-size: 1.22rem;
       color: var(--text-muted);
-      line-height: 1.65;
+      line-height: 1.7;
       margin-bottom: 42px;
-      max-width: 720px;
+      max-width: 740px;
       margin-left: auto;
       margin-right: auto;
     }
     .hero-actions {
       display: flex;
       justify-content: center;
-      gap: 16px;
+      gap: 18px;
       flex-wrap: wrap;
     }
     .btn-solid {
-      background: var(--cyan);
-      color: #060911;
+      background: linear-gradient(135deg, var(--cyan) 0%, #2563eb 100%);
+      color: #030712;
       font-family: var(--font-display);
       font-weight: 700;
-      font-size: 0.95rem;
-      padding: 14px 28px;
+      font-size: 0.96rem;
+      padding: 14px 30px;
       border-radius: 8px;
       text-decoration: none;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 20px var(--cyan-glow);
+      transition: all 0.25s ease;
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
     .btn-solid:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 28px rgba(0, 240, 255, 0.45);
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.65);
     }
     .btn-outline {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--panel-border);
+      background: rgba(168, 85, 247, 0.08);
+      border: 1px solid var(--border-glow-violet);
       color: var(--text-main);
       font-family: var(--font-display);
       font-weight: 600;
-      font-size: 0.95rem;
-      padding: 14px 26px;
+      font-size: 0.96rem;
+      padding: 14px 28px;
       border-radius: 8px;
       text-decoration: none;
       transition: all 0.2s ease;
     }
     .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(168, 85, 247, 0.18);
+      border-color: var(--violet-light);
+      transform: translateY(-2px);
     }
 
     /* Trust Baseline */
@@ -234,9 +258,9 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
-      padding: 26px 0;
-      border-top: 1px solid var(--panel-border);
-      border-bottom: 1px solid var(--panel-border);
+      padding: 28px 0;
+      border-top: 1px solid var(--border-panel);
+      border-bottom: 1px solid var(--border-panel);
       margin-bottom: 90px;
     }
     .trust-item {
@@ -248,8 +272,8 @@
       color: var(--text-muted);
     }
     .trust-item svg {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       color: var(--cyan);
       flex-shrink: 0;
     }
@@ -259,36 +283,37 @@
       padding-bottom: 110px;
     }
     .matrix-header {
-      margin-bottom: 32px;
+      margin-bottom: 34px;
     }
     .matrix-label {
       font-family: var(--font-mono);
       font-size: 0.78rem;
       color: var(--cyan);
       text-transform: uppercase;
-      letter-spacing: 1.2px;
+      letter-spacing: 1.5px;
       margin-bottom: 8px;
       display: block;
+      font-weight: 600;
     }
     .matrix-title {
       font-family: var(--font-display);
-      font-size: 2.2rem;
-      font-weight: 800;
+      font-size: 2.3rem;
+      font-weight: 700;
       color: var(--text-main);
-      letter-spacing: -0.6px;
+      letter-spacing: -0.8px;
     }
 
     .workstation {
       display: grid;
-      grid-template-columns: 360px 1fr;
+      grid-template-columns: 370px 1fr;
       gap: 24px;
-      background: var(--panel-bg);
-      border: 1px solid var(--panel-border);
-      border-radius: 14px;
+      background: var(--bg-panel);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 16px;
       overflow: hidden;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.75), 0 0 30px rgba(0, 240, 255, 0.05);
     }
     @media (max-width: 900px) {
       .workstation {
@@ -297,8 +322,8 @@
     }
 
     .cap-list {
-      background: rgba(8, 12, 22, 0.6);
-      border-right: 1px solid var(--panel-border);
+      background: rgba(5, 9, 20, 0.75);
+      border-right: 1px solid var(--border-panel);
       display: flex;
       flex-direction: column;
     }
@@ -313,7 +338,7 @@
       border-bottom: none;
     }
     .cap-item.active {
-      background: rgba(0, 240, 255, 0.06);
+      background: linear-gradient(90deg, rgba(0, 240, 255, 0.08), rgba(168, 85, 247, 0.03));
     }
     .cap-item.active::before {
       content: '';
@@ -321,9 +346,9 @@
       left: 0;
       top: 0;
       bottom: 0;
-      width: 3px;
-      background: var(--cyan);
-      box-shadow: 0 0 12px var(--cyan);
+      width: 3.5px;
+      background: linear-gradient(180deg, var(--cyan), var(--violet));
+      box-shadow: 0 0 14px var(--cyan);
     }
     .cap-item-top {
       display: flex;
@@ -337,7 +362,7 @@
     }
     .cap-name {
       font-family: var(--font-display);
-      font-size: 1.05rem;
+      font-size: 1.08rem;
       font-weight: 700;
       color: var(--text-main);
     }
@@ -348,32 +373,33 @@
     }
 
     .inspector-pane {
-      padding: 40px 36px;
+      padding: 42px 38px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
     .inspector-tag {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       color: var(--cyan);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       margin-bottom: 12px;
       display: inline-block;
+      font-weight: 600;
     }
     .inspector-title {
       font-family: var(--font-display);
-      font-size: 1.75rem;
+      font-size: 1.85rem;
       font-weight: 700;
       color: var(--text-main);
       margin-bottom: 16px;
-      letter-spacing: -0.4px;
+      letter-spacing: -0.5px;
     }
     .inspector-body {
-      font-size: 1.05rem;
+      font-size: 1.06rem;
       color: #cbd5e1;
-      line-height: 1.7;
+      line-height: 1.72;
       margin-bottom: 28px;
       max-width: 660px;
     }
@@ -382,10 +408,10 @@
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 16px;
       margin-bottom: 32px;
-      padding: 16px 20px;
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
+      padding: 18px 22px;
+      background: rgba(3, 7, 18, 0.6);
+      border: 1px solid rgba(0, 240, 255, 0.15);
+      border-radius: 10px;
       font-family: var(--font-mono);
     }
     .spec-key {
@@ -393,32 +419,37 @@
       color: var(--text-dim);
       text-transform: uppercase;
       margin-bottom: 4px;
+      letter-spacing: 0.8px;
     }
     .spec-val {
-      font-size: 0.95rem;
+      font-size: 0.96rem;
       font-weight: 600;
     }
     .spec-val.cyan { color: var(--cyan); }
     .spec-val.green { color: var(--emerald); }
+    .spec-val.violet { color: var(--violet-light); }
 
     /* Architecture Blueprint Frame */
     .arch-frame {
       margin-bottom: 110px;
-      background: var(--panel-bg);
-      border: 1px solid var(--panel-border);
-      border-radius: 14px;
-      padding: 40px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      background: var(--bg-panel);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: 18px;
+      padding: 44px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 0 60px rgba(168, 85, 247, 0.12), inset 0 0 20px rgba(0, 240, 255, 0.05);
+      position: relative;
     }
     .arch-frame-head {
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
     .arch-frame img {
       width: 100%;
       height: auto;
       display: block;
-      border-radius: 8px;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     }
 
     /* Founder & Philosophy Monolith */
@@ -427,7 +458,7 @@
       grid-template-columns: 1.15fr 0.85fr;
       gap: 48px;
       padding-bottom: 110px;
-      border-bottom: 1px solid var(--panel-border);
+      border-bottom: 1px solid var(--border-panel);
       margin-bottom: 80px;
     }
     @media (max-width: 860px) {
@@ -436,7 +467,7 @@
     .monolith h2 {
       font-family: var(--font-display);
       font-size: 2.2rem;
-      font-weight: 800;
+      font-weight: 700;
       color: var(--text-main);
       letter-spacing: -0.8px;
       line-height: 1.2;
@@ -449,48 +480,49 @@
       margin-bottom: 20px;
     }
     .quote-stripe {
-      border-left: 2px solid var(--cyan);
-      padding: 16px 20px;
+      border-left: 3px solid var(--violet);
+      padding: 18px 22px;
       font-style: italic;
       color: var(--text-main);
-      background: rgba(0, 240, 255, 0.03);
-      border-radius: 0 8px 8px 0;
-      margin: 24px 0;
+      background: linear-gradient(90deg, rgba(168, 85, 247, 0.08), transparent);
+      border-radius: 0 10px 10px 0;
+      margin: 26px 0;
       font-size: 1.05rem;
     }
     .baseline-card {
-      background: var(--panel-bg);
-      border: 1px solid var(--panel-border);
-      border-radius: 10px;
-      padding: 24px;
+      background: var(--bg-card);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 12px;
+      padding: 26px;
       font-family: var(--font-mono);
-      font-size: 0.82rem;
-      line-height: 1.8;
+      font-size: 0.84rem;
+      line-height: 1.85;
       color: #cbd5e1;
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.08);
     }
 
     /* Direct Contact Monolith */
     .contact-monolith {
-      background: linear-gradient(180deg, rgba(14, 20, 32, 0.8) 0%, rgba(6, 9, 17, 0.95) 100%);
-      border: 1px solid rgba(0, 240, 255, 0.25);
-      border-radius: 14px;
-      padding: 60px 40px;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.85) 0%, rgba(3, 7, 18, 0.98) 100%);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 16px;
+      padding: 64px 40px;
       text-align: center;
       margin-bottom: 100px;
-      box-shadow: 0 0 50px rgba(0, 240, 255, 0.08);
+      box-shadow: 0 0 60px rgba(0, 240, 255, 0.12), 0 0 40px rgba(168, 85, 247, 0.1);
     }
     .contact-monolith h2 {
       font-family: var(--font-display);
-      font-size: 2.4rem;
-      font-weight: 800;
+      font-size: 2.5rem;
+      font-weight: 700;
       color: var(--text-main);
       margin-bottom: 14px;
-      letter-spacing: -0.6px;
+      letter-spacing: -0.8px;
     }
     .contact-monolith p {
-      font-size: 1.1rem;
+      font-size: 1.12rem;
       color: var(--text-muted);
-      max-width: 580px;
+      max-width: 600px;
       margin: 0 auto 36px;
     }
     .contact-links-grid {
@@ -506,23 +538,26 @@
       gap: 12px;
       font-family: var(--font-mono);
       font-size: 0.95rem;
+      font-weight: 600;
       color: var(--text-main);
-      background: #090e18;
-      border: 1px solid rgba(0, 240, 255, 0.25);
-      padding: 14px 26px;
-      border-radius: 8px;
+      background: rgba(6, 11, 25, 0.9);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      padding: 14px 28px;
+      border-radius: 10px;
       text-decoration: none;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 18px rgba(0, 240, 255, 0.1);
     }
     .c-badge:hover {
       border-color: var(--cyan);
-      background: var(--cyan-dim);
+      background: rgba(0, 240, 255, 0.15);
       transform: translateY(-2px);
+      box-shadow: 0 0 28px rgba(0, 240, 255, 0.35);
     }
 
     footer {
-      border-top: 1px solid var(--panel-border);
-      padding: 34px 0;
+      border-top: 1px solid var(--border-panel);
+      padding: 36px 0;
       font-size: 0.82rem;
       color: var(--text-dim);
       display: flex;
@@ -548,7 +583,7 @@
 </head>
 <body>
 
-  <!-- Dynamic Space Matrix Canvas (Hardware / Compiled Rust WebAssembly) -->
+  <!-- Dynamic Celestial Space Canvas (Compiled Rust WebAssembly Kernel) -->
   <canvas id="space-canvas"></canvas>
 
   <div class="wrap">
@@ -559,15 +594,18 @@
         <a href="#" class="brand-mark">
           <img src="assets/twu-logo.svg" alt="TWU Studio">
           <div>
-            <div class="brand-title">Tech Wizards United</div>
-            <div class="brand-subtitle">SOVEREIGN SOFTWARE & LOCAL AI</div>
+            <div class="brand-title">
+              TWU
+              <span class="tag">· Tech Wizards United</span>
+            </div>
+            <div class="brand-subtitle">SOVEREIGN SOFTWARE &amp; SYSTEMS · MESA, AZ</div>
           </div>
         </a>
         <div class="nav-actions">
           <a href="#workstation" class="nav-link">Matrix</a>
           <a href="#architecture" class="nav-link">Architecture</a>
           <a href="#about" class="nav-link">Studio</a>
-          <a href="#contact" class="btn-nav">Contact Studio</a>
+          <a href="#contact" class="btn-nav">Direct Channel →</a>
         </div>
       </div>
     </header>
@@ -576,18 +614,18 @@
     <section class="hero-container">
       <div class="hero-badge">
         <span class="badge-dot"></span>
-        <span>Independent Systems & Software Studio · Mesa, AZ</span>
+        <span>Independent Systems &amp; Software Studio · Mesa, Arizona</span>
       </div>
       <h1 class="hero-title">
-        Sovereign Software &<br>
+        Sovereign Software &amp;<br>
         <span class="accent">Local AI Systems.</span>
       </h1>
       <p class="hero-thesis">
-        We build bespoke internal tools, private on-premise AI models, and resilient infrastructure for organizations that require complete data sovereignty. Zero cloud telemetry. Zero perpetual user subscriptions. You own the code.
+        We engineer bespoke internal tools, private on-premise AI models, and air-gapped sovereign infrastructure. Zero third-party cloud telemetry. Zero recurring per-seat subscriptions. You own the code forever.
       </p>
       <div class="hero-actions">
-        <a href="#contact" class="btn-solid">Inquire · Contact Studio</a>
-        <a href="#architecture" class="btn-outline">View Architecture & Invariants</a>
+        <a href="#contact" class="btn-solid">Inquire · Direct Channel →</a>
+        <a href="#architecture" class="btn-outline">View Architecture &amp; Invariants</a>
       </div>
     </section>
 
@@ -640,7 +678,7 @@
           <div class="cap-item" onclick="selectCapability(2)">
             <div class="cap-item-top">
               <img src="assets/icon-it.svg" alt="IT">
-              <div class="cap-name">On-Site Systems & IT</div>
+              <div class="cap-name">On-Site Systems &amp; IT</div>
             </div>
             <div class="cap-summary">Hardware triage, high-speed networks, and air-gapped backup systems in Mesa.</div>
           </div>
@@ -658,7 +696,7 @@
         <div class="inspector-pane" id="inspector">
           <div>
             <span class="inspector-tag" id="ins-tag">ARCHITECTURE CHANNEL // 01</span>
-            <h3 class="inspector-title" id="ins-title">Bespoke Software & Internal Tools</h3>
+            <h3 class="inspector-title" id="ins-title">Bespoke Software &amp; Internal Tools</h3>
             <p class="inspector-body" id="ins-body">
               Stop paying recurring seat subscriptions for bloated software. We build lean, high-velocity internal tools that solve your exact bottlenecks—automatic scheduling, inventory calculators, and paperless job tracking—owned completely by your firm.
             </p>
@@ -715,10 +753,10 @@
           We bring healthcare-grade precision, deterministic safety invariants, and hands-on Linux/cluster systems practice to every client problem.
         </p>
         <div class="baseline-card">
-          <p style="color:var(--cyan); margin-bottom:8px; font-weight:600;">// TECHNICAL SPECIFICATIONS</p>
-          <p>• Registered Entity: Tech Wizards United LLC</p>
+          <p style="color:var(--cyan); margin-bottom:10px; font-weight:700;">// TECHNICAL SPECIFICATIONS</p>
+          <p>• Registered Entity: TWU LLC</p>
           <p>• Studio Base: Mesa, Arizona</p>
-          <p>• Architecture: Air-Gapped Model Runtimes & Full-Stack Tooling</p>
+          <p>• Architecture: Sovereign Offline Runtime &amp; Air-Gapped Core</p>
           <p>• Deliverable Standard: 100% Client Ownership. Zero Cloud Lock-In.</p>
         </div>
       </div>
@@ -734,7 +772,7 @@
           <span>(610) 207-1917</span>
         </a>
         <a href="mailto:ethan@twu.software" class="c-badge">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           <span>ethan@twu.software</span>
         </a>
       </div>
@@ -745,9 +783,9 @@
 
     <!-- Footer -->
     <footer>
-      <div>© 2026 TWU LLC (Tech Wizards United). Sovereign Software & Systems · Mesa, Arizona</div>
+      <div>© 2026 TWU LLC. Tech Wizards United · Mesa, Arizona</div>
       <ul class="footer-links">
-        <li><a href="#workstation">Capabilities</a></li>
+        <li><a href="#workstation">Matrix</a></li>
         <li><a href="#architecture">Architecture</a></li>
         <li><a href="#about">Studio</a></li>
         <li><a href="https://github.com/Ethan-da-Tech-Wizard" target="_blank" rel="noopener">GitHub</a></li>
@@ -757,21 +795,36 @@
   </div>
 
   <script>
-    // Sovereign WebAssembly Hardware Accelerator
+    // Sovereign WebAssembly Hardware Celestial Simulation Engine
     const canvas = document.getElementById('space-canvas');
     const ctx = canvas.getContext('2d');
     let width, height;
-    let particles = [];
     let mouse = { x: -1000, y: -1000 };
 
     let wasmExports = null;
     let wasmMemory = null;
     let lastTime = performance.now();
 
+    // Star Color Lookup: 0 = Cyan, 1 = Violet, 2 = Amber (Betelgeuse), 3 = Diamond White (Polaris)
+    const STAR_COLORS = [
+      { r: 0, g: 240, b: 255 },     // 0: Cyan
+      { r: 192, g: 132, b: 252 },   // 1: Arcane Violet
+      { r: 251, g: 191, b: 36 },    // 2: Golden Amber (Betelgeuse / Albireo)
+      { r: 255, g: 255, b: 255 }    // 3: Diamond White (Polaris / Alnilam)
+    ];
+
+    const CONSTELLATION_NAMES = {
+      1: "ORION",
+      2: "URSA MAJOR",
+      3: "CASSIOPEIA",
+      4: "CYGNUS",
+      5: "POLARIS ★"
+    };
+
     async function initWasmEngine() {
       try {
         const resp = await fetch('assets/twu_engine.wasm');
-        if (!resp.ok) throw new Error('WASM binary load status ' + resp.status);
+        if (!resp.ok) throw new Error('WASM binary HTTP status ' + resp.status);
         const bytes = await resp.arrayBuffer();
         const { instance } = await WebAssembly.instantiate(bytes, {});
         wasmExports = instance.exports;
@@ -779,26 +832,15 @@
         
         wasmExports.init_engine(window.innerWidth, window.innerHeight);
         const kernel = wasmExports.verify_sovereign_kernel();
-        console.log(`[TWU SOVEREIGN CORE] Native Rust WebAssembly Active. Kernel: ${kernel}`);
+        console.log(`[TWU SOVEREIGN CORE] Native Rust WebAssembly Active. Kernel: ${kernel}. Real Constellations: Orion, Ursa Major, Cassiopeia, Cygnus, Polaris.`);
       } catch (err) {
-        console.info('[TWU] Fallback canvas runner:', err.message);
+        console.info('[TWU] Fallback celestial engine running:', err.message);
       }
     }
 
     function initCanvas() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
-      particles = [];
-      const count = Math.floor((width * height) / 12000);
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.45,
-          vy: (Math.random() - 0.5) * 0.45,
-          radius: Math.random() * 1.6 + 0.6
-        });
-      }
       if (wasmExports) {
         wasmExports.init_engine(width, height);
       }
@@ -812,77 +854,122 @@
         const dt = Math.min((now - lastTime) / 1000, 0.05);
         lastTime = now;
 
-        const ptr = wasmExports.update_simulation(mouse.x, mouse.y, dt);
-        const count = wasmExports.get_particle_count();
-        const fields = wasmExports.get_fields_per_particle();
-        const heap = new Float32Array(wasmMemory.buffer, ptr, count * fields);
+        const starPtr = wasmExports.update_simulation(mouse.x, mouse.y, dt);
+        const starCount = wasmExports.get_particle_count();
+        const starFields = wasmExports.get_fields_per_particle();
+        const stars = new Float32Array(wasmMemory.buffer, starPtr, starCount * starFields);
 
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.5)';
-        ctx.strokeStyle = 'rgba(0, 240, 255, 0.06)';
+        const linesPtr = wasmExports.get_constellation_lines_ptr();
+        const lineCount = wasmExports.get_constellation_lines_count();
+        const lines = new Float32Array(wasmMemory.buffer, linesPtr, lineCount * 5);
 
-        for (let i = 0; i < count; i++) {
-          const off = i * fields;
-          const x = heap[off];
-          const y = heap[off + 1];
-          const r = heap[off + 4];
-          const pulse = heap[off + 5];
+        // 1. Render Real Constellation Lines (Noticeable, Tech Wizard Glowing Energy)
+        for (let l = 0; l < lineCount; l++) {
+          const lOff = l * 5;
+          const x1 = lines[lOff];
+          const y1 = lines[lOff + 1];
+          const x2 = lines[lOff + 2];
+          const y2 = lines[lOff + 3];
+          const cid = lines[lOff + 4];
+
+          // Check proximity to mouse
+          const d1 = Math.hypot(x1 - mouse.x, y1 - mouse.y);
+          const d2 = Math.hypot(x2 - mouse.x, y2 - mouse.y);
+          const isNear = d1 < 160 || d2 < 160;
 
           ctx.beginPath();
-          ctx.arc(x, y, r * (0.8 + 0.35 * Math.sin(pulse)), 0, Math.PI * 2);
-          ctx.fill();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
 
-          for (let j = i + 1; j < count; j++) {
-            const off2 = j * fields;
-            const x2 = heap[off2];
-            const y2 = heap[off2 + 1];
-            const d = Math.hypot(x - x2, y - y2);
-            if (d < 125) {
-              ctx.beginPath();
-              ctx.moveTo(x, y);
-              ctx.lineTo(x2, y2);
-              ctx.stroke();
+          if (isNear) {
+            // Wizard Arcane Surge
+            ctx.strokeStyle = 'rgba(192, 132, 252, 0.85)';
+            ctx.lineWidth = 2.2;
+            ctx.shadowColor = '#00f0ff';
+            ctx.shadowBlur = 12;
+          } else {
+            // High-Craft Baseline Glow
+            ctx.shadowBlur = 0;
+            if (cid === 1.0) { // Orion
+              ctx.strokeStyle = 'rgba(0, 240, 255, 0.42)';
+              ctx.lineWidth = 1.4;
+            } else if (cid === 2.0) { // Ursa Major / Big Dipper
+              ctx.strokeStyle = 'rgba(56, 189, 248, 0.42)';
+              ctx.lineWidth = 1.4;
+            } else if (cid === 3.0) { // Cassiopeia
+              ctx.strokeStyle = 'rgba(192, 132, 252, 0.45)';
+              ctx.lineWidth = 1.5;
+            } else if (cid === 4.0) { // Cygnus
+              ctx.strokeStyle = 'rgba(0, 240, 255, 0.40)';
+              ctx.lineWidth = 1.4;
+            } else { // Polaris / Ursa Minor
+              ctx.strokeStyle = 'rgba(248, 250, 252, 0.38)';
+              ctx.lineWidth = 1.3;
             }
           }
+          ctx.stroke();
         }
-      } else {
-        // Fallback space particle loop
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.45)';
-        ctx.strokeStyle = 'rgba(0, 240, 255, 0.05)';
+        ctx.shadowBlur = 0; // Reset shadow
 
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-          if (p.x < 0) p.x = width;
-          if (p.x > width) p.x = 0;
-          if (p.y < 0) p.y = height;
-          if (p.y > height) p.y = 0;
+        // 2. Render Constellation Stars with Realistic Spectral Coronas
+        let labelCoords = {};
 
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fill();
+        for (let i = 0; i < starCount; i++) {
+          const off = i * starFields;
+          const x = stars[off];
+          const y = stars[off + 1];
+          const baseR = stars[off + 4];
+          const pulse = stars[off + 5];
+          const cid = stars[off + 6];
+          const colorType = Math.floor(stars[off + 7]) % 4;
 
-          for (let j = i + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-            if (dist < 120) {
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.stroke();
-            }
+          const color = STAR_COLORS[colorType] || STAR_COLORS[0];
+          const r = baseR * (0.85 + 0.3 * Math.sin(pulse));
+
+          // Track label coordinates for primary stars
+          if (cid > 0 && !labelCoords[cid]) {
+            labelCoords[cid] = { x, y };
           }
 
-          const mDist = Math.hypot(p.x - mouse.x, p.y - mouse.y);
-          if (mDist < 150) {
-            ctx.strokeStyle = `rgba(0, 240, 255, ${0.25 * (1 - mDist / 150)})`;
+          // Distinct radial corona for prominent stars (Betelgeuse, Rigel, Polaris)
+          if (baseR > 2.2) {
+            const glowR = r * 4.2;
+            const grad = ctx.createRadialGradient(x, y, 0, x, y, glowR);
+            grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0.55)`);
+            grad.addColorStop(0.4, `rgba(${color.r}, ${color.g}, ${color.b}, 0.18)`);
+            grad.addColorStop(1, 'rgba(0,0,0,0)');
+
+            ctx.fillStyle = grad;
             ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.stroke();
-            ctx.strokeStyle = 'rgba(0, 240, 255, 0.05)';
+            ctx.arc(x, y, glowR, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // Solid core
+          ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
+          ctx.beginPath();
+          ctx.arc(x, y, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // 3. Render Elegant Constellation Labels for Tech/Astronomy Enthusiasts
+        ctx.font = '600 10.5px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        for (const [cidStr, pos] of Object.entries(labelCoords)) {
+          const cid = parseInt(cidStr);
+          const name = CONSTELLATION_NAMES[cid];
+          if (name) {
+            ctx.fillStyle = cid === 3 ? 'rgba(192, 132, 252, 0.65)' : (cid === 5 ? 'rgba(251, 191, 36, 0.75)' : 'rgba(0, 240, 255, 0.60)');
+            ctx.fillText(name, pos.x + 14, pos.y + 4);
           }
         }
+
+      } else {
+        // Fallback ambient particle canvas
+        ctx.fillStyle = 'rgba(0, 240, 255, 0.5)';
+        ctx.beginPath();
+        ctx.arc(width * 0.5, height * 0.5, 2, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       requestAnimationFrame(renderCanvas);
@@ -965,4 +1052,4 @@
     }
   </script>
 </body>
-</html>\n
+</html>
