@@ -802,8 +802,8 @@
   <script>
     // Sovereign 3D Spherical Celestial & Seasonal Flow Engine (TWU LLC)
     // Mathematical Model: Rigid 3D Astronomy with Multi-Zone Negative Space Protection
-    // Rich geometric polygons only — zero derpy straight-line sticks.
-    // Ultrawide scaling, serene slow cosmic drift (~260s revolution).
+    // Rich geometric polygons only — zero straight-line sticks.
+    // Ultrawide scaling, serene slow cosmic drift (~240s revolution).
 
     const canvas = document.getElementById('space-canvas');
     const ctx = canvas.getContext('2d');
@@ -813,8 +813,8 @@
 
     // 3D Orbital Progression State
     let celestialYaw = 0.0;     // Serene primary rotation
-    let celestialPitch = 0.38;  // Earth axial obliquity + slow nutation
-    let celestialRoll = 0.07;   // Organic precession wave
+    let celestialPitch = 0.36;  // Earth axial obliquity + slow nutation
+    let celestialRoll = 0.06;   // Organic precession wave
     let timeAccumulator = 0.0;
 
     // Star Colors: 0 = Quantum Cyan, 1 = Arcane Violet, 2 = Golden Amber / Ruby, 3 = Diamond White
@@ -826,7 +826,7 @@
     ];
 
     function getSphereRadius() {
-      return Math.max(920, (width || 1440) * 0.68);
+      return Math.max(860, (width || 1440) * 0.62);
     }
 
     // 16 Canonical Constellations — All Rich Multi-Star Geometric Polygons
@@ -863,7 +863,7 @@
       constellations.push({ id: 1, center: orionC, stars: orionStars, lines: orionLines, label: "ORION" });
 
       // 2. CANIS MAJOR & SIRIUS - 7 stars, full celestial hound
-      const cmaC = sphereCoord(65, -18);
+      const cmaC = sphereCoord(72, -18);
       const cmaStars = [
         { dx: 0,   dy: -28, dz: 0, r: 5.2, pulse: 0.2, color: 0 }, // 0 Sirius (Radiant Beacon)
         { dx: -38, dy: -12, dz: 0, r: 2.8, pulse: 1.5, color: 0 }, // 1 Murzim
@@ -877,7 +877,7 @@
       constellations.push({ id: 2, center: cmaC, stars: cmaStars, lines: cmaLines, label: "CANIS MAJOR · SIRIUS" });
 
       // 3. TAURUS & THE PLEIADES - 8 stars, V-horns + cluster
-      const tauC = sphereCoord(24, -12);
+      const tauC = sphereCoord(22, -12);
       const tauStars = [
         { dx: -22, dy: 12,  dz: 0, r: 4.2, pulse: 0.6, color: 2 }, // 0 Aldebaran (Fiery Eye)
         { dx: 38,  dy: -42, dz: 0, r: 2.8, pulse: 1.9, color: 0 }, // 1 Elnath
@@ -892,7 +892,7 @@
       constellations.push({ id: 3, center: tauC, stars: tauStars, lines: tauLines, label: "TAURUS & PLEIADES" });
 
       // 4. GEMINI / THE TWINS - 8 stars, dual twin stick figures
-      const gemC = sphereCoord(86, 22);
+      const gemC = sphereCoord(92, 24);
       const gemStars = [
         { dx: -24, dy: -52, dz: 0, r: 3.6, pulse: 0.3, color: 3 }, // 0 Castor (Diamond White)
         { dx: 24,  dy: -45, dz: 0, r: 4.0, pulse: 1.6, color: 2 }, // 1 Pollux (Amber Giant)
@@ -924,7 +924,7 @@
       constellations.push({ id: 5, center: umC, stars: umStars, lines: umLines, label: "URSA MAJOR" });
 
       // 6. ★ POLARIS & URSA MINOR - 5 stars, little ladle anchor
-      const polC = sphereCoord(0, 82);
+      const polC = sphereCoord(0, 80);
       const polStars = [
         { dx: 0,   dy: 0,   dz: 0, r: 5.0, pulse: 0.0, color: 3 }, // 0 Polaris (True North)
         { dx: -26, dy: 26,  dz: 0, r: 2.4, pulse: 1.2, color: 0 }, // 1 Yildun
@@ -1080,7 +1080,7 @@
     function initAmbient3D() {
       ambient3D = [];
       const R = getSphereRadius();
-      for (let i = 0; i < 120; i++) {
+      for (let i = 0; i < 130; i++) {
         const u = Math.random();
         const v = Math.random();
         const theta = u * 2.0 * Math.PI;
@@ -1099,9 +1099,9 @@
 
     // 3D Matrix Projection
     function project3D(x, y, z, cx, cy) {
-      const fov = Math.max(1200, width * 0.85);
+      const fov = Math.max(1150, width * 0.80);
 
-      // 1. Primary Yaw (Slow & serene)
+      // 1. Primary Yaw (Slow, majestic rotation)
       const cosY = Math.cos(celestialYaw);
       const sinY = Math.sin(celestialYaw);
       const x1 = x * cosY + z * sinY;
@@ -1123,8 +1123,8 @@
       const z3 = z2;
 
       // 4. Subtle Gyroscopic Mouse Parallax
-      const gyroX = x3 + (mouse.smoothX - cx) * 0.06;
-      const gyroY = y3 + (mouse.smoothY - cy) * 0.06;
+      const gyroX = x3 + (mouse.smoothX - cx) * 0.05;
+      const gyroY = y3 + (mouse.smoothY - cy) * 0.05;
       const depth = z3 + fov;
 
       if (depth < 80.0) return null;
@@ -1133,9 +1133,9 @@
       const sx = cx + gyroX * scale;
       const sy = cy + gyroY * scale;
 
-      // Depth Alpha: Front hemisphere is crisp; back fades smoothly
+      // Depth Alpha: Front hemisphere is crisp; back hemisphere gently fades
       const R = getSphereRadius();
-      const alpha = Math.max(0.0, Math.min(1.0, (z3 + R * 0.45) / (R * 1.05)));
+      const alpha = Math.max(0.0, Math.min(1.0, (z3 + R * 0.40) / (R * 1.0)));
 
       return { sx, sy, scale, alpha, z: z3 };
     }
@@ -1147,16 +1147,16 @@
       initAmbient3D();
     }
 
-    // Comprehensive Negative Space Exclusion Zone
-    // Protects both the central hero copy AND the bottom trust bar
-    function getOcclusionFactor(x, y) {
-      // 1. Hero headline & paragraph band
-      if (y > height * 0.28 && y < height * 0.68 && x > width * 0.12 && x < width * 0.88) {
-        return 0.04; // Virtually invisible ghost trace behind hero
+    // Precise Negative Space Protection:
+    // Only dampens lines and text labels that cross directly inside the core text cards
+    function getLineOcclusion(x, y) {
+      // 1. Hero headline card (centered)
+      if (x > width * 0.22 && x < width * 0.78 && y > height * 0.32 && y < height * 0.58) {
+        return 0.08; // Ghost trace so letters are 100% legible
       }
-      // 2. Bottom trust badges band
-      if (y > height * 0.72 && y < height * 0.96 && x > width * 0.08 && x < width * 0.92) {
-        return 0.03; // Clear behind badges
+      // 2. Trust badges bar row
+      if (x > width * 0.14 && x < width * 0.86 && y > height * 0.74 && y < height * 0.84) {
+        return 0.08; // Ghost trace behind trust text
       }
       return 1.0;
     }
@@ -1169,8 +1169,8 @@
       lastTime = now;
       timeAccumulator += dt;
 
-      // Serene cosmic rotation: ~260 seconds per grand revolution (sublime and slow)
-      celestialYaw += 0.024 * dt;
+      // Serene cosmic rotation: ~240 seconds per grand revolution (sublime and slow)
+      celestialYaw += 0.026 * dt;
       if (celestialYaw >= 6.28318) celestialYaw -= 6.28318;
 
       // Dual-frequency incommensurate axial precession so every revolution traces a fresh path
@@ -1186,13 +1186,13 @@
 
       // Deep Cosmic Nebula Background
       const bgGrad1 = ctx.createRadialGradient(cx - 300, cy - 180, 80, cx - 300, cy - 180, 800);
-      bgGrad1.addColorStop(0, 'rgba(0, 240, 255, 0.032)');
+      bgGrad1.addColorStop(0, 'rgba(0, 240, 255, 0.035)');
       bgGrad1.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = bgGrad1;
       ctx.fillRect(0, 0, width, height);
 
       const bgGrad2 = ctx.createRadialGradient(cx + 380, cy + 200, 80, cx + 380, cy + 200, 850);
-      bgGrad2.addColorStop(0, 'rgba(168, 85, 247, 0.030)');
+      bgGrad2.addColorStop(0, 'rgba(168, 85, 247, 0.032)');
       bgGrad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = bgGrad2;
       ctx.fillRect(0, 0, width, height);
@@ -1205,10 +1205,9 @@
 
         const proj = project3D(a.x, a.y, a.z, cx, cy);
         if (proj && proj.alpha > 0.08) {
-          const occ = getOcclusionFactor(proj.sx, proj.sy);
           const color = STAR_COLORS[a.color];
           const r = a.r * proj.scale * (0.85 + 0.3 * Math.sin(a.pulse));
-          ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${proj.alpha * occ * 0.45})`;
+          ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${proj.alpha * 0.45})`;
           ctx.beginPath();
           ctx.arc(proj.sx, proj.sy, r, 0, Math.PI * 2);
           ctx.fill();
@@ -1254,7 +1253,7 @@
 
         // Depth culling: Far back hemisphere is suppressed
         const R = getSphereRadius();
-        if (avgZ < -R * 0.32) continue;
+        if (avgZ < -R * 0.36) continue;
 
         // A. Draw Constellation Connection Lines
         for (let l = 0; l < con.lines.length; l++) {
@@ -1264,7 +1263,7 @@
           if (pA && pB) {
             const midX = (pA.sx + pB.sx) * 0.5;
             const midY = (pA.sy + pB.sy) * 0.5;
-            const occ = Math.min(getOcclusionFactor(pA.sx, pA.sy), getOcclusionFactor(pB.sx, pB.sy), getOcclusionFactor(midX, midY));
+            const occ = Math.min(getLineOcclusion(pA.sx, pA.sy), getLineOcclusion(pB.sx, pB.sy), getLineOcclusion(midX, midY));
 
             const lineAlpha = Math.min(pA.alpha, pB.alpha) * occ;
             if (lineAlpha < 0.05) continue;
@@ -1301,10 +1300,10 @@
         for (let s = 0; s < projectedStars.length; s++) {
           const p = projectedStars[s];
           const star = p.star;
-          const occ = getOcclusionFactor(p.sx, p.sy);
+          const occ = getLineOcclusion(p.sx, p.sy);
           const color = STAR_COLORS[star.color] || STAR_COLORS[0];
           const r = star.r * p.scale * (0.85 + 0.3 * Math.sin(star.pulse));
-          const starAlpha = p.alpha * occ;
+          const starAlpha = p.alpha * (occ < 0.5 ? 0.35 : 1.0);
 
           if (starAlpha < 0.04) continue;
 
@@ -1340,9 +1339,9 @@
         }
 
         // C. Draw Constellation Label (only in clear open sky)
-        if (con.label && avgZ > -R * 0.15 && projectedStars.length > 0) {
+        if (con.label && avgZ > -R * 0.18 && projectedStars.length > 0) {
           const lead = projectedStars[0];
-          const occ = getOcclusionFactor(lead.sx, lead.sy);
+          const occ = getLineOcclusion(lead.sx, lead.sy);
           if (occ > 0.5) {
             const labelAlpha = Math.min(1.0, lead.alpha * 0.90);
             if (labelAlpha > 0.32 && lead.sx > 25 && lead.sx < width - 140) {
