@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TWU LLC | Tech Wizards United — Sovereign Software, Mobile IT & Offline AI</title>
+  <meta name="description" content="Mesa, Arizona software studio and systems engineering firm. Custom software, mobile IT support, private offline AI architectures, and community education.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07090e;
+      --bg-card: rgba(18, 22, 34, 0.7);
+      --bg-card-hover: rgba(26, 32, 50, 0.85);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-bright: rgba(0, 240, 255, 0.3);
+      --text: #e2e8f0;
+      --text-bright: #ffffff;
+      --text-muted: #94a3b8;
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.25);
+      --purple: #a855f7;
+      --purple-glow: rgba(168, 85, 247, 0.25);
+      --emerald: #10b981;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.07) 0%, transparent 40%),
+        radial-gradient(circle at 85% 70%, rgba(168, 85, 247, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(7, 9, 14, 0.75);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 0;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-bright);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.5px;
+    }
+    .logo-badge {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      color: #07090e;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+    .btn-contact {
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-contact:hover {
+      background: var(--cyan);
+      color: #07090e;
+      box-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 100px 0 70px;
+      text-align: center;
+      position: relative;
+    }
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      color: var(--cyan);
+      font-family: var(--font-mono);
+      margin-bottom: 28px;
+      letter-spacing: 0.5px;
+    }
+    .hero-pill span {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: var(--emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--emerald);
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      color: var(--text-bright);
+      max-width: 950px;
+      margin: 0 auto 24px;
+    }
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, #ffffff 30%, var(--cyan) 75%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-desc {
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      color: var(--text-muted);
+      max-width: 760px;
+      margin: 0 auto 40px;
+      font-weight: 400;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 50px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), #00b4d8);
+      color: #07090e;
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 25px var(--cyan-glow);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 240, 255, 0.4);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-bright);
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Trust Strip */
+    .trust-strip {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 40px 0 80px;
+      background: rgba(18, 22, 34, 0.3);
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .trust-item strong {
+      color: var(--text-bright);
+    }
+
+    /* Pillars / Services Grid */
+    .section-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--text-bright);
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 640px;
+      margin: 0 auto 50px;
+      text-align: center;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-bottom: 90px;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 26px;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-bright);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    }
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 22px;
+      color: var(--cyan);
+    }
+    .card h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      margin-bottom: 12px;
+    }
+    .card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+    .card-meta {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--cyan);
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* The Philosophy / Story Feature */
+    .story-section {
+      background: linear-gradient(180deg, rgba(18, 22, 34, 0.6) 0%, rgba(7, 9, 14, 0.9) 100%);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 56px 44px;
+      margin-bottom: 90px;
+      position: relative;
+    }
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 900px) {
+      .story-grid { grid-template-columns: 1fr; }
+      .story-section { padding: 36px 24px; }
+    }
+    .story-content h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text-bright);
+      margin-bottom: 18px;
+      letter-spacing: -0.5px;
+    }
+    .story-content p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+      line-height: 1.7;
+    }
+    .quote-box {
+      border-left: 3px solid var(--cyan);
+      padding-left: 20px;
+      font-style: italic;
+      color: var(--text-bright);
+      margin: 24px 0;
+      font-size: 1.1rem;
+    }
+    .terminal-box {
+      background: #0d1117;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #38bdf8;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .terminal-header {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .terminal-header span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .t-red { background: #ef4444; }
+    .t-yellow { background: #f59e0b; }
+    .t-green { background: #10b981; }
+
+    /* Contact Section */
+    .contact-card {
+      background: radial-gradient(circle at 50% 0%, rgba(0, 240, 255, 0.1) 0%, rgba(18, 22, 34, 0.8) 75%);
+      border: 1px solid var(--border-bright);
+      border-radius: 24px;
+      padding: 60px 40px;
+      text-align: center;
+      margin-bottom: 90px;
+    }
+    .contact-card h2 {
+      font-size: 2.2rem;
+      color: var(--text-bright);
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .contact-card p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 36px;
+    }
+    .contact-details {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+    .contact-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.05rem;
+      color: var(--text-bright);
+      text-decoration: none;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+    .contact-badge:hover {
+      border-color: var(--cyan);
+      background: rgba(0, 240, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+      list-style: none;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .footer-links a:hover {
+      color: var(--cyan);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div class="container nav-wrap">
+      <a href="#" class="logo">
+        <span class="logo-badge">TWU</span>
+        <span>Tech Wizards United</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#story">About</a></li>
+        <li><a href="#contact" class="btn-contact">Get in Touch</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-pill">
+        <span></span> MESA, ARIZONA · SOVEREIGN TECH & PRIVATE AI
+      </div>
+      <h1>
+        Technology You Own.<br>
+        <span class="gradient-text">Freedom From Subscriptions.</span>
+      </h1>
+      <p class="hero-desc">
+        TWU LLC builds high-performance custom software, on-site IT infrastructure, and offline AI systems that run directly on your own hardware. Zero cloud dependencies. Zero monthly seat licenses.
+      </p>
+      <div class="hero-actions">
+        <a href="tel:6102071917" class="btn-primary">Call or Text: (610) 207-1917</a>
+        <a href="#services" class="btn-secondary">Explore Capabilities</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Strip -->
+  <div class="container">
+    <div class="trust-strip">
+      <div class="trust-item">
+        <span>🏛️</span>
+        <span>City of Mesa Vendor: <strong>VS0000020683</strong></span>
+      </div>
+      <div class="trust-item">
+        <span>🛡️</span>
+        <span>SAM.gov UEI: <strong>FAQ6J93X5NL3</strong></span>
+      </div>
+      <div class="trust-item">
+        <span>🇺🇸</span>
+        <span>SBA SBC Control ID: <strong>SBC_002683059</strong></span>
+      </div>
+      <div class="trust-item">
+        <span>🔒</span>
+        <span>AZ Level 1 Fingerprint Cleared</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Services Grid -->
+  <section id="services" class="container">
+    <h2 class="section-title">Engineered For Real Business & Community Needs</h2>
+    <p class="section-subtitle">
+      Whether you need on-call mobile IT for your shop or custom software engineered to eliminate repetitive paperwork, we deliver working results you own completely.
+    </p>
+
+    <div class="grid-4">
+      <!-- Card 1 -->
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Custom Software & Internal Tools</h3>
+        <p>
+          Bespoke tools built in plain English to solve your exact bottlenecks. Custom job checklists, intake organizers, and database synchronization without paying $50/user every month.
+        </p>
+        <div class="card-meta">Python · TypeScript · React · SQLite</div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <h3>Private Offline AI</h3>
+        <p>
+          State-of-the-art AI models configured to execute directly on your own laptop or local workstation. Analyze sensitive customer data and documents with complete privacy and zero API bills.
+        </p>
+        <div class="card-meta">100% Offline · Zero Data Leaks</div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card">
+        <div class="card-icon">🛠️</div>
+        <h3>Mobile IT & Systems Support</h3>
+        <p>
+          On-site and remote computer repairs, Wi-Fi networking, automated air-gapped backup systems, and system performance tuning across Mesa, Gilbert, and the East Valley.
+        </p>
+        <div class="card-meta">Mesa, AZ · Mobile / On-Site</div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card">
+        <div class="card-icon">🤝</div>
+        <h3>Community Tech Education</h3>
+        <p>
+          Hands-on public workshops and campus student cohorts teaching everyday families, students, and seniors how to protect against AI scams and build practical computer tools in plain English.
+        </p>
+        <div class="card-meta">Free Workshops · Mesa Public Library Partner</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Story & Philosophy -->
+  <section id="story" class="container">
+    <div class="story-section">
+      <div class="story-grid">
+        <div class="story-content">
+          <h2>"Anything Is Possible If You Can Articulate Your Thoughts."</h2>
+          <p>
+            Most people assume technology is rigid, complicated, and reserved for massive tech conglomerates. We believe the opposite: modern tools allow anyone with clear intent to command computers directly.
+          </p>
+          <div class="quote-box">
+            "When my 7-year-old daughter asked for a game that combined Minecraft and aliens, I extracted creature models from an old game called Spore, ported them into Minecraft, and by that evening we were flying spaceships alongside friendly aliens in a world that had never seen either."
+          </div>
+          <p>
+            We bring that same sovereign engineering philosophy to local businesses. You should not have to adapt your business to rigid, overpriced software subscriptions. We build software that adapts to you.
+          </p>
+        </div>
+        <div class="terminal-box">
+          <div class="terminal-header">
+            <span class="t-red"></span>
+            <span class="t-yellow"></span>
+            <span class="t-green"></span>
+          </div>
+          <p><span style="color:#a855f7;">twu@workstation</span>:<span style="color:#00f0ff;">~</span>$ ./scripts/ethan status</p>
+          <p style="color:#10b981;">[✓] Linux Kernel Governors: Optimized</p>
+          <p style="color:#10b981;">[✓] Offline AI Model Broker: Active ($0 cloud cost)</p>
+          <p style="color:#10b981;">[✓] Air-Gapped Defense Suite: 100 invariants locked</p>
+          <p style="color:#10b981;">[✓] Data Confidentiality: Rule 11 verified</p>
+          <p style="margin-top:12px; color:var(--text-muted);">// Ready to build sovereign tools for Mesa businesses.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Call To Action -->
+  <section id="contact" class="container">
+    <div class="contact-card">
+      <h2>Let’s Solve Your Technology Challenges</h2>
+      <p>
+        Ready to fix a broken workflow, secure your systems, or train your staff on practical tools? Call, text, or email directly.
+      </p>
+      <div class="contact-details">
+        <a href="tel:6102071917" class="contact-badge">
+          <span>📞</span>
+          <span>(610) 207-1917</span>
+        </a>
+        <a href="mailto:ethan@twu.software" class="contact-badge">
+          <span>✉️</span>
+          <span>ethan@twu.software</span>
+        </a>
+      </div>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0;">
+        Founder: <strong>Ethan Paul Kilmer</strong> · Tech Wizards United LLC · Mesa, AZ 85206
+      </p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <ul class="footer-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#story">About</a></li>
+        <li><a href="https://github.com/Ethan-da-Tech-Wizard" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+      <p>© 2026 TWU LLC (Tech Wizards United). All rights reserved. Sovereign technology built in Mesa, Arizona.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
