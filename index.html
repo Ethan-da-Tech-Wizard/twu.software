@@ -1340,27 +1340,25 @@
     // ============================================================================
     function getProtectedBoxes() {
       const boxes = [];
-      const pad = 28;
+      const pad = 32;
 
-      // 1. Central Hero Reading Sanctuary (Badge through Seasonal Wheel)
-      const hero = document.querySelector('.hero-section');
+      // 1. Central Hero Container & Reading Sanctuary
+      const hero = document.querySelector('.hero-container');
       if (hero) {
         const r = hero.getBoundingClientRect();
-        // Shield the central column where user reads and clicks
-        const heroLeft = Math.max(0, r.left + (r.width > 900 ? (r.width - 880) * 0.5 : 0) - pad);
-        const heroRight = Math.min(width, r.right - (r.width > 900 ? (r.width - 880) * 0.5 : 0) + pad);
         boxes.push({
-          x1: heroLeft,
-          x2: heroRight,
+          x1: r.left - pad,
+          x2: r.right + pad,
           y1: r.top - pad,
-          y2: r.bottom + pad + 16
+          y2: r.bottom + pad + 24
         });
       }
 
-      // 2. Individual content cards, trust strip, and headings on scroll
+      // 2. Individual content elements, headings, cards, and buttons
       const selectors = [
+        '.hero-badge', '.hero-title', '.hero-thesis', '.hero-cta', '.celestial-nav-wrap',
         '.trust-strip', '.section-title', '.section-desc',
-        '.matrix-card', '.workstation', '.arch-schematic',
+        '.matrix-grid', '.matrix-card', '.workstation', '.arch-schematic',
         '.quote-box', '.baseline-card', '.contact-card'
       ];
 
@@ -1392,12 +1390,23 @@
     }
 
     function isLineOccluded(x1, y1, x2, y2, boxes) {
-      for (let t = 0; t <= 1.0; t += 0.20) {
+      for (let t = 0; t <= 1.0; t += 0.10) {
         const px = x1 + (x2 - x1) * t;
         const py = y1 + (y2 - y1) * t;
         if (isPointOccluded(px, py, boxes)) return true;
       }
       return false;
+    }
+
+    function isLabelOccluded(lx, ly, textLen, boxes) {
+      const boxW = Math.max(140, textLen * 7.5);
+      const boxH = 20;
+      // Test all 4 corners and center of the label rect
+      return isPointOccluded(lx, ly, boxes) ||
+             isPointOccluded(lx + boxW, ly, boxes) ||
+             isPointOccluded(lx, ly - boxH, boxes) ||
+             isPointOccluded(lx + boxW, ly - boxH, boxes) ||
+             isPointOccluded(lx + boxW * 0.5, ly - boxH * 0.5, boxes);
     }
 
     function isLineOccluded(x1, y1, x2, y2, boxes) {
@@ -1654,14 +1663,17 @@
           const lead = projectedStars[0];
           const labelX = lead.sx + 10;
           const labelY = lead.sy - 12;
+          const labelText = (con.season === 'POLARIS' ? '' : `[${con.season}] `) + con.label;
 
-          if (!isPointOccluded(labelX, labelY, protectedBoxes) && lead.sx > 30 && lead.sx < width - 180) {
+          // Never draw label if lead star or any part of label rectangle intersects protected elements
+          if (!isPointOccluded(lead.sx, lead.sy, protectedBoxes) &&
+              !isLabelOccluded(labelX, labelY, labelText.length, protectedBoxes) &&
+              lead.sx > 30 && lead.sx < width - 180) {
             const labelAlpha = Math.min(1.0, lead.alpha * 0.92);
             if (labelAlpha > 0.30) {
               ctx.fillStyle = isHovered ? '#00f0ff' : `rgba(148, 163, 184, ${labelAlpha * 0.82})`;
               ctx.font = '600 10.5px "JetBrains Mono", monospace';
-              const prefix = con.season === 'POLARIS' ? '' : `[${con.season}] `;
-              ctx.fillText(`${prefix}${con.label}`, labelX, labelY);
+              ctx.fillText(labelText, labelX, labelY);
             }
           }
         }
