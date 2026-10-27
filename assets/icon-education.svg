@@ -1,0 +1,15 @@
+<svg width="44" height="44" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="eduGrad" x1="4" y1="4" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+  </defs>
+  <rect width="40" height="40" rx="10" fill="rgba(245, 158, 11, 0.08)" stroke="rgba(245, 158, 11, 0.25)" stroke-width="1"/>
+  <!-- Open Book / Codex Vector -->
+  <path d="M20 17C16.5 14 13 14.5 10 16V27C13 25.5 16.5 25 20 28C23.5 25 27 25.5 30 27V16C27 14.5 23.5 14 20 17Z" stroke="url(#eduGrad)" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- Central Spine -->
+  <path d="M20 17V28" stroke="#f59e0b" stroke-width="1.6"/>
+  <!-- Upward Innovation Beacon -->
+  <path d="M20 10V13M17 11.5L18.5 13M23 11.5L21.5 13" stroke="#ec4899" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
