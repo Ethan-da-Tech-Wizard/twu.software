@@ -1589,7 +1589,9 @@
       // 3. Track Hovered Constellation
       hoveredConstellation = null;
 
-      // 4. Render 31 Flowing Geometric Constellations (100% UNLABELED IN SKY)
+      // 4. Render 31 Flowing Geometric Constellations (Holistic Smooth-Blending Engine)
+      // Constellations remain 100% whole; they fade in/out smoothly as a unified object.
+      // Zero partial disassembling or single-line stick fragments.
       for (let c = 0; c < CONSTELLATIONS_3D.length; c++) {
         const con = CONSTELLATIONS_3D[c];
         const center = con.center;
@@ -1621,36 +1623,86 @@
           }
         }
 
-        if (projectedStars.length < 2) continue;
+        // Must have all or virtually all stars projected
+        if (projectedStars.length < con.stars.length - 1 || projectedStars.length < 2) continue;
         avgZ /= projectedStars.length;
         avgX /= projectedStars.length;
         avgY /= projectedStars.length;
 
         const R = getSphereRadius();
-        if (avgZ < -R * 0.36) continue;
+
+        // A. Smooth Celestial Depth Alpha (Unified for the entire constellation)
+        // Rotates smoothly from back of sphere into front hemisphere without popping
+        const depthNorm = Math.max(0.0, Math.min(1.0, (avgZ + R * 0.35) / (R * 0.70)));
+        const depthFade = 0.5 - 0.5 * Math.cos(depthNorm * Math.PI);
+        if (depthFade < 0.02) continue;
+
+        // B. Holistic Proximity & Occlusion Fade
+        // Compute closest distance from any star in the constellation to any protected text box
+        let minBoxDist = 9999.0;
+        let anyStarInside = false;
+
+        for (let s = 0; s < projectedStars.length; s++) {
+          const p = projectedStars[s];
+          for (let b = 0; b < protectedBoxes.length; b++) {
+            const box = protectedBoxes[b];
+            if (p.sx >= box.x1 && p.sx <= box.x2 && p.sy >= box.y1 && p.sy <= box.y2) {
+              anyStarInside = true;
+              minBoxDist = 0.0;
+              break;
+            }
+            const dx = Math.max(box.x1 - p.sx, 0, p.sx - box.x2);
+            const dy = Math.max(box.y1 - p.sy, 0, p.sy - box.y2);
+            const dist = Math.hypot(dx, dy);
+            if (dist < minBoxDist) minBoxDist = dist;
+          }
+          if (anyStarInside) break;
+        }
+
+        // Also test lines against boxes
+        if (!anyStarInside) {
+          for (let l = 0; l < con.lines.length; l++) {
+            const [iA, iB] = con.lines[l];
+            const pA = projectedStars[iA];
+            const pB = projectedStars[iB];
+            if (pA && pB && isLineOccluded(pA.sx, pA.sy, pB.sx, pB.sy, protectedBoxes)) {
+              anyStarInside = true;
+              minBoxDist = 0.0;
+              break;
+            }
+          }
+        }
+
+        if (anyStarInside) continue;
+
+        // Smooth Hermite blend buffer (75px soft transition zone)
+        const FADE_BUFFER = 75.0;
+        let occFade = 1.0;
+        if (minBoxDist < FADE_BUFFER) {
+          const t = Math.max(0.0, minBoxDist / FADE_BUFFER);
+          occFade = t * t * (3.0 - 2.0 * t); // Smoothstep curve
+        }
+
+        // Unified Constellation Alpha — Every star and line uses this EXACT alpha
+        const conAlpha = depthFade * occFade;
+        if (conAlpha < 0.035) continue;
 
         if (isHovered) {
           hoveredConstellation = { con, projectedStars, avgX, avgY };
         }
 
-        // A. Draw Constellation Connection Lines (Protected by strict line collision shield)
+        // C. Draw Constellation Connection Lines (All lines together as one unified figure)
         for (let l = 0; l < con.lines.length; l++) {
           const [iA, iB] = con.lines[l];
           const pA = projectedStars[iA];
           const pB = projectedStars[iB];
           if (pA && pB) {
-            // Absolute text collision suppression: if line touches any text box, skip!
-            if (isLineOccluded(pA.sx, pA.sy, pB.sx, pB.sy, protectedBoxes)) continue;
-
-            const lineAlpha = Math.min(pA.alpha, pB.alpha);
-            if (lineAlpha < 0.05) continue;
-
             ctx.beginPath();
             ctx.moveTo(pA.sx, pA.sy);
             ctx.lineTo(pB.sx, pB.sy);
 
             if (isHovered) {
-              ctx.strokeStyle = `rgba(0, 240, 255, ${Math.min(0.98, lineAlpha * 2.8)})`;
+              ctx.strokeStyle = `rgba(0, 240, 255, ${Math.min(0.98, conAlpha * 2.8)})`;
               ctx.lineWidth = 2.4;
               ctx.shadowColor = '#00f0ff';
               ctx.shadowBlur = 14;
@@ -1658,15 +1710,15 @@
               ctx.shadowBlur = 0;
               ctx.lineWidth = 1.35;
               if (con.season === "WINTER") {
-                ctx.strokeStyle = `rgba(0, 240, 255, ${lineAlpha * 0.72})`;
+                ctx.strokeStyle = `rgba(0, 240, 255, ${conAlpha * 0.72})`;
               } else if (con.season === "SPRING") {
-                ctx.strokeStyle = `rgba(168, 85, 247, ${lineAlpha * 0.72})`;
+                ctx.strokeStyle = `rgba(168, 85, 247, ${conAlpha * 0.72})`;
               } else if (con.season === "SUMMER") {
-                ctx.strokeStyle = `rgba(251, 191, 36, ${lineAlpha * 0.72})`;
+                ctx.strokeStyle = `rgba(251, 191, 36, ${conAlpha * 0.72})`;
               } else if (con.season === "AUTUMN") {
-                ctx.strokeStyle = `rgba(56, 189, 248, ${lineAlpha * 0.70})`;
+                ctx.strokeStyle = `rgba(56, 189, 248, ${conAlpha * 0.70})`;
               } else {
-                ctx.strokeStyle = `rgba(255, 255, 255, ${lineAlpha * 0.75})`;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${conAlpha * 0.75})`;
               }
             }
             ctx.stroke();
@@ -1675,21 +1727,17 @@
 
         ctx.shadowBlur = 0;
 
-        // B. Draw Stars with Coronas (Occluded if inside text boxes)
+        // D. Draw Constellation Stars (Whole asterism smoothly fades together)
         for (let s = 0; s < projectedStars.length; s++) {
           const p = projectedStars[s];
           const star = p.star;
 
-          if (isPointOccluded(p.sx, p.sy, protectedBoxes)) continue;
-
           const color = STAR_COLORS[star.color] || STAR_COLORS[0];
           const r = star.r * p.scale * (0.85 + 0.3 * Math.sin(star.pulse));
-          const starAlpha = p.alpha;
-
-          if (starAlpha < 0.04) continue;
+          const starAlpha = conAlpha;
 
           // Radial Corona for Primary Stars
-          if (star.r >= 3.6 && starAlpha > 0.16) {
+          if (star.r >= 3.6 && starAlpha > 0.14) {
             const glowR = r * (isHovered ? 5.6 : 4.4);
             const grad = ctx.createRadialGradient(p.sx, p.sy, 0, p.sx, p.sy, glowR);
             grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.78})`);
@@ -1700,7 +1748,7 @@
             ctx.arc(p.sx, p.sy, glowR, 0, Math.PI * 2);
             ctx.fill();
 
-            // 4-Point Diffraction Cross for Key Navigational Anchors (Polaris, Sirius, Vega)
+            // 4-Point Diffraction Cross for Navigational Anchors
             if ((con.id === 27 && s === 0) || (con.id === 17 && s === 0) || (con.id === 1 && s === 0)) {
               ctx.strokeStyle = `rgba(255, 255, 255, ${starAlpha * 0.85})`;
               ctx.lineWidth = 1.0;
@@ -1719,9 +1767,6 @@
           ctx.arc(p.sx, p.sy, Math.max(1.0, r), 0, Math.PI * 2);
           ctx.fill();
         }
-
-        // NOTE: ALL SKY TEXT LABELS ARE COMPLETELY REMOVED PER USER DIRECTIVE.
-        // The firmament is clean and pure like the authentic cosmos.
       }
 
       // C. Draw Sleek Holographic HUD Tooltip ONLY when Hovering
