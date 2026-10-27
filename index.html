@@ -13,19 +13,19 @@
 
   <style>
     :root {
-      --bg: #090d16;
-      --bg-elevated: #0f1523;
-      --bg-subtle: #141b2d;
+      --bg: #060911;
+      --bg-elevated: rgba(14, 20, 34, 0.75);
+      --bg-subtle: rgba(20, 28, 48, 0.85);
       --border: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.16);
-      --border-accent: rgba(0, 240, 255, 0.35);
+      --border-hover: rgba(0, 240, 255, 0.3);
+      --border-accent: rgba(0, 240, 255, 0.4);
       
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
       --text-tertiary: #64748b;
       --text-accent: #00f0ff;
       
-      --accent-blue: #38bdf8;
+      --accent-blue: #00f0ff;
       --accent-indigo: #6366f1;
       --accent-violet: #a855f7;
       --accent-emerald: #10b981;
@@ -34,7 +34,7 @@
       --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       
-      --container-width: 1080px;
+      --container-width: 1120px;
     }
 
     * {
@@ -52,10 +52,24 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 100% 40%, rgba(99, 102, 241, 0.04) 0%, transparent 40%);
-      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    /* Sovereign Dynamic Space Grid Canvas (Hardware / WASM) */
+    #space-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.85;
+    }
+
+    .page-wrap {
+      position: relative;
+      z-index: 1;
     }
 
     .container {
@@ -505,6 +519,11 @@
 </head>
 <body>
 
+  <!-- Dynamic Space Matrix Canvas Powered By Compiled Rust WebAssembly -->
+  <canvas id="space-canvas"></canvas>
+
+  <div class="page-wrap">
+
   <!-- Navigation -->
   <header>
     <div class="container nav-inner">
@@ -715,5 +734,148 @@
     </div>
   </footer>
 
+  </div><!-- /page-wrap -->
+
+  <script>
+    // Sovereign WebAssembly Hardware Accelerator
+    const canvas = document.getElementById('space-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+    let mouse = { x: -1000, y: -1000 };
+
+    let wasmExports = null;
+    let wasmMemory = null;
+    let lastTime = performance.now();
+
+    async function initWasmEngine() {
+      try {
+        const resp = await fetch('assets/twu_engine.wasm');
+        if (!resp.ok) throw new Error('WASM binary load status ' + resp.status);
+        const bytes = await resp.arrayBuffer();
+        const { instance } = await WebAssembly.instantiate(bytes, {});
+        wasmExports = instance.exports;
+        wasmMemory = wasmExports.memory;
+        
+        wasmExports.init_engine(window.innerWidth, window.innerHeight);
+        const kernel = wasmExports.verify_sovereign_kernel();
+        console.log(`[TWU SOVEREIGN CORE] Native Rust WebAssembly Active. Kernel: ${kernel}`);
+      } catch (err) {
+        console.info('[TWU] Fallback canvas runner:', err.message);
+      }
+    }
+
+    function initCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      particles = [];
+      const count = Math.floor((width * height) / 12000);
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: (Math.random() - 0.5) * 0.45,
+          radius: Math.random() * 1.6 + 0.6
+        });
+      }
+      if (wasmExports) {
+        wasmExports.init_engine(width, height);
+      }
+    }
+
+    function renderCanvas() {
+      ctx.clearRect(0, 0, width, height);
+
+      if (wasmExports && wasmMemory) {
+        const now = performance.now();
+        const dt = Math.min((now - lastTime) / 1000, 0.05);
+        lastTime = now;
+
+        const ptr = wasmExports.update_simulation(mouse.x, mouse.y, dt);
+        const count = wasmExports.get_particle_count();
+        const fields = wasmExports.get_fields_per_particle();
+        const heap = new Float32Array(wasmMemory.buffer, ptr, count * fields);
+
+        ctx.fillStyle = 'rgba(0, 240, 255, 0.5)';
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.06)';
+
+        for (let i = 0; i < count; i++) {
+          const off = i * fields;
+          const x = heap[off];
+          const y = heap[off + 1];
+          const r = heap[off + 4];
+          const pulse = heap[off + 5];
+
+          ctx.beginPath();
+          ctx.arc(x, y, r * (0.8 + 0.35 * Math.sin(pulse)), 0, Math.PI * 2);
+          ctx.fill();
+
+          for (let j = i + 1; j < count; j++) {
+            const off2 = j * fields;
+            const x2 = heap[off2];
+            const y2 = heap[off2 + 1];
+            const d = Math.hypot(x - x2, y - y2);
+            if (d < 125) {
+              ctx.beginPath();
+              ctx.moveTo(x, y);
+              ctx.lineTo(x2, y2);
+              ctx.stroke();
+            }
+          }
+        }
+      } else {
+        // Fallback space particle loop
+        ctx.fillStyle = 'rgba(0, 240, 255, 0.45)';
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.05)';
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0) p.x = width;
+          if (p.x > width) p.x = 0;
+          if (p.y < 0) p.y = height;
+          if (p.y > height) p.y = 0;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+            if (dist < 120) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.stroke();
+            }
+          }
+
+          const mDist = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+          if (mDist < 150) {
+            ctx.strokeStyle = `rgba(0, 240, 255, ${0.25 * (1 - mDist / 150)})`;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.05)';
+          }
+        }
+      }
+
+      requestAnimationFrame(renderCanvas);
+    }
+
+    window.addEventListener('resize', initCanvas);
+    window.addEventListener('mousemove', e => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+    initCanvas();
+    renderCanvas();
+    initWasmEngine();
+  </script>
 </body>
 </html>
