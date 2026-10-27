@@ -43,6 +43,11 @@
 
     body {
       background-color: var(--bg);
+      background-image: 
+        radial-gradient(ellipse 70% 45% at 50% -10%, rgba(124, 58, 237, 0.22), transparent 70%),
+        radial-gradient(ellipse 50% 35% at 85% 45%, rgba(0, 240, 255, 0.14), transparent 70%),
+        radial-gradient(ellipse 55% 40% at 15% 70%, rgba(168, 85, 247, 0.14), transparent 70%);
+      background-attachment: fixed;
       color: var(--text-muted);
       font-family: var(--font-body);
       font-size: 16px;
@@ -805,12 +810,15 @@
     let wasmMemory = null;
     let lastTime = performance.now();
 
-    // Star Color Lookup: 0 = Cyan, 1 = Violet, 2 = Amber (Betelgeuse), 3 = Diamond White (Polaris)
+    // Embedded 100% Offline Sovereign Rust WebAssembly Kernel (Zero Network Overhead)
+    const WASM_KERNEL_B64 = "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MzE0MTUxNjE3MTgxOTIwMjEyMjIzMjQyNTI2MjcyODI5MzAzMTMyMzMzNDM1MzYzNzM4Mzk0MDQxNDI0MzQ0NDU0NjQ3NDg0OTUwNTE1MjUzNTQ1NTU2NTc1ODU5NjA2MTYyNjM2NDY1NjY2NzY4Njk3MDcxNzI3Mzc0NzU3Njc3Nzg3OTgwODE4MjgzODQ4NTg2ODc4ODg5OTA5MTkyOTM5NDk1OTY5Nzk4OTmfARAASwAAAFcCAAAFAAAAAEHwhcAACwzZKTUBAADwRAAAh0QA8gUEbmFtZQAVFHR3dV93YXNtX2VuZ2luZS53YXNtAawFDwAuX1JOdkNzNVFLZGU3U2NSNEhfN19fX3J1c3RjMTdydXN0X2JlZ2luX3Vud2luZAEdZ2V0X2NvbnN0ZWxsYXRpb25fbGluZXNfY291bnQCG2dldF9jb25zdGVsbGF0aW9uX2xpbmVzX3B0cgMXZ2V0X2ZpZWxkc19wZXJfcGFydGljbGUEEmdldF9wYXJ0aWNsZV9jb3VudAULaW5pdF9lbmdpbmUGEXVwZGF0ZV9zaW11bGF0aW9uBxd2ZXJpZnlfc292ZXJlaWduX2tlcm5lbAg4X1pONGNvcmUzZm10OUZvcm1hdHRlcjEycGFkX2ludGVncmFsMTdoYzE2MGM0OTRmNDJmNWM4N0UJS19aTjRjb3JlM2ZtdDNudW0zaW1wMjFfJExUJGltcGwkdTIwJHUzMiRHVCQxMF9mbXRfaW5uZXIxN2g2ODlmYjdjNmMwZGE3OWMzRQowX1pONGNvcmU5cGFuaWNraW5nOXBhbmljX2ZtdDE3aGI4YmFkYjlhOTM5Y2NmN2FFCzpfWk40Y29yZTlwYW5pY2tpbmcxOHBhbmljX2JvdW5kc19jaGVjazE3aDc1NzllYWY3MjQzN2M2OGRFDGJfWk40Y29yZTNmbXQzbnVtM2ltcDUyXyRMVCRpbXBsJHUyMCRjb3JlLi5mbXQuLkRpc3BsYXkkdTIwJGZvciR1MjAkdTMyJEdUJDNmbXQxN2g3YWFhNmQ1MTBkMDQ0ZWE3RQ1GX1pONGNvcmUzZm10OUZvcm1hdHRlcjEycGFkX2ludGVncmFsMTJ3cml0ZV9wcmVmaXgxN2hiYWM3MjY1MDZjNDY1NDU2RQ42X1pONGNvcmUzc3RyNWNvdW50MTRkb19jb3VudF9jaGFyczE3aDUzZWRhNDY5MjQ1MTE2NTlFBxIBAA9fX3N0YWNrX3BvaW50ZXIJEQIABy5yb2RhdGEBBS5kYXRhAE0JcHJvZHVjZXJzAghsYW5ndWFnZQEEUnVzdAAMcHJvY2Vzc2VkLWJ5AQVydXN0Yx0xLjk0LjAgKDRhNGVmNDkzZSAyMDI2LTAzLTAyKQCUAQ90YXJnZXRfZmVhdHVyZXMIKwtidWxrLW1lbW9yeSsPYnVsay1tZW1vcnktb3B0KxZjYWxsLWluZGlyZWN0LW92ZXJsb25nKwptdWx0aXZhbHVlKw9tdXRhYmxlLWdsb2JhbHMrE25vbnRyYXBwaW5nLWZwdG9pbnQrD3JlZmVyZW5jZS10eXBlcysIc2lnbi1leHQ=";
+
+    // Celestial Constellation Definitions & Coordinates (Dual Engine: WebAssembly + JS Immediate Render)
     const STAR_COLORS = [
-      { r: 0, g: 240, b: 255 },     // 0: Cyan
-      { r: 192, g: 132, b: 252 },   // 1: Arcane Violet
-      { r: 251, g: 191, b: 36 },    // 2: Golden Amber (Betelgeuse / Albireo)
-      { r: 255, g: 255, b: 255 }    // 3: Diamond White (Polaris / Alnilam)
+      { r: 0, g: 240, b: 255 },    // 0: Quantum Cyan
+      { r: 192, g: 132, b: 252 },  // 1: Arcane Violet
+      { r: 251, g: 191, b: 36 },   // 2: Golden Amber (Betelgeuse / Albireo)
+      { r: 255, g: 255, b: 255 }   // 3: Diamond White (Polaris / Rigel)
     ];
 
     const CONSTELLATION_NAMES = {
@@ -818,21 +826,122 @@
       2: "URSA MAJOR",
       3: "CASSIOPEIA",
       4: "CYGNUS",
-      5: "POLARIS ★"
+      5: "★ POLARIS"
     };
+
+    // Pure JS Fallback Stars & Lines so canvas is 100% active on Frame 0
+    let jsStars = [];
+    let jsLines = [];
+
+    function setupCelestialCoordinates() {
+      jsStars = [];
+      jsLines = [];
+
+      // 1. ORION (Indices 0..7)
+      const oOx = width * 0.78;
+      const oOy = height * 0.28;
+      const s1 = Math.min(width, height) * 0.28;
+      jsStars.push(
+        { x: oOx - s1 * 0.35, y: oOy - s1 * 0.45, r: 3.4, pulse: 0.0, cid: 1, color: 2 }, // 0 Betelgeuse (Amber)
+        { x: oOx + s1 * 0.35, y: oOy - s1 * 0.42, r: 2.5, pulse: 1.2, cid: 1, color: 0 }, // 1 Bellatrix
+        { x: oOx - s1 * 0.15, y: oOy + s1 * 0.02, r: 2.3, pulse: 2.4, cid: 1, color: 0 }, // 2 Alnitak
+        { x: oOx,             y: oOy,             r: 2.4, pulse: 3.1, cid: 1, color: 3 }, // 3 Alnilam
+        { x: oOx + s1 * 0.15, y: oOy - s1 * 0.02, r: 2.3, pulse: 4.0, cid: 1, color: 0 }, // 4 Mintaka
+        { x: oOx - s1 * 0.32, y: oOy + s1 * 0.45, r: 2.6, pulse: 5.1, cid: 1, color: 0 }, // 5 Saiph
+        { x: oOx + s1 * 0.38, y: oOy + s1 * 0.48, r: 3.5, pulse: 0.5, cid: 1, color: 0 }, // 6 Rigel (Cyan Giant)
+        { x: oOx,             y: oOy - s1 * 0.65, r: 1.8, pulse: 1.8, cid: 1, color: 3 }  // 7 Meissa
+      );
+      jsLines.push(
+        [0, 1, 1], [1, 4, 1], [0, 2, 1], [2, 3, 1], [3, 4, 1],
+        [2, 5, 1], [4, 6, 1], [5, 6, 1], [7, 0, 1], [7, 1, 1]
+      );
+
+      // 2. URSA MAJOR / BIG DIPPER (Indices 8..14)
+      const uOx = width * 0.20;
+      const uOy = height * 0.22;
+      const s2 = Math.min(width, height) * 0.24;
+      jsStars.push(
+        { x: uOx + s2 * 0.45, y: uOy - s2 * 0.20, r: 2.9, pulse: 0.2, cid: 2, color: 0 }, // 8 Dubhe
+        { x: uOx + s2 * 0.42, y: uOy + s2 * 0.15, r: 2.5, pulse: 1.5, cid: 2, color: 0 }, // 9 Merak
+        { x: uOx + s2 * 0.10, y: uOy + s2 * 0.18, r: 2.4, pulse: 2.8, cid: 2, color: 0 }, // 10 Phecda
+        { x: uOx + s2 * 0.12, y: uOy - s2 * 0.15, r: 2.3, pulse: 4.1, cid: 2, color: 1 }, // 11 Megrez
+        { x: uOx - s2 * 0.12, y: uOy - s2 * 0.08, r: 2.7, pulse: 5.3, cid: 2, color: 0 }, // 12 Alioth
+        { x: uOx - s2 * 0.32, y: uOy + s2 * 0.05, r: 2.6, pulse: 0.8, cid: 2, color: 3 }, // 13 Mizar
+        { x: uOx - s2 * 0.52, y: uOy + s2 * 0.25, r: 2.8, pulse: 2.1, cid: 2, color: 0 }  // 14 Alkaid
+      );
+      jsLines.push(
+        [8, 9, 2], [9, 10, 2], [10, 11, 2], [11, 8, 2],
+        [11, 12, 2], [12, 13, 2], [13, 14, 2]
+      );
+
+      // 3. CASSIOPEIA "W" (Indices 15..19)
+      const cOx = width * 0.52;
+      const cOy = height * 0.12;
+      const s3 = Math.min(width, height) * 0.16;
+      jsStars.push(
+        { x: cOx - s3 * 0.60, y: cOy + s3 * 0.10, r: 2.5, pulse: 0.4, cid: 3, color: 0 }, // 15 Caph
+        { x: cOx - s3 * 0.30, y: cOy - s3 * 0.20, r: 2.8, pulse: 1.7, cid: 3, color: 2 }, // 16 Schedar
+        { x: cOx,             y: cOy + s3 * 0.05, r: 2.9, pulse: 3.0, cid: 3, color: 0 }, // 17 Gamma Cas
+        { x: cOx + s3 * 0.32, y: cOy - s3 * 0.25, r: 2.4, pulse: 4.3, cid: 3, color: 0 }, // 18 Ruchbah
+        { x: cOx + s3 * 0.62, y: cOy + s3 * 0.05, r: 2.3, pulse: 5.6, cid: 3, color: 1 }  // 19 Segin
+      );
+      jsLines.push(
+        [15, 16, 3], [16, 17, 3], [17, 18, 3], [18, 19, 3]
+      );
+
+      // 4. CYGNUS / NORTHERN CROSS (Indices 20..24)
+      const cyOx = width * 0.80;
+      const cyOy = height * 0.72;
+      const s4 = Math.min(width, height) * 0.20;
+      jsStars.push(
+        { x: cyOx,             y: cyOy - s4 * 0.45, r: 3.4, pulse: 0.1, cid: 4, color: 0 }, // 20 Deneb
+        { x: cyOx,             y: cyOy,             r: 2.7, pulse: 1.4, cid: 4, color: 3 }, // 21 Sadr
+        { x: cyOx,             y: cyOy + s4 * 0.50, r: 2.4, pulse: 2.7, cid: 4, color: 2 }, // 22 Albireo
+        { x: cyOx - s4 * 0.42, y: cyOy - s4 * 0.05, r: 2.5, pulse: 4.0, cid: 4, color: 0 }, // 23 Delta Cyg
+        { x: cyOx + s4 * 0.42, y: cyOy - s4 * 0.02, r: 2.5, pulse: 5.2, cid: 4, color: 0 }  // 24 Gienah
+      );
+      jsLines.push(
+        [20, 21, 4], [21, 22, 4], [23, 21, 4], [21, 24, 4]
+      );
+
+      // 5. URSA MINOR / POLARIS (Indices 25..29)
+      const pOx = width * 0.38;
+      const pOy = height * 0.14;
+      const s5 = Math.min(width, height) * 0.14;
+      jsStars.push(
+        { x: pOx,             y: pOy - s5 * 0.40, r: 3.8, pulse: 0.0, cid: 5, color: 3 }, // 25 Polaris
+        { x: pOx - s5 * 0.12, y: pOy - s5 * 0.15, r: 1.9, pulse: 1.1, cid: 5, color: 0 }, // 26 Yildun
+        { x: pOx - s5 * 0.22, y: pOy + s5 * 0.05, r: 2.0, pulse: 2.2, cid: 5, color: 1 }, // 27 Ahfa
+        { x: pOx - s5 * 0.42, y: pOy + s5 * 0.25, r: 2.3, pulse: 3.5, cid: 5, color: 0 }, // 28 Pherkad
+        { x: pOx - s5 * 0.25, y: pOy + s5 * 0.35, r: 2.6, pulse: 4.8, cid: 5, color: 2 }  // 29 Kochab
+      );
+      jsLines.push(
+        [25, 26, 5], [26, 27, 5], [27, 28, 5], [28, 29, 5], [29, 27, 5]
+      );
+
+      // Ambient background stellar dust (65 stars)
+      for (let i = 30; i < 95; i++) {
+        jsStars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: 0.8 + Math.random() * 1.5,
+          pulse: Math.random() * 6.28,
+          cid: 0,
+          color: Math.random() > 0.7 ? 1 : 0
+        });
+      }
+    }
 
     async function initWasmEngine() {
       try {
-        const resp = await fetch('assets/twu_engine.wasm');
-        if (!resp.ok) throw new Error('WASM binary HTTP status ' + resp.status);
-        const bytes = await resp.arrayBuffer();
-        const { instance } = await WebAssembly.instantiate(bytes, {});
+        const binary = Uint8Array.from(atob(WASM_KERNEL_B64), c => c.charCodeAt(0));
+        const { instance } = await WebAssembly.instantiate(binary, {});
         wasmExports = instance.exports;
         wasmMemory = wasmExports.memory;
         
-        wasmExports.init_engine(window.innerWidth, window.innerHeight);
+        wasmExports.init_engine(width, height);
         const kernel = wasmExports.verify_sovereign_kernel();
-        console.log(`[TWU SOVEREIGN CORE] Native Rust WebAssembly Active. Kernel: ${kernel}. Real Constellations: Orion, Ursa Major, Cassiopeia, Cygnus, Polaris.`);
+        console.log(`[TWU SOVEREIGN CORE] Native Rust WebAssembly Active. Kernel: ${kernel}.`);
       } catch (err) {
         console.info('[TWU] Fallback celestial engine running:', err.message);
       }
@@ -841,6 +950,7 @@
     function initCanvas() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
+      setupCelestialCoordinates();
       if (wasmExports) {
         wasmExports.init_engine(width, height);
       }
@@ -849,127 +959,173 @@
     function renderCanvas() {
       ctx.clearRect(0, 0, width, height);
 
-      if (wasmExports && wasmMemory) {
-        const now = performance.now();
-        const dt = Math.min((now - lastTime) / 1000, 0.05);
-        lastTime = now;
+      const now = performance.now();
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
 
+      let starList = [];
+      let lineList = [];
+
+      if (wasmExports && wasmMemory) {
         const starPtr = wasmExports.update_simulation(mouse.x, mouse.y, dt);
         const starCount = wasmExports.get_particle_count();
         const starFields = wasmExports.get_fields_per_particle();
-        const stars = new Float32Array(wasmMemory.buffer, starPtr, starCount * starFields);
+        const rawStars = new Float32Array(wasmMemory.buffer, starPtr, starCount * starFields);
 
         const linesPtr = wasmExports.get_constellation_lines_ptr();
         const lineCount = wasmExports.get_constellation_lines_count();
-        const lines = new Float32Array(wasmMemory.buffer, linesPtr, lineCount * 5);
-
-        // 1. Render Real Constellation Lines (Noticeable, Tech Wizard Glowing Energy)
-        for (let l = 0; l < lineCount; l++) {
-          const lOff = l * 5;
-          const x1 = lines[lOff];
-          const y1 = lines[lOff + 1];
-          const x2 = lines[lOff + 2];
-          const y2 = lines[lOff + 3];
-          const cid = lines[lOff + 4];
-
-          // Check proximity to mouse
-          const d1 = Math.hypot(x1 - mouse.x, y1 - mouse.y);
-          const d2 = Math.hypot(x2 - mouse.x, y2 - mouse.y);
-          const isNear = d1 < 160 || d2 < 160;
-
-          ctx.beginPath();
-          ctx.moveTo(x1, y1);
-          ctx.lineTo(x2, y2);
-
-          if (isNear) {
-            // Wizard Arcane Surge
-            ctx.strokeStyle = 'rgba(192, 132, 252, 0.85)';
-            ctx.lineWidth = 2.2;
-            ctx.shadowColor = '#00f0ff';
-            ctx.shadowBlur = 12;
-          } else {
-            // High-Craft Baseline Glow
-            ctx.shadowBlur = 0;
-            if (cid === 1.0) { // Orion
-              ctx.strokeStyle = 'rgba(0, 240, 255, 0.42)';
-              ctx.lineWidth = 1.4;
-            } else if (cid === 2.0) { // Ursa Major / Big Dipper
-              ctx.strokeStyle = 'rgba(56, 189, 248, 0.42)';
-              ctx.lineWidth = 1.4;
-            } else if (cid === 3.0) { // Cassiopeia
-              ctx.strokeStyle = 'rgba(192, 132, 252, 0.45)';
-              ctx.lineWidth = 1.5;
-            } else if (cid === 4.0) { // Cygnus
-              ctx.strokeStyle = 'rgba(0, 240, 255, 0.40)';
-              ctx.lineWidth = 1.4;
-            } else { // Polaris / Ursa Minor
-              ctx.strokeStyle = 'rgba(248, 250, 252, 0.38)';
-              ctx.lineWidth = 1.3;
-            }
-          }
-          ctx.stroke();
-        }
-        ctx.shadowBlur = 0; // Reset shadow
-
-        // 2. Render Constellation Stars with Realistic Spectral Coronas
-        let labelCoords = {};
+        const rawLines = new Float32Array(wasmMemory.buffer, linesPtr, lineCount * 5);
 
         for (let i = 0; i < starCount; i++) {
           const off = i * starFields;
-          const x = stars[off];
-          const y = stars[off + 1];
-          const baseR = stars[off + 4];
-          const pulse = stars[off + 5];
-          const cid = stars[off + 6];
-          const colorType = Math.floor(stars[off + 7]) % 4;
-
-          const color = STAR_COLORS[colorType] || STAR_COLORS[0];
-          const r = baseR * (0.85 + 0.3 * Math.sin(pulse));
-
-          // Track label coordinates for primary stars
-          if (cid > 0 && !labelCoords[cid]) {
-            labelCoords[cid] = { x, y };
-          }
-
-          // Distinct radial corona for prominent stars (Betelgeuse, Rigel, Polaris)
-          if (baseR > 2.2) {
-            const glowR = r * 4.2;
-            const grad = ctx.createRadialGradient(x, y, 0, x, y, glowR);
-            grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0.55)`);
-            grad.addColorStop(0.4, `rgba(${color.r}, ${color.g}, ${color.b}, 0.18)`);
-            grad.addColorStop(1, 'rgba(0,0,0,0)');
-
-            ctx.fillStyle = grad;
-            ctx.beginPath();
-            ctx.arc(x, y, glowR, 0, Math.PI * 2);
-            ctx.fill();
-          }
-
-          // Solid core
-          ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
-          ctx.beginPath();
-          ctx.arc(x, y, r, 0, Math.PI * 2);
-          ctx.fill();
+          starList.push({
+            x: rawStars[off],
+            y: rawStars[off + 1],
+            r: rawStars[off + 4],
+            pulse: rawStars[off + 5],
+            cid: Math.floor(rawStars[off + 6]),
+            color: Math.floor(rawStars[off + 7]) % 4
+          });
         }
 
-        // 3. Render Elegant Constellation Labels for Tech/Astronomy Enthusiasts
-        ctx.font = '600 10.5px "JetBrains Mono", monospace';
-        ctx.textAlign = 'left';
-        for (const [cidStr, pos] of Object.entries(labelCoords)) {
-          const cid = parseInt(cidStr);
-          const name = CONSTELLATION_NAMES[cid];
-          if (name) {
-            ctx.fillStyle = cid === 3 ? 'rgba(192, 132, 252, 0.65)' : (cid === 5 ? 'rgba(251, 191, 36, 0.75)' : 'rgba(0, 240, 255, 0.60)');
-            ctx.fillText(name, pos.x + 14, pos.y + 4);
-          }
+        for (let l = 0; l < lineCount; l++) {
+          const lOff = l * 5;
+          lineList.push({
+            x1: rawLines[lOff],
+            y1: rawLines[lOff + 1],
+            x2: rawLines[lOff + 2],
+            y2: rawLines[lOff + 3],
+            cid: Math.floor(rawLines[lOff + 4])
+          });
         }
-
       } else {
-        // Fallback ambient particle canvas
-        ctx.fillStyle = 'rgba(0, 240, 255, 0.5)';
+        // Pure JS high-performance simulation
+        for (let i = 0; i < jsStars.length; i++) {
+          const s = jsStars[i];
+          s.pulse += (s.cid === 5 && i === 25) ? 0.015 : 0.03;
+          if (s.pulse > 6.28) s.pulse -= 6.28;
+
+          // Mouse gravity interaction
+          if (mouse.x >= 0 && mouse.y >= 0) {
+            const dx = s.x - mouse.x;
+            const dy = s.y - mouse.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 180 && dist > 2) {
+              const force = (1 - dist / 180) * 1.5;
+              s.x += (dx / dist) * force;
+              s.y += (dy / dist) * force;
+            }
+          }
+
+          starList.push(s);
+        }
+
+        for (let l = 0; l < jsLines.length; l++) {
+          const [idxA, idxB, cid] = jsLines[l];
+          if (jsStars[idxA] && jsStars[idxB]) {
+            lineList.push({
+              x1: jsStars[idxA].x,
+              y1: jsStars[idxA].y,
+              x2: jsStars[idxB].x,
+              y2: jsStars[idxB].y,
+              cid: cid
+            });
+          }
+        }
+      }
+
+      // 1. Draw Visible Glowing Constellation Lines
+      for (let l = 0; l < lineList.length; l++) {
+        const line = lineList[l];
+        const d1 = Math.hypot(line.x1 - mouse.x, line.y1 - mouse.y);
+        const d2 = Math.hypot(line.x2 - mouse.x, line.y2 - mouse.y);
+        const isNear = d1 < 160 || d2 < 160;
+
         ctx.beginPath();
-        ctx.arc(width * 0.5, height * 0.5, 2, 0, Math.PI * 2);
+        ctx.moveTo(line.x1, line.y1);
+        ctx.lineTo(line.x2, line.y2);
+
+        if (isNear) {
+          ctx.strokeStyle = 'rgba(192, 132, 252, 0.85)';
+          ctx.lineWidth = 2.2;
+          ctx.shadowColor = '#00f0ff';
+          ctx.shadowBlur = 12;
+        } else {
+          ctx.shadowBlur = 0;
+          if (line.cid === 1) { // Orion
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.44)';
+            ctx.lineWidth = 1.6;
+          } else if (line.cid === 2) { // Ursa Major
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.44)';
+            ctx.lineWidth = 1.6;
+          } else if (line.cid === 3) { // Cassiopeia
+            ctx.strokeStyle = 'rgba(192, 132, 252, 0.48)';
+            ctx.lineWidth = 1.7;
+          } else if (line.cid === 4) { // Cygnus
+            ctx.strokeStyle = 'rgba(0, 240, 255, 0.44)';
+            ctx.lineWidth = 1.6;
+          } else { // Polaris / Ursa Minor
+            ctx.strokeStyle = 'rgba(248, 250, 252, 0.42)';
+            ctx.lineWidth = 1.5;
+          }
+        }
+        ctx.stroke();
+      }
+      ctx.shadowBlur = 0;
+
+      // 2. Draw Constellation Stars & Coronas
+      let labelCoords = {};
+
+      for (let i = 0; i < starList.length; i++) {
+        const s = starList[i];
+        const color = STAR_COLORS[s.color] || STAR_COLORS[0];
+        const r = s.r * (0.85 + 0.3 * Math.sin(s.pulse));
+
+        if (s.cid > 0 && !labelCoords[s.cid]) {
+          labelCoords[s.cid] = { x: s.x, y: s.y };
+        }
+
+        // Radial Corona for major stars
+        if (s.r > 2.2) {
+          const glowR = r * 4.2;
+          const grad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, glowR);
+          grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0.65)`);
+          grad.addColorStop(0.35, `rgba(${color.r}, ${color.g}, ${color.b}, 0.22)`);
+          grad.addColorStop(1, 'rgba(0,0,0,0)');
+
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, glowR, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Polaris Diffraction Spikes
+          if (s.cid === 5 && i === 25) {
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
+            ctx.lineWidth = 1.0;
+            ctx.beginPath();
+            ctx.moveTo(s.x - 14, s.y); ctx.lineTo(s.x + 14, s.y);
+            ctx.moveTo(s.x, s.y - 14); ctx.lineTo(s.x, s.y + 14);
+            ctx.stroke();
+          }
+        }
+
+        // Solid star center
+        ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
         ctx.fill();
+      }
+
+      // 3. Draw Small-Caps Astronomical Constellation Labels
+      ctx.font = '600 11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      for (const [cidStr, pos] of Object.entries(labelCoords)) {
+        const cid = parseInt(cidStr);
+        const name = CONSTELLATION_NAMES[cid];
+        if (name) {
+          ctx.fillStyle = cid === 3 ? 'rgba(192, 132, 252, 0.75)' : (cid === 5 ? 'rgba(251, 191, 36, 0.85)' : 'rgba(0, 240, 255, 0.70)');
+          ctx.fillText(name, pos.x + 15, pos.y + 5);
+        }
       }
 
       requestAnimationFrame(renderCanvas);
