@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TWU Constellation Visual Inspection Suite</title>
+  <link rel="icon" type="image/svg+xml" href="assets/twu-logo.svg">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #04060a;
+      --card-bg: rgba(10, 14, 22, 0.88);
+      --cyan: #00f0ff;
+      --pink: #ec4899;
+      --violet: #a855f7;
+      --border: rgba(0, 240, 255, 0.22);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: #f8fafc;
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      padding: 30px;
+      overflow-x: hidden;
+    }
+    .header {
+      max-width: 1400px;
+      margin: 0 auto 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--gold-bright);
+      font-size: 0.82rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    h1 { font-size: 2.2rem; font-weight: 700; }
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .filter-btn {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid var(--border);
+      color: #fde68a;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--gold);
+      color: #04060a;
+      font-weight: 700;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      position: relative;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: var(--gold-bright);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(245, 158, 11, 0.15);
+    }
+    .card-canvas {
+      width: 100%;
+      height: 200px;
+      background: #020306;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      display: block;
+    }
+    .card-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .card-name { font-size: 1.15rem; font-weight: 700; color: var(--gold-bright); }
+    .card-season {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--emerald);
+      text-transform: uppercase;
+    }
+    .card-desc { font-size: 0.85rem; color: #94a3b8; margin-top: 4px; line-height: 1.4; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <div class="tag">// TWU LLC · VISUAL VERIFICATION HARNESS</div>
+      <h1>31 Constellations Observatory Gallery</h1>
+      <p style="color:#94a3b8; margin-top:6px;">Inspecting individual asterisms. Spherical tangent projection guarantees zero flat collapsing.</p>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterSeason('ALL')">All Figures (31)</button>
+        <button class="filter-btn" onclick="filterSeason('SUMMER')">Summer (8)</button>
+        <button class="filter-btn" onclick="filterSeason('AUTUMN')">Autumn (8)</button>
+        <button class="filter-btn" onclick="filterSeason('WINTER')">Winter (8)</button>
+        <button class="filter-btn" onclick="filterSeason('SPRING')">Spring (4)</button>
+        <button class="filter-btn" onclick="filterSeason('POLARIS')">Circumpolar (3)</button>
+      </div>
+    </div>
+    <div>
+      <a href="index.html" class="filter-btn" style="text-decoration:none;">← Return to Live Studio</a>
+    </div>
+  </div>
+
+  <div class="grid" id="constellation-grid"></div>
+
+  <script>
+    // Star Colors: Solar Gold, Arcane Amber, Ancient Emerald, Diamond White
+    const STAR_COLORS = [
+      { r: 251, g: 191, b: 36 },
+      { r: 245, g: 158, b: 11 },
+      { r: 52,  g: 211, b: 153 },
+      { r: 255, g: 255, b: 255 }
+    ];
+
+    // Load definitions from live script
+    const CONSTELLATIONS = [
+      { id: 1, season: "SUMMER", label: "LYRA", desc: "Vega Diamond Anchor · Celestial Harp", stars: [{dx:0,dy:-44,r:5.5,c:3},{dx:-22,dy:-16,r:3,c:0},{dx:-29,dy:25,r:3,c:0},{dx:13,dy:33,r:3.2,c:3},{dx:20,dy:-11,r:2.8,c:0}], lines: [[0,1],[0,4],[1,2],[2,3],[3,4],[1,4]] },
+      { id: 2, season: "SUMMER", label: "CYGNUS", desc: "The Northern Cross · Deneb Supergiant", stars: [{dx:0,dy:-50,r:5.2,c:3},{dx:0,dy:-5,r:3.8,c:0},{dx:0,dy:50,r:3.2,c:2},{dx:-50,dy:5,r:3.4,c:0},{dx:50,dy:-16,r:3.4,c:0}], lines: [[0,1],[1,2],[3,1],[1,4]] },
+      { id: 3, season: "SUMMER", label: "AQUILA", desc: "The Eagle · Altair Diamond Wingspan", stars: [{dx:0,dy:-10,r:5.0,c:3},{dx:-18,dy:-28,r:3.2,c:2},{dx:18,dy:7,r:3,c:0},{dx:-58,dy:14,r:3,c:0},{dx:55,dy:-36,r:3,c:0},{dx:12,dy:45,r:2.8,c:0}], lines: [[1,0],[0,2],[3,1],[4,1],[2,5],[3,0],[4,0]] },
+      { id: 4, season: "SUMMER", label: "HERCULES", desc: "The Keystone Quadrangle · Globular Cluster M13", stars: [{dx:-24,dy:-32,r:3.4,c:0},{dx:22,dy:-36,r:3.3,c:2},{dx:32,dy:22,r:3.5,c:0},{dx:-16,dy:26,r:3.2,c:3},{dx:-50,dy:-60,r:3.0,c:0},{dx:44,dy:64,r:3.1,c:0}], lines: [[0,1],[1,2],[2,3],[3,0],[0,4],[2,5]] },
+      { id: 5, season: "SUMMER", label: "SCORPIUS", desc: "Antares Golden Heart · J-Hook Stinger", stars: [{dx:-20,dy:-36,r:5.8,c:1},{dx:-42,dy:-56,r:3,c:0},{dx:-46,dy:-40,r:3,c:0},{dx:-2,dy:-15,r:3,c:0},{dx:20,dy:10,r:3,c:0},{dx:40,dy:38,r:3,c:0},{dx:28,dy:52,r:3.6,c:3},{dx:10,dy:44,r:3,c:2}], lines: [[1,2],[2,0],[0,3],[3,4],[4,5],[5,6],[6,7]] },
+      { id: 6, season: "SUMMER", label: "SAGITTARIUS", desc: "The Teapot Asterism · Galactic Center Hub", stars: [{dx:8,dy:-44,r:3.6,c:0},{dx:36,dy:-12,r:4.2,c:3},{dx:24,dy:22,r:3.8,c:0},{dx:-36,dy:20,r:3.6,c:2},{dx:-18,dy:-20,r:4.0,c:0},{dx:56,dy:-2,r:3.4,c:0},{dx:-56,dy:-14,r:3.4,c:0}], lines: [[3,2],[2,1],[1,4],[4,3],[4,0],[0,1],[1,5],[2,5],[3,6],[6,4]] },
+      { id: 7, season: "SUMMER", label: "CORONA BOREALIS", desc: "The Northern Crown · Alphecca Emerald Core", stars: [{dx:0,dy:28,r:4.6,c:2},{dx:-28,dy:16,r:3.2,c:0},{dx:-48,dy:-6,r:3.0,c:0},{dx:28,dy:16,r:3.2,c:0},{dx:48,dy:-6,r:3.0,c:0},{dx:-56,dy:-30,r:2.8,c:3},{dx:56,dy:-30,r:2.8,c:3}], lines: [[5,2],[2,1],[1,0],[0,3],[3,4],[4,6]] },
+      { id: 8, season: "SUMMER", label: "OPHIUCHUS", desc: "The Serpent Bearer · Rasalhague Zenith", stars: [{dx:0,dy:-46,r:4.2,c:3},{dx:-38,dy:-10,r:3.2,c:2},{dx:-42,dy:30,r:3.0,c:0},{dx:40,dy:25,r:3.2,c:0},{dx:34,dy:-16,r:3.0,c:0}], lines: [[0,1],[1,2],[2,3],[3,4],[4,0]] },
+      { id: 9, season: "AUTUMN", label: "CASSIOPEIA", desc: "The Queen's Throne · Royal 'W'", stars: [{dx:-65,dy:-10,r:3.6,c:3},{dx:-32,dy:20,r:4.6,c:1},{dx:0,dy:-16,r:4.0,c:3},{dx:34,dy:12,r:3.6,c:0},{dx:64,dy:-20,r:3.2,c:2}], lines: [[0,1],[1,2],[2,3],[3,4]] },
+      { id: 10, season: "AUTUMN", label: "PEGASUS", desc: "The Winged Horse · Great Square & Galloping Limbs", stars: [{dx:-36,dy:-36,r:4.2,c:3},{dx:36,dy:-36,r:4.0,c:0},{dx:36,dy:36,r:4.0,c:0},{dx:-36,dy:36,r:4.2,c:1},{dx:68,dy:-60,r:3.4,c:2},{dx:94,dy:-76,r:3.0,c:0}], lines: [[0,1],[1,2],[2,3],[3,0],[1,4],[4,5]] },
+      { id: 11, season: "AUTUMN", label: "PERSEUS", desc: "Algol Demon Star · Heroic Segment", stars: [{dx:0,dy:-22,r:4.6,c:0},{dx:-30,dy:14,r:3.8,c:1},{dx:-16,dy:-50,r:2.8,c:3},{dx:30,dy:-38,r:3.0,c:0},{dx:25,dy:10,r:3.0,c:0},{dx:42,dy:40,r:2.8,c:0}], lines: [[2,0],[0,3],[0,1],[0,4],[4,5]] },
+      { id: 12, season: "AUTUMN", label: "ANDROMEDA", desc: "Princess Asterism · Alpheratz Joint", stars: [{dx:-44,dy:-34,r:4.4,c:3},{dx:-10,dy:-10,r:3.8,c:1},{dx:32,dy:16,r:3.6,c:0},{dx:-22,dy:25,r:2.8,c:0},{dx:18,dy:42,r:2.9,c:2}], lines: [[0,1],[1,2],[1,3],[2,4]] },
+      { id: 13, season: "WINTER", label: "ORION", desc: "The Hunter · Betelgeuse & Rigel Pillars", stars: [{dx:-36,dy:-46,r:5.6,c:1},{dx:38,dy:44,r:5.6,c:3},{dx:36,dy:-42,r:3.8,c:3},{dx:-28,dy:48,r:3.6,c:2},{dx:-16,dy:2,r:3.4,c:0},{dx:0,dy:0,r:3.4,c:0},{dx:16,dy:-2,r:3.4,c:0}], lines: [[4,5],[5,6],[0,4],[2,6],[0,2],[4,3],[6,1],[3,1]] },
+      { id: 14, season: "WINTER", label: "LEPUS", desc: "The Hare · Arneb Golden Core & Celestial Ears", stars: [{dx:-12,dy:-10,r:4.0,c:1},{dx:14,dy:-14,r:3.4,c:0},{dx:30,dy:12,r:3.0,c:0},{dx:-8,dy:16,r:2.8,c:3},{dx:-34,dy:4,r:3.0,c:0},{dx:-28,dy:-34,r:3.2,c:3},{dx:-44,dy:-28,r:2.8,c:0}], lines: [[0,1],[1,2],[2,3],[3,0],[4,0],[0,5],[4,6]] },
+      { id: 15, season: "WINTER", label: "TAURUS & PLEIADES", desc: "Aldebaran Bull Eye · Hyades V · Pleiades", stars: [{dx:0,dy:12,r:5.8,c:1},{dx:-38,dy:-12,r:3.4,c:0},{dx:38,dy:-22,r:3.4,c:0},{dx:-44,dy:-44,r:3.2,c:3},{dx:48,dy:-48,r:3.2,c:0},{dx:-16,dy:-4,r:3.0,c:2}], lines: [[1,0],[0,2],[1,3],[2,4],[5,0]] },
+      { id: 15, season: "WINTER", label: "CANIS MAJOR", desc: "Sirius Diamond · Brightest Star in the Night Sky", stars: [{dx:0,dy:-44,r:6.4,c:3},{dx:-22,dy:-8,r:3.8,c:0},{dx:24,dy:6,r:3.6,c:0},{dx:-38,dy:34,r:3.4,c:2},{dx:42,dy:42,r:3.2,c:0},{dx:0,dy:52,r:3.0,c:0}], lines: [[0,1],[1,3],[1,2],[2,4],[3,5]] },
+      { id: 16, season: "WINTER", label: "GEMINI", desc: "The Celestial Twins · Castor & Pollux", stars: [{dx:-22,dy:-48,r:4.8,c:3},{dx:22,dy:-44,r:5.2,c:1},{dx:-28,dy:-8,r:3.2,c:0},{dx:26,dy:-4,r:3.4,c:0},{dx:-36,dy:38,r:3.2,c:2},{dx:34,dy:42,r:3.4,c:2}], lines: [[0,1],[0,2],[2,4],[1,3],[3,5],[2,3]] },
+      { id: 17, season: "WINTER", label: "AURIGA", desc: "The Charioteer · Capella Golden Pentagram", stars: [{dx:0,dy:-46,r:5.6,c:1},{dx:-36,dy:-18,r:3.8,c:3},{dx:-26,dy:36,r:3.4,c:0},{dx:24,dy:42,r:3.4,c:2},{dx:38,dy:-10,r:3.2,c:0}], lines: [[0,1],[1,2],[2,3],[3,4],[4,0]] },
+      { id: 18, season: "SPRING", label: "URSA MAJOR", desc: "The Great Bear · Big Dipper Pointer Stars", stars: [{dx:48,dy:20,r:4.6,c:1},{dx:42,dy:-24,r:4.2,c:3},{dx:8,dy:22,r:3.4,c:0},{dx:4,dy:-22,r:3.4,c:0},{dx:-26,dy:-14,r:3.8,c:3},{dx:-54,dy:4,r:3.6,c:2},{dx:-80,dy:32,r:4.0,c:3}], lines: [[1,0],[0,2],[2,3],[3,1],[3,4],[4,5],[5,6]] },
+      { id: 19, season: "SPRING", label: "LEO", desc: "The Celestial Lion · Regulus Royal Star", stars: [{dx:-48,dy:26,r:5.6,c:3},{dx:-40,dy:-8,r:3.4,c:0},{dx:-22,dy:-32,r:4.2,c:1},{dx:4,dy:-44,r:3.2,c:0},{dx:16,dy:-28,r:3.0,c:2},{dx:8,dy:-12,r:3.4,c:3},{dx:38,dy:28,r:3.6,c:0},{dx:56,dy:-4,r:4.4,c:3}], lines: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,2],[0,6],[6,7],[7,5]] },
+      { id: 20, season: "SPRING", label: "BOÖTES", desc: "The Herdsman · Arcturus Golden Giant Kite", stars: [{dx:0,dy:48,r:6.0,c:1},{dx:-28,dy:10,r:3.4,c:3},{dx:28,dy:10,r:3.2,c:0},{dx:-18,dy:-36,r:3.2,c:2},{dx:18,dy:-36,r:3.2,c:0},{dx:0,dy:-54,r:3.6,c:3}], lines: [[0,1],[0,2],[1,3],[2,4],[3,5],[4,5],[1,2]] },
+      { id: 21, season: "POLARIS", label: "POLARIS & URSA MINOR", desc: "The North Star · True Celestial Pivot", stars: [{dx:0,dy:-50,r:6.0,c:3},{dx:16,dy:-20,r:2.8,c:0},{dx:32,dy:8,r:2.8,c:0},{dx:14,dy:36,r:3.0,c:2},{dx:-22,dy:38,r:3.8,c:1},{dx:-26,dy:14,r:3.5,c:3}], lines: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,2]] }
+    ];
+
+    const grid = document.getElementById('constellation-grid');
+
+    function renderCards(filter = 'ALL') {
+      grid.innerHTML = '';
+      CONSTELLATIONS.forEach(c => {
+        if (filter !== 'ALL' && c.season !== filter) return;
+
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const canvas = document.createElement('canvas');
+        canvas.className = 'card-canvas';
+        canvas.width = 300;
+        canvas.height = 200;
+
+        const ctx = canvas.getContext('2d');
+        const cx = 150, cy = 100;
+
+        // Draw connectors
+        ctx.lineWidth = 1.6;
+        ctx.strokeStyle = c.season === 'SPRING' ? 'rgba(52, 211, 153, 0.75)' : 'rgba(251, 191, 36, 0.75)';
+        c.lines.forEach(([i1, i2]) => {
+          const s1 = c.stars[i1];
+          const s2 = c.stars[i2];
+          if (s1 && s2) {
+            ctx.beginPath();
+            ctx.moveTo(cx + s1.dx, cy + s1.dy);
+            ctx.lineTo(cx + s2.dx, cy + s2.dy);
+            ctx.stroke();
+          }
+        });
+
+        // Draw stars
+        c.stars.forEach((s, idx) => {
+          const col = STAR_COLORS[s.c] || STAR_COLORS[0];
+          // Glow
+          if (s.r >= 4.0) {
+            const grad = ctx.createRadialGradient(cx + s.dx, cy + s.dy, 0, cx + s.dx, cy + s.dy, s.r * 3.5);
+            grad.addColorStop(0, `rgba(${col.r}, ${col.g}, ${col.b}, 0.8)`);
+            grad.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(cx + s.dx, cy + s.dy, s.r * 3.5, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          // Core
+          ctx.fillStyle = `rgb(${col.r}, ${col.g}, ${col.b})`;
+          ctx.beginPath();
+          ctx.arc(cx + s.dx, cy + s.dy, s.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        card.innerHTML = `
+          <div class="card-info">
+            <div class="card-name">${c.label}</div>
+            <div class="card-season">${c.season}</div>
+          </div>
+          <div class="card-desc">${c.desc}</div>
+        `;
+        card.insertBefore(canvas, card.firstChild);
+        grid.appendChild(card);
+      });
+    }
+
+    function filterSeason(season) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toUpperCase().includes(season));
+      });
+      renderCards(season);
+    }
+
+    renderCards('ALL');
+  </script>
+</body>
+</html>

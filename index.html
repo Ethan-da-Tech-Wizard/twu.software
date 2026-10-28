@@ -3,14 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TWU LLC | Tech Wizards United · Sovereign Software & Local AI Systems</title>
-  <meta name="description" content="Independent software studio engineering bespoke internal tools, on-premise AI models, and air-gapped sovereign infrastructure. Founded in Mesa, Arizona.">
+  <title>TWU LLC | Tech Wizards United · Private Software & Local AI Systems</title>
+  <meta name="description" content="Independent software studio engineering bespoke internal tools, on-premise AI models, and air-gapped local infrastructure. Founded in Mesa, Arizona.">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=()">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none';">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="assets/twu-logo.svg">
+  
+  <script>
+    // Anti-Clickjacking Defense: Prevent embedding inside malicious third-party iframes
+    if (window.top !== window.self) {
+      try {
+        window.top.location.replace(window.self.location.href);
+      } catch (e) {
+        window.location.replace('about:blank');
+      }
+    }
+  </script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,20 +30,33 @@
 
   <style>
     :root {
-      --bg: #030712;
-      --bg-panel: rgba(8, 14, 28, 0.56);
-      --bg-card: rgba(13, 20, 38, 0.60);
-      --border-panel: rgba(255, 255, 255, 0.08);
-      --border-glow-cyan: rgba(0, 240, 255, 0.45);
-      --border-glow-violet: rgba(168, 85, 247, 0.45);
+      --bg: #06080f;
+      --bg-panel: rgba(10, 15, 26, 0.70);
+      --bg-card: rgba(15, 22, 36, 0.75);
+      --border-panel: rgba(0, 240, 255, 0.16);
+
+      /* Electric Cyan, Neon Magenta & Soft Violet Cyber Palette */
       --cyan: #00f0ff;
       --cyan-bright: #38bdf8;
-      --cyan-glow: rgba(0, 240, 255, 0.35);
+      --cyan-glow: rgba(0, 240, 255, 0.40);
+
+      --pink: #ec4899;
+      --pink-bright: #f472b6;
+      --pink-glow: rgba(236, 72, 153, 0.35);
+
       --violet: #a855f7;
-      --violet-light: #c084fc;
+      --violet-bright: #c084fc;
       --violet-glow: rgba(168, 85, 247, 0.35);
+
       --emerald: #10b981;
-      --amber: #fbbf24;
+      --emerald-bright: #34d399;
+      --emerald-glow: rgba(16, 185, 129, 0.32);
+
+      --gold: #00f0ff;
+      --gold-bright: #38bdf8;
+      --gold-glow: rgba(0, 240, 255, 0.35);
+      --amber: #f59e0b;
+
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
@@ -54,9 +79,9 @@
     body {
       background-color: var(--bg);
       background-image: 
-        radial-gradient(ellipse 70% 45% at 50% -10%, rgba(124, 58, 237, 0.22), transparent 70%),
-        radial-gradient(ellipse 50% 35% at 85% 45%, rgba(0, 240, 255, 0.14), transparent 70%),
-        radial-gradient(ellipse 55% 40% at 15% 70%, rgba(168, 85, 247, 0.14), transparent 70%);
+        radial-gradient(ellipse 70% 45% at 50% -10%, rgba(0, 240, 255, 0.12), transparent 70%),
+        radial-gradient(ellipse 50% 40% at 85% 45%, rgba(168, 85, 247, 0.10), transparent 70%),
+        radial-gradient(ellipse 55% 45% at 15% 65%, rgba(236, 72, 153, 0.08), transparent 70%);
       background-attachment: fixed;
       color: var(--text-muted);
       font-family: var(--font-body);
@@ -67,7 +92,7 @@
       position: relative;
     }
 
-    /* Sovereign Celestial Space Canvas (Compiled Rust WebAssembly) */
+    /* Celestial Observatory Canvas */
     #space-canvas {
       position: fixed;
       top: 0;
@@ -89,14 +114,15 @@
 
     /* Navigation */
     header {
-      padding: 20px 0;
-      border-bottom: 1px solid var(--border-panel);
-      background: rgba(3, 7, 18, 0.82);
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.18);
+      background: rgba(6, 9, 17, 0.88);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       position: sticky;
       top: 0;
       z-index: 50;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
     }
     .nav-bar {
       display: flex;
@@ -111,10 +137,10 @@
       color: var(--text-main);
     }
     .brand-mark img {
-      width: 38px;
-      height: 38px;
+      width: 40px;
+      height: 40px;
       display: block;
-      filter: drop-shadow(0 0 12px var(--cyan-glow));
+      filter: drop-shadow(0 0 14px rgba(0, 240, 255, 0.35));
     }
     .brand-title {
       font-family: var(--font-display);
@@ -124,17 +150,18 @@
       display: flex;
       align-items: baseline;
       gap: 8px;
+      color: #ffffff;
     }
     .brand-title span.tag {
       font-size: 0.82rem;
       font-family: var(--font-body);
       font-weight: 600;
-      color: var(--cyan-bright);
+      color: #00f0ff;
     }
     .brand-subtitle {
       font-family: var(--font-mono);
       font-size: 0.68rem;
-      color: var(--violet-light);
+      color: #f472b6;
       letter-spacing: 1.2px;
     }
     .nav-actions {
@@ -151,27 +178,28 @@
       transition: color 0.2s ease;
     }
     .nav-link:hover {
-      color: var(--text-main);
+      color: #00f0ff;
     }
     .btn-nav {
-      background: linear-gradient(135deg, rgba(0, 240, 255, 0.12), rgba(168, 85, 247, 0.12));
-      border: 1px solid var(--border-glow-cyan);
-      color: var(--text-main) !important;
+      background: transparent;
+      border: 1px solid rgba(0, 240, 255, 0.50);
+      color: #ffffff !important;
       font-family: var(--font-mono);
       font-size: 0.80rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      padding: 8px 18px;
-      border-radius: 3px;
+      padding: 9px 20px;
+      border-radius: 4px;
       text-decoration: none;
       transition: all 0.2s ease;
-      box-shadow: 0 0 14px rgba(0, 240, 255, 0.15);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.18);
     }
     .btn-nav:hover {
-      background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(168, 85, 247, 0.25));
-      border-color: var(--cyan);
+      background: rgba(0, 240, 255, 0.15);
+      border-color: #00f0ff;
       transform: translateY(-1px);
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.40);
     }
 
     @media (max-width: 720px) {
@@ -201,23 +229,23 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: rgba(0, 240, 255, 0.06);
-      border: 1px solid rgba(0, 240, 255, 0.28);
-      padding: 6px 18px;
-      border-radius: 3px;
+      background: rgba(168, 85, 247, 0.08);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      padding: 7px 20px;
+      border-radius: 20px;
       font-family: var(--font-mono);
       font-size: 0.74rem;
-      color: #e0f2fe;
+      color: #e2e8f0;
       margin-bottom: 28px;
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.12);
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.16);
       letter-spacing: 0.6px;
     }
     .badge-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: var(--cyan);
-      box-shadow: 0 0 10px var(--cyan);
+      background: #00f0ff;
+      box-shadow: 0 0 10px #00f0ff;
     }
     .hero-title {
       font-family: var(--font-display);
@@ -229,11 +257,11 @@
       margin-bottom: 26px;
     }
     .hero-title span.accent {
-      background: linear-gradient(135deg, #ffffff 15%, var(--cyan) 60%, var(--violet-light) 95%);
+      background: linear-gradient(135deg, #00f0ff 0%, #38bdf8 40%, #a855f7 70%, #ec4899 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: inline-block;
-      filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.35));
+      filter: drop-shadow(0 0 32px rgba(0, 240, 255, 0.45));
     }
     .hero-thesis {
       font-size: 1.22rem;
@@ -251,44 +279,48 @@
       flex-wrap: wrap;
     }
     .btn-solid {
-      background: linear-gradient(135deg, var(--cyan) 0%, #2563eb 100%);
-      color: #030712;
+      background: #00f0ff;
+      color: #050811;
       font-family: var(--font-mono);
       font-weight: 700;
       font-size: 0.88rem;
       text-transform: uppercase;
       letter-spacing: 0.8px;
       padding: 13px 28px;
-      border-radius: 3px;
+      border-radius: 4px;
       text-decoration: none;
       transition: all 0.25s ease;
-      box-shadow: 0 0 24px rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.50);
       display: inline-flex;
       align-items: center;
       gap: 8px;
     }
     .btn-solid:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 35px rgba(0, 240, 255, 0.65);
+      box-shadow: 0 0 45px rgba(0, 240, 255, 0.75);
+      background: #38bdf8;
     }
     .btn-outline {
       background: rgba(168, 85, 247, 0.08);
-      border: 1px solid var(--border-glow-violet);
-      color: var(--text-main);
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      color: #f1f5f9;
       font-family: var(--font-mono);
       font-weight: 600;
       font-size: 0.88rem;
       text-transform: uppercase;
       letter-spacing: 0.8px;
       padding: 13px 26px;
-      border-radius: 3px;
+      border-radius: 4px;
       text-decoration: none;
       transition: all 0.2s ease;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
     }
     .btn-outline:hover {
       background: rgba(168, 85, 247, 0.18);
-      border-color: var(--violet-light);
+      border-color: #c084fc;
+      color: #ffffff;
       transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.35);
     }
 
     /* Trust Baseline */
@@ -360,12 +392,12 @@
       display: grid;
       grid-template-columns: 360px 1fr;
       background: var(--bg-panel);
-      border: 1px solid rgba(0, 240, 255, 0.28);
+      border: 1px solid rgba(245, 158, 11, 0.28);
       border-radius: 3px;
       overflow: hidden;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 240, 255, 0.08);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8), 0 0 35px rgba(245, 158, 11, 0.10);
       position: relative;
     }
     .workstation::before {
@@ -375,8 +407,8 @@
       left: -1px;
       width: 12px;
       height: 12px;
-      border-top: 2px solid var(--cyan);
-      border-left: 2px solid var(--cyan);
+      border-top: 2px solid var(--gold);
+      border-left: 2px solid var(--gold);
       pointer-events: none;
       z-index: 10;
     }
@@ -387,8 +419,8 @@
       right: -1px;
       width: 12px;
       height: 12px;
-      border-bottom: 2px solid var(--cyan);
-      border-right: 2px solid var(--cyan);
+      border-bottom: 2px solid var(--emerald);
+      border-right: 2px solid var(--emerald);
       pointer-events: none;
       z-index: 10;
     }
@@ -407,7 +439,7 @@
       align-items: center;
       padding: 10px 22px;
       background: rgba(3, 7, 18, 0.85);
-      border-bottom: 1px solid rgba(0, 240, 255, 0.20);
+      border-bottom: 1px solid rgba(245, 158, 11, 0.20);
       font-family: var(--font-mono);
       font-size: 0.72rem;
       letter-spacing: 1.2px;
@@ -443,7 +475,7 @@
 
     .cap-list {
       background: rgba(5, 9, 20, 0.50);
-      border-right: 1px solid rgba(0, 240, 255, 0.15);
+      border-right: 1px solid rgba(245, 158, 11, 0.15);
       display: flex;
       flex-direction: column;
     }
@@ -459,10 +491,10 @@
       border-bottom: none;
     }
     .cap-item:hover {
-      background: rgba(0, 240, 255, 0.04);
+      background: rgba(245, 158, 11, 0.04);
     }
     .cap-item.active {
-      background: linear-gradient(90deg, rgba(0, 240, 255, 0.12), rgba(168, 85, 247, 0.04));
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.14), rgba(16, 185, 129, 0.04));
     }
     .cap-item.active::before {
       content: '';
@@ -471,8 +503,8 @@
       top: 0;
       bottom: 0;
       width: 3px;
-      background: linear-gradient(180deg, var(--cyan), var(--violet));
-      box-shadow: 0 0 12px var(--cyan);
+      background: linear-gradient(180deg, var(--gold-bright), var(--emerald-bright));
+      box-shadow: 0 0 12px var(--gold-glow);
     }
     .cap-item-top {
       display: flex;
@@ -501,7 +533,7 @@
     }
     .cap-item.active .cap-name {
       color: #ffffff;
-      text-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+      text-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
     }
     .cap-status-pill {
       font-family: var(--font-mono);
@@ -515,9 +547,9 @@
       border: 1px solid rgba(255, 255, 255, 0.06);
     }
     .cap-item.active .cap-status-pill {
-      background: rgba(0, 240, 255, 0.12);
-      color: var(--cyan);
-      border-color: rgba(0, 240, 255, 0.35);
+      background: rgba(245, 158, 11, 0.12);
+      color: var(--gold-bright);
+      border-color: rgba(245, 158, 11, 0.35);
       font-weight: 600;
     }
     .cap-summary {
@@ -589,9 +621,9 @@
       font-family: var(--font-mono);
       font-size: 0.70rem;
       padding: 4px 10px;
-      background: rgba(0, 240, 255, 0.06);
-      border: 1px solid rgba(0, 240, 255, 0.22);
-      color: #e0f2fe;
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+      color: #a7f3d0;
       border-radius: 2px;
       letter-spacing: 0.8px;
     }
@@ -601,8 +633,8 @@
       gap: 14px;
       margin-bottom: 30px;
       padding: 16px 20px;
-      background: rgba(3, 7, 18, 0.45);
-      border: 1px solid rgba(0, 240, 255, 0.18);
+      background: rgba(3, 7, 18, 0.55);
+      border: 1px solid rgba(245, 158, 11, 0.22);
       border-radius: 3px;
       font-family: var(--font-mono);
     }
@@ -618,20 +650,20 @@
       font-weight: 600;
       letter-spacing: 0.2px;
     }
-    .spec-val.cyan { color: var(--cyan); }
-    .spec-val.green { color: var(--emerald); }
-    .spec-val.violet { color: var(--violet-light); }
+    .spec-val.cyan { color: var(--gold-bright); }
+    .spec-val.green { color: var(--emerald-bright); }
+    .spec-val.violet { color: var(--pink-bright); }
 
     /* Architecture Blueprint Frame */
     .arch-frame {
       margin-bottom: 110px;
       background: var(--bg-panel);
-      border: 1px solid rgba(168, 85, 247, 0.35);
+      border: 1px solid rgba(244, 63, 94, 0.28);
       border-radius: 4px;
       padding: 44px;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 0 60px rgba(168, 85, 247, 0.12), inset 0 0 20px rgba(0, 240, 255, 0.05);
+      box-shadow: 0 0 60px rgba(244, 63, 94, 0.12), inset 0 0 20px rgba(245, 158, 11, 0.06);
       position: relative;
     }
     .arch-frame-head {
@@ -673,18 +705,18 @@
       margin-bottom: 20px;
     }
     .quote-stripe {
-      border-left: 3px solid var(--violet);
+      border-left: 3px solid var(--pink);
       padding: 18px 22px;
       font-style: italic;
       color: var(--text-main);
-      background: linear-gradient(90deg, rgba(168, 85, 247, 0.08), transparent);
+      background: linear-gradient(90deg, rgba(244, 63, 94, 0.08), transparent);
       border-radius: 0 3px 3px 0;
       margin: 26px 0;
       font-size: 1.05rem;
     }
     .baseline-card {
       background: var(--bg-card);
-      border: 1px solid rgba(0, 240, 255, 0.25);
+      border: 1px solid rgba(245, 158, 11, 0.28);
       border-radius: 3px;
       padding: 26px;
       font-family: var(--font-mono);
@@ -693,20 +725,20 @@
       color: #cbd5e1;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 0 25px rgba(0, 240, 255, 0.08);
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.08);
     }
 
     /* Direct Contact Monolith */
     .contact-monolith {
       background: linear-gradient(180deg, rgba(15, 23, 42, 0.60) 0%, rgba(3, 7, 18, 0.70) 100%);
-      border: 1px solid rgba(0, 240, 255, 0.3);
+      border: 1px solid rgba(245, 158, 11, 0.32);
       border-radius: 4px;
       padding: 64px 40px;
       text-align: center;
       margin-bottom: 100px;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 0 60px rgba(0, 240, 255, 0.12), 0 0 40px rgba(168, 85, 247, 0.1);
+      box-shadow: 0 0 60px rgba(245, 158, 11, 0.12), 0 0 40px rgba(16, 185, 129, 0.08);
     }
     .contact-monolith h2 {
       font-family: var(--font-display);
@@ -738,19 +770,19 @@
       font-weight: 600;
       color: var(--text-main);
       background: rgba(6, 11, 25, 0.88);
-      border: 1px solid rgba(0, 240, 255, 0.35);
+      border: 1px solid rgba(245, 158, 11, 0.35);
       padding: 13px 26px;
       border-radius: 3px;
       text-decoration: none;
       transition: all 0.25s ease;
-      box-shadow: 0 0 18px rgba(0, 240, 255, 0.1);
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.10);
       letter-spacing: 0.5px;
     }
     .c-badge:hover {
-      border-color: var(--cyan);
-      background: rgba(0, 240, 255, 0.15);
+      border-color: #fbbf24;
+      background: rgba(245, 158, 11, 0.12);
       transform: translateY(-2px);
-      box-shadow: 0 0 28px rgba(0, 240, 255, 0.35);
+      box-shadow: 0 0 28px rgba(245, 158, 11, 0.35);
     }
 
     footer {
@@ -797,7 +829,7 @@
               TWU
               <span class="tag">· Tech Wizards United</span>
             </div>
-            <div class="brand-subtitle">SOVEREIGN SOFTWARE &amp; SYSTEMS · MESA, AZ</div>
+            <div class="brand-subtitle">PRIVATE SOFTWARE &amp; SYSTEMS · MESA, AZ</div>
           </div>
         </a>
         <div class="nav-actions">
@@ -816,11 +848,11 @@
         <span>Independent Systems &amp; Software Studio · Mesa, Arizona</span>
       </div>
       <h1 class="hero-title">
-        Sovereign Software &amp;<br>
+        Private Software &amp;<br>
         <span class="accent">Local AI Systems.</span>
       </h1>
       <p class="hero-thesis">
-        We engineer bespoke internal tools, private on-premise AI models, and air-gapped sovereign infrastructure. Zero third-party cloud telemetry. Zero recurring per-seat subscriptions. You own the code forever.
+        We engineer bespoke internal tools, private on-premise AI models, and air-gapped local infrastructure. Zero third-party cloud telemetry. Zero recurring per-seat subscriptions. You own the code forever.
       </p>
       <div class="hero-actions">
         <a href="#contact" class="btn-solid">Inquire · Direct Channel →</a>
@@ -865,7 +897,7 @@
         <div class="workstation-topbar">
           <div class="ws-status">
             <span class="ws-pulse-dot"></span>
-            <span>SOVEREIGN WORKSTATION // V3.4</span>
+            <span>LOCAL WORKSTATION // V3.4</span>
           </div>
           <div class="ws-telemetry">
             <span>AIR-GAP: VERIFIED</span>
@@ -919,7 +951,7 @@
               </div>
               <span class="cap-status-pill">READY</span>
             </div>
-            <div class="cap-summary">Practical community curriculum on scam defense and sovereign tool building.</div>
+            <div class="cap-summary">Practical community curriculum on scam defense and local tool building.</div>
           </div>
         </div>
 
@@ -930,7 +962,7 @@
               <span class="inspector-tag" id="ins-tag">CAPABILITY CHANNEL // 01 · LOCAL SOFTWARE</span>
               <span class="inspector-active-pill"><span class="ws-pulse-dot"></span> INSPECTION READY</span>
             </div>
-            <h3 class="inspector-title" id="ins-title">Bespoke Internal Tools &amp; Sovereign Software</h3>
+            <h3 class="inspector-title" id="ins-title">Bespoke Internal Tools &amp; Private Software</h3>
             <p class="inspector-body" id="ins-body">
               Stop paying recurring per-seat subscriptions for bloated, generic SaaS. We engineer lean, high-velocity internal tools—automated scheduling, inventory dispatch, offline-first client registries, and zero-telemetry workflows—tailored precisely to your operational invariants. Built with native performance and owned completely by your company forever.
             </p>
@@ -970,10 +1002,10 @@
     <section class="arch-frame" id="architecture">
       <div class="arch-frame-head">
         <span class="matrix-label">Engineering Baseline</span>
-        <h2 class="matrix-title">The Sovereign Offline Architecture</h2>
+        <h2 class="matrix-title">The Private Offline Architecture</h2>
         <p style="margin-top: 6px; color: var(--text-muted);">How our systems operate inside your air-gapped perimeter with zero cloud data leakage.</p>
       </div>
-      <img src="assets/architecture-schematic.svg" alt="Sovereign Architecture Schematic">
+      <img src="assets/architecture-schematic.svg" alt="Private Architecture Schematic">
     </section>
 
     <!-- Studio Philosophy & Founder -->
@@ -987,7 +1019,7 @@
           I founded TWU LLC on a simple principle: computers are meant to empower people, not entrap them in perpetual software subscriptions.
         </p>
         <p>
-          You shouldn't have to bend your workflows around rigid corporate software. We craft bespoke tools that adapt to you, run on the hardware you already own, and remain under your sovereign control forever.
+          You shouldn't have to bend your workflows around rigid corporate software. We craft bespoke tools that adapt to you, run on the hardware you already own, and remain under your direct control forever.
         </p>
       </div>
 
@@ -1000,7 +1032,7 @@
           <p style="color:var(--cyan); margin-bottom:10px; font-weight:700;">// TECHNICAL SPECIFICATIONS</p>
           <p>• Registered Entity: TWU LLC</p>
           <p>• Studio Base: Mesa, Arizona</p>
-          <p>• Architecture: Sovereign Offline Runtime &amp; Air-Gapped Core</p>
+          <p>• Architecture: Private Offline Runtime &amp; Air-Gapped Core</p>
           <p>• Deliverable Standard: 100% Client Ownership. Zero Cloud Lock-In.</p>
         </div>
       </div>
@@ -1014,11 +1046,11 @@
         <!-- Anti-Harvesting Obfuscated Channel: Immune to automated mailto: crawlers & scrapers -->
         <!-- institutional-contact: ethan@twu.software -->
         <a href="javascript:void(0)" class="c-badge" id="contact-email-btn" onclick="openDirectChannel(event)" onmouseenter="primeEmailLink(this)" ontouchstart="primeEmailLink(this)" title="Click to email or copy address">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           <span id="email-label">ethan<span style="display:none;">-defend-bot-trap</span>@twu.software</span>
         </a>
         <a href="https://github.com/Ethan-da-Tech-Wizard" target="_blank" rel="noopener" class="c-badge">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
           <span>github.com/Ethan-da-Tech-Wizard</span>
         </a>
       </div>
@@ -1042,7 +1074,7 @@
 
   <script>
     // ============================================================================
-    // SOVEREIGN CELESTIAL OBSERVATORY ENGINE (TWU LLC)
+    // CELESTIAL OBSERVATORY ENGINE (TWU LLC)
     // ============================================================================
     // • 31 Authentic Multi-Star Geometric Constellations flowing in seasonal sequence:
     //     SUMMER -> AUTUMN -> WINTER -> SPRING -> SUMMER ...
@@ -1067,15 +1099,15 @@
     let celestialRoll = 0.04;
     let timeAccumulator = 0.0;
 
-    // Star Colors: 0 = Quantum Cyan, 1 = Arcane Violet, 2 = Golden Amber, 3 = Diamond White, 4 = Emerald Aurora, 5 = Rose Nebula, 6 = Sapphire Sky
+    // Star Colors: The Master Triad Spectra (Gold, Emerald Green, Rose Pink & Diamond White)
     const STAR_COLORS = [
-      { r: 0,   g: 240, b: 255 },  // 0: Quantum Cyan (Rigel, Sirius, Deneb)
-      { r: 192, g: 132, b: 252 },  // 1: Arcane Violet (Vega, Spica)
-      { r: 251, g: 191, b: 36 },   // 2: Golden Amber (Betelgeuse, Arcturus, Aldebaran)
-      { r: 255, g: 255, b: 255 },  // 3: Diamond White (Polaris, Castor, Altair)
-      { r: 52,  g: 211, b: 153 },  // 4: Emerald Aurora (Mintaka, Bellatrix)
-      { r: 244, g: 114, b: 182 },  // 5: Rose Nebula (Antares Core)
-      { r: 56,  g: 189, b: 248 }   // 6: Sapphire Sky (Alphecca)
+      { r: 240, g: 245, b: 255 },  // 0: Celestial Starlight White (Rigel, Sirius, Deneb)
+      { r: 254, g: 240, b: 138 },  // 1: Warm Electrum Gold (Vega, Capella)
+      { r: 251, g: 191, b: 36 },   // 2: Solar Amber Gold (Betelgeuse, Arcturus)
+      { r: 255, g: 255, b: 255 },  // 3: Diamond White (Polaris, Castor)
+      { r: 52,  g: 211, b: 153 },  // 4: Celestial Aurora Emerald (Mintaka, Bellatrix)
+      { r: 251, g: 113, b: 133 },  // 5: Nebula Rose Pink (Antares Core)
+      { r: 244, g: 63,  b: 94 }    // 6: Deep Rose Magenta (Alphecca)
     ];
 
     function getSphereRadius() {
@@ -1264,7 +1296,7 @@
         label: "ANDROMEDA", desc: "The Chained Maiden · Mirach Golden Giant & Almach"
       });
 
-      // 11. PEGASUS (Great Square + Neck & Nose)
+      // 11. PEGASUS (The Winged Horse)
       constellations.push({
         id: 11, season: "AUTUMN", center: sc(22, 36),
         stars: [
@@ -1273,10 +1305,12 @@
           { dx: 48,  dy: 38,  dz: 0, r: 3.8, pulse: 2.4, color: 0, name: "Markab" },
           { dx: -46, dy: 36,  dz: 0, r: 3.7, pulse: 3.6, color: 0, name: "Algenib" },
           { dx: 92,  dy: 52,  dz: 0, r: 3.0, pulse: 4.8, color: 0, name: "Homam" },
-          { dx: 128, dy: 16,  dz: 0, r: 3.3, pulse: 0.6, color: 3, name: "Enif" }
+          { dx: 128, dy: 16,  dz: 0, r: 3.3, pulse: 0.6, color: 3, name: "Enif" },
+          { dx: 78,  dy: -72, dz: 0, r: 3.1, pulse: 1.9, color: 0, name: "Matar" },
+          { dx: 108, dy: -94, dz: 0, r: 2.8, pulse: 3.2, color: 3, name: "Pi Pegasi" }
         ],
-        lines: [[0, 1], [1, 2], [2, 3], [3, 0], [2, 4], [4, 5]],
-        label: "PEGASUS", desc: "The Winged Horse · The Great Square & Enif Beacon"
+        lines: [[0, 1], [1, 2], [2, 3], [3, 0], [2, 4], [4, 5], [1, 6], [6, 7]],
+        label: "PEGASUS", desc: "The Winged Horse · Great Square, Galloping Limbs & Enif"
       });
 
       // 12. ARIES (The Ram)
@@ -1398,20 +1432,23 @@
           { dx: 42,  dy: 38,  dz: 0, r: 2.7, pulse: 1.9, color: 3, name: "Alzirr" }
         ],
         lines: [[0, 2], [2, 4], [4, 5], [1, 3], [3, 6], [6, 7], [0, 1], [2, 3]],
-        label: "GEMINI", desc: "Castor & Pollux · Twin Sovereign Guardians"
+        label: "GEMINI", desc: "Castor & Pollux · Twin Celestial Guardians"
       });
 
       // 20. LEPUS (The Hare)
       constellations.push({
         id: 20, season: "WINTER", center: sc(82, -48),
         stars: [
-          { dx: -24, dy: -18, dz: 0, r: 3.4, pulse: 0.4, color: 2, name: "Arneb" },
-          { dx: 18,  dy: -22, dz: 0, r: 3.2, pulse: 1.8, color: 0, name: "Nihal" },
-          { dx: 36,  dy: 18,  dz: 0, r: 2.8, pulse: 3.1, color: 0, name: "Gamma Lep" },
-          { dx: -14, dy: 24,  dz: 0, r: 2.7, pulse: 4.3, color: 3, name: "Delta Lep" }
+          { dx: -14, dy: -12, dz: 0, r: 3.8, pulse: 0.4, color: 2, name: "Arneb" },
+          { dx: 16,  dy: -16, dz: 0, r: 3.4, pulse: 1.8, color: 0, name: "Nihal" },
+          { dx: 34,  dy: 14,  dz: 0, r: 2.9, pulse: 3.1, color: 0, name: "Gamma Lep" },
+          { dx: -10, dy: 18,  dz: 0, r: 2.8, pulse: 4.3, color: 3, name: "Delta Lep" },
+          { dx: -38, dy: 6,   dz: 0, r: 3.0, pulse: 1.2, color: 0, name: "Zeta Lep" },
+          { dx: -32, dy: -38, dz: 0, r: 3.2, pulse: 2.5, color: 3, name: "Mu Lep (Ear)" },
+          { dx: -48, dy: -32, dz: 0, r: 2.9, pulse: 3.8, color: 0, name: "Lambda Lep (Ear)" }
         ],
-        lines: [[0, 1], [1, 2], [2, 3], [3, 0]],
-        label: "LEPUS", desc: "The Hare · Arneb Golden Core"
+        lines: [[0, 1], [1, 2], [2, 3], [3, 0], [4, 0], [0, 5], [4, 6]],
+        label: "LEPUS", desc: "The Hare · Arneb Golden Core & Celestial Ears"
       });
 
       // --------------------------------------------------------------------------
@@ -1494,17 +1531,18 @@
         label: "CORONA BOREALIS", desc: "The Northern Crown · Alphecca Violet Gem"
       });
 
-      // 26. CORVUS (The Raven Box)
+      // 26. CORVUS (The Celestial Crow)
       constellations.push({
         id: 26, season: "SPRING", center: sc(182, -46),
         stars: [
           { dx: -24, dy: -20, dz: 0, r: 3.4, pulse: 0.5, color: 0, name: "Gienah" },
           { dx: 26,  dy: -16, dz: 0, r: 3.5, pulse: 1.7, color: 2, name: "Kraz" },
           { dx: 20,  dy: 24,  dz: 0, r: 3.3, pulse: 3.0, color: 0, name: "Algorab" },
-          { dx: -28, dy: 18,  dz: 0, r: 3.2, pulse: 4.3, color: 3, name: "Minkar" }
+          { dx: -28, dy: 18,  dz: 0, r: 3.2, pulse: 4.3, color: 3, name: "Minkar" },
+          { dx: -54, dy: -2,  dz: 0, r: 3.0, pulse: 2.1, color: 0, name: "Alchiba (Beak)" }
         ],
-        lines: [[0, 1], [1, 2], [2, 3], [3, 0]],
-        label: "CORVUS", desc: "The Celestial Crow · Four-Star Diamond Sail"
+        lines: [[0, 1], [1, 2], [2, 3], [3, 0], [0, 4], [3, 4]],
+        label: "CORVUS", desc: "The Celestial Crow · Diamond Sail & Alchiba Beak"
       });
 
       // --------------------------------------------------------------------------
@@ -1525,17 +1563,18 @@
         label: "POLARIS", desc: "True North Celestial Anchor · Alpha Ursae Minoris"
       });
 
-      // 28. DRACO (The Dragon's Head Quadrangle)
+      // 28. DRACO (The Dragon's Crest)
       constellations.push({
         id: 28, season: "POLARIS", center: sc(260, 68),
         stars: [
           { dx: -18, dy: -22, dz: 0, r: 3.6, pulse: 0.3, color: 2, name: "Eltanin" },
           { dx: 22,  dy: -24, dz: 0, r: 3.4, pulse: 1.6, color: 0, name: "Rastaban" },
           { dx: 28,  dy: 16,  dz: 0, r: 3.0, pulse: 2.9, color: 3, name: "Grumium" },
-          { dx: -14, dy: 24,  dz: 0, r: 2.9, pulse: 4.1, color: 0, name: "Kuma" }
+          { dx: -14, dy: 24,  dz: 0, r: 2.9, pulse: 4.1, color: 0, name: "Kuma" },
+          { dx: 64,  dy: 36,  dz: 0, r: 2.9, pulse: 1.8, color: 0, name: "Gianfar" }
         ],
-        lines: [[0, 1], [1, 2], [2, 3], [3, 0]],
-        label: "DRACO", desc: "The Dragon's Head · Eltanin Amber Supergiant"
+        lines: [[0, 1], [1, 2], [2, 3], [3, 0], [2, 4]],
+        label: "DRACO", desc: "The Dragon's Head · Eltanin Supergiant & Spinal Arc"
       });
 
       // 29. CEPHEUS (The King's House)
@@ -1621,9 +1660,10 @@
         const tailY = m.y - (m.vy / 600) * m.length;
 
         const grad = ctx.createLinearGradient(tailX, tailY, m.x, m.y);
-        grad.addColorStop(0, 'rgba(0, 240, 255, 0)');
-        grad.addColorStop(0.65, `rgba(168, 85, 247, ${m.life * 0.65})`);
-        grad.addColorStop(1, `rgba(255, 255, 255, ${m.life * 0.95})`);
+        grad.addColorStop(0, 'rgba(251, 191, 36, 0)');
+        grad.addColorStop(0.40, `rgba(16, 185, 129, ${m.life * 0.65})`);
+        grad.addColorStop(0.80, `rgba(251, 113, 133, ${m.life * 0.85})`);
+        grad.addColorStop(1, `rgba(255, 255, 255, ${m.life * 0.98})`);
 
         ctx.strokeStyle = grad;
         ctx.lineWidth = 1.6;
@@ -1727,17 +1767,23 @@
       const cx = width * 0.5;
       const cy = height * 0.36 - (scrollY * 0.08);
 
-      // Deep Cosmic Nebula Background Gases
+      // Deep Cosmic Gold, Emerald & Rose Nebula Background Gases
       const bgGrad1 = ctx.createRadialGradient(cx - 360, cy - 180, 100, cx - 360, cy - 180, 950);
-      bgGrad1.addColorStop(0, 'rgba(0, 240, 255, 0.042)');
+      bgGrad1.addColorStop(0, 'rgba(245, 158, 11, 0.038)');
       bgGrad1.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = bgGrad1;
       ctx.fillRect(0, 0, width, height);
 
       const bgGrad2 = ctx.createRadialGradient(cx + 420, cy + 220, 100, cx + 420, cy + 220, 1000);
-      bgGrad2.addColorStop(0, 'rgba(168, 85, 247, 0.038)');
+      bgGrad2.addColorStop(0, 'rgba(16, 185, 129, 0.028)');
       bgGrad2.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = bgGrad2;
+      ctx.fillRect(0, 0, width, height);
+
+      const bgGrad3 = ctx.createRadialGradient(cx, cy + 380, 80, cx, cy + 380, 800);
+      bgGrad3.addColorStop(0, 'rgba(244, 63, 94, 0.025)');
+      bgGrad3.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = bgGrad3;
       ctx.fillRect(0, 0, width, height);
 
       // 1. Draw 1,850 Ambient Stardust Particles (Vibrant Multi-Color Field Behind All Menus)
@@ -1832,15 +1878,15 @@
             ctx.lineTo(pB.sx, pB.sy);
 
             if (con.season === "WINTER") {
-              ctx.strokeStyle = `rgba(0, 240, 255, ${conAlpha * 0.85})`;
+              ctx.strokeStyle = `rgba(0, 240, 255, ${conAlpha * 0.90})`;
             } else if (con.season === "SPRING") {
-              ctx.strokeStyle = `rgba(192, 132, 252, ${conAlpha * 0.85})`;
+              ctx.strokeStyle = `rgba(52, 211, 153, ${conAlpha * 0.88})`;
             } else if (con.season === "SUMMER") {
-              ctx.strokeStyle = `rgba(251, 191, 36, ${conAlpha * 0.85})`;
+              ctx.strokeStyle = `rgba(0, 240, 255, ${conAlpha * 0.90})`;
             } else if (con.season === "AUTUMN") {
-              ctx.strokeStyle = `rgba(56, 189, 248, ${conAlpha * 0.82})`;
+              ctx.strokeStyle = `rgba(236, 72, 153, ${conAlpha * 0.90})`;
             } else {
-              ctx.strokeStyle = `rgba(255, 255, 255, ${conAlpha * 0.88})`;
+              ctx.strokeStyle = `rgba(255, 255, 255, ${conAlpha * 0.90})`;
             }
             ctx.stroke();
           }
@@ -1930,7 +1976,7 @@
       {
         channel: "CHANNEL: 01 // BESPOKE",
         tag: "CAPABILITY CHANNEL // 01 · LOCAL SOFTWARE",
-        title: "Bespoke Internal Tools & Sovereign Software",
+        title: "Bespoke Internal Tools & Private Software",
         body: "Stop paying recurring per-seat subscriptions for bloated, generic SaaS. We engineer lean, high-velocity internal tools—automated scheduling, inventory dispatch, offline-first client registries, and zero-telemetry workflows—tailored precisely to your operational invariants. Built with native performance and owned completely by your company forever.",
         badges: ["[LOCAL_NATIVE]", "[ZERO_CLOUD_TELEMETRY]", "[PERPETUAL_LICENSE]", "[OFFLINE_FIRST]"],
         specs: [
@@ -1952,7 +1998,7 @@
           { key: "INFERENCE ENGINE", val: "Local GPU / CPU Sharded", color: "cyan" },
           { key: "CLOUD EXPOSURE", val: "Mathematically 0.00%", color: "green" },
           { key: "API BILLING", val: "$0.00 / token forever", color: "green" },
-          { key: "PRIVACY BOUNDARY", val: "Air-Gapped Sovereign Hardware", color: "violet" }
+          { key: "PRIVACY BOUNDARY", val: "Air-Gapped Local Hardware", color: "violet" }
         ],
         actionText: "Deploy Private AI Models →",
         actionLink: "#contact"
@@ -1976,8 +2022,8 @@
         channel: "CHANNEL: 04 // WORKSHOPS",
         tag: "CAPABILITY CHANNEL // 04 · WORKSHOPS & EDUCATION",
         title: "Hands-On Tech Workshops & Community Training",
-        body: "Practical, empowering technical education designed to demystify computers and AI. We teach actionable cybersecurity defense—how to identify phishing, protect personal financial data, prevent digital extortion—and guide aspiring builders through assembling their first sovereign local AI workstations.",
-        badges: ["[COMMUNITY_FIRST]", "[HANDS_ON_LABS]", "[SCAM_DEFENSE]", "[SOVEREIGN_SKILLS]"],
+        body: "Practical, empowering technical education designed to demystify computers and AI. We teach actionable cybersecurity defense—how to identify phishing, protect personal financial data, prevent digital extortion—and guide aspiring builders through assembling their first private local AI workstations.",
+        badges: ["[COMMUNITY_FIRST]", "[HANDS_ON_LABS]", "[SCAM_DEFENSE]", "[PRACTICAL_SKILLS]"],
         specs: [
           { key: "FORMAT", val: "In-Person Interactive Labs", color: "cyan" },
           { key: "CURRICULUM", val: "Scam Defense & Local AI", color: "green" },

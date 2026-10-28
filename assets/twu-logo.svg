@@ -1,32 +1,34 @@
 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="twuGrad" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+    <!-- Master Cybernetic Palette: Electric Cyan & Neon Magenta/Pink -->
+    <linearGradient id="squircleBorder" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#00f0ff"/>
-      <stop offset="50%" stop-color="#6366f1"/>
-      <stop offset="100%" stop-color="#a855f7"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
     </linearGradient>
-    <linearGradient id="twuGlow" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#a855f7" stop-opacity="0.0"/>
+    <linearGradient id="glyphW" x1="12" y1="20" x2="36" y2="34" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#ec4899"/>
     </linearGradient>
-    <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
+    <filter id="cyanGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
       <feComposite in="SourceGraphic" in2="blur" operator="over"/>
     </filter>
   </defs>
-  <!-- Background Shield Prism -->
-  <rect x="3" y="3" width="42" height="42" rx="12" fill="#090d16" stroke="url(#twuGrad)" stroke-width="1.75"/>
-  <rect x="5" y="5" width="38" height="38" rx="10" fill="url(#twuGlow)"/>
-  
-  <!-- Geometric T-W Glyphs -->
-  <!-- Crossbar of T -->
-  <path d="M12 15H36" stroke="url(#twuGrad)" stroke-width="2.75" stroke-linecap="round"/>
-  <!-- Stem of T / Center of W -->
-  <path d="M24 15V33" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round"/>
-  <!-- Left wing of W -->
-  <path d="M14 21L19 33L24 25" stroke="url(#twuGrad)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- Right wing of W -->
-  <path d="M34 21L29 33L24 25" stroke="url(#twuGrad)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- Quantum Core Spark -->
-  <circle cx="24" cy="25" r="2.2" fill="#00f0ff" filter="url(#glowFilter)"/>
+
+  <!-- Deep Obsidian Squircle Badge -->
+  <rect x="3" y="3" width="42" height="42" rx="12" fill="#070a14" stroke="url(#squircleBorder)" stroke-width="2"/>
+
+  <!-- Letter W (Neon Magenta / Soft Violet) -->
+  <path d="M13 21L19 33L24 23L29 33L35 21" stroke="url(#glyphW)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Letter T (Electric Cyan with Glow) -->
+  <!-- Crossbar -->
+  <path d="M12 16H36" stroke="#00f0ff" stroke-width="2.8" stroke-linecap="round"/>
+  <!-- Central Stem -->
+  <path d="M24 16V26" stroke="#00f0ff" stroke-width="2.6" stroke-linecap="round"/>
+
+  <!-- Central Luminous Cyan Node -->
+  <circle cx="24" cy="23" r="2.6" fill="#00f0ff" filter="url(#cyanGlow)"/>
+  <circle cx="24" cy="23" r="1.3" fill="#ffffff"/>
 </svg>
