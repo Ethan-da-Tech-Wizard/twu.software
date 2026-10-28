@@ -833,12 +833,15 @@
     let timeAccumulator = 0.0;
     let hoveredConstellation = null;
 
-    // Star Colors: 0 = Quantum Cyan, 1 = Arcane Violet, 2 = Golden Amber/Ruby, 3 = Diamond White
+    // Star Colors: 0 = Quantum Cyan, 1 = Arcane Violet, 2 = Golden Amber, 3 = Diamond White, 4 = Emerald Aurora, 5 = Rose Nebula, 6 = Sapphire Sky
     const STAR_COLORS = [
-      { r: 0, g: 240, b: 255 },    // 0: Cyan
-      { r: 192, g: 132, b: 252 },  // 1: Violet
-      { r: 251, g: 191, b: 36 },   // 2: Amber
-      { r: 255, g: 255, b: 255 }   // 3: White
+      { r: 0,   g: 240, b: 255 },  // 0: Quantum Cyan (Rigel, Sirius, Deneb)
+      { r: 192, g: 132, b: 252 },  // 1: Arcane Violet (Vega, Spica)
+      { r: 251, g: 191, b: 36 },   // 2: Golden Amber (Betelgeuse, Arcturus, Aldebaran)
+      { r: 255, g: 255, b: 255 },  // 3: Diamond White (Polaris, Castor, Altair)
+      { r: 52,  g: 211, b: 153 },  // 4: Emerald Aurora (Mintaka, Bellatrix)
+      { r: 244, g: 114, b: 182 },  // 5: Rose Nebula (Antares Core)
+      { r: 56,  g: 189, b: 248 }   // 6: Sapphire Sky (Alphecca)
     ];
 
     function getSphereRadius() {
@@ -1312,26 +1315,26 @@
     let CONSTELLATIONS_3D = build3DConstellations();
 
     // ============================================================================
-    // 950 AMBIENT STARDUST PARTICLES (Infinite Scroll Envelope - No Empty Voids!)
+    // 1,850 AMBIENT STARDUST PARTICLES (Rich, Multi-Color Cosmic Field)
     // ============================================================================
     let ambient3D = [];
     function initAmbient3D() {
       ambient3D = [];
       const R = getSphereRadius();
-      for (let i = 0; i < 950; i++) {
+      for (let i = 0; i < 1850; i++) {
         const u = Math.random();
         const v = Math.random();
         const theta = u * 2.0 * Math.PI;
         const phi = (v - 0.5) * Math.PI * 0.98;
-        const r = R * (0.50 + Math.random() * 0.85);
+        const r = R * (0.45 + Math.random() * 0.90);
         ambient3D.push({
           x: r * Math.cos(phi) * Math.sin(theta),
           y: r * Math.sin(phi),
           z: r * Math.cos(phi) * Math.cos(theta),
-          r: 0.35 + Math.random() * 1.8,
+          r: 0.65 + Math.random() * 2.2,
           pulse: Math.random() * 6.28,
           pulseSpeed: 0.008 + Math.random() * 0.024,
-          color: Math.random() > 0.65 ? (Math.random() > 0.5 ? 1 : 2) : (Math.random() > 0.35 ? 0 : 3)
+          color: Math.floor(Math.random() * STAR_COLORS.length)
         });
       }
     }
@@ -1562,20 +1565,34 @@
       ctx.fillStyle = bgGrad2;
       ctx.fillRect(0, 0, width, height);
 
-      // 1. Draw 950 Ambient Stardust Particles
+      // 1. Draw 1,850 Ambient Stardust Particles (Vibrant Multi-Color Field)
       for (let i = 0; i < ambient3D.length; i++) {
         const a = ambient3D[i];
         a.pulse += a.pulseSpeed;
         if (a.pulse > 6.28) a.pulse -= 6.28;
 
         const proj = project3D(a.x, a.y, a.z, cx, cy);
-        if (proj && proj.alpha > 0.04) {
-          if (isPointOccluded(proj.sx, proj.sy, protectedBoxes)) continue;
+        if (proj && proj.alpha > 0.03) {
+          const isBehind = isPointOccluded(proj.sx, proj.sy, protectedBoxes);
+          const boxDim = isBehind ? 0.32 : 1.0;
 
           const color = STAR_COLORS[a.color];
-          const twinkle = 0.75 + 0.45 * Math.sin(a.pulse);
-          const r = Math.max(0.6, a.r * proj.scale * twinkle);
-          const starAlpha = Math.min(0.92, proj.alpha * (0.45 + 0.40 * Math.sin(a.pulse)));
+          const twinkle = 0.80 + 0.40 * Math.sin(a.pulse);
+          const r = Math.max(0.85, a.r * proj.scale * twinkle);
+          const starAlpha = Math.min(0.96, proj.alpha * (0.60 + 0.38 * Math.sin(a.pulse))) * boxDim;
+
+          // Soft radiant corona for prominent background stars
+          if (r > 1.8 && starAlpha > 0.28) {
+            const glowR = r * 3.2;
+            const grad = ctx.createRadialGradient(proj.sx, proj.sy, 0, proj.sx, proj.sy, glowR);
+            grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.48})`);
+            grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(proj.sx, proj.sy, glowR, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
           ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha})`;
           ctx.beginPath();
           ctx.arc(proj.sx, proj.sy, r, 0, Math.PI * 2);
@@ -1631,23 +1648,23 @@
 
         const R = getSphereRadius();
 
-        // A. Smooth Celestial Depth Alpha (Unified for the entire constellation)
+        // A. Smooth Celestial Depth Alpha — Wide FOV to bring 3x more constellations into view
         // Rotates smoothly from back of sphere into front hemisphere without popping
-        const depthNorm = Math.max(0.0, Math.min(1.0, (avgZ + R * 0.35) / (R * 0.70)));
+        const depthNorm = Math.max(0.0, Math.min(1.0, (avgZ + R * 0.65) / (R * 1.30)));
         const depthFade = 0.5 - 0.5 * Math.cos(depthNorm * Math.PI);
-        if (depthFade < 0.02) continue;
+        if (depthFade < 0.015) continue;
 
-        // B. Holistic Proximity & Occlusion Fade
-        // Compute closest distance from any star in the constellation to any protected text box
+        // B. Holistic Proximity & Content Preservation
+        // When passing behind hero text cards, gently attenuate rather than deleting the entire asterism
         let minBoxDist = 9999.0;
-        let anyStarInside = false;
+        let starInsideCount = 0;
 
         for (let s = 0; s < projectedStars.length; s++) {
           const p = projectedStars[s];
           for (let b = 0; b < protectedBoxes.length; b++) {
             const box = protectedBoxes[b];
             if (p.sx >= box.x1 && p.sx <= box.x2 && p.sy >= box.y1 && p.sy <= box.y2) {
-              anyStarInside = true;
+              starInsideCount++;
               minBoxDist = 0.0;
               break;
             }
@@ -1656,42 +1673,25 @@
             const dist = Math.hypot(dx, dy);
             if (dist < minBoxDist) minBoxDist = dist;
           }
-          if (anyStarInside) break;
         }
 
-        // Also test lines against boxes
-        if (!anyStarInside) {
-          for (let l = 0; l < con.lines.length; l++) {
-            const [iA, iB] = con.lines[l];
-            const pA = projectedStars[iA];
-            const pB = projectedStars[iB];
-            if (pA && pB && isLineOccluded(pA.sx, pA.sy, pB.sx, pB.sy, protectedBoxes)) {
-              anyStarInside = true;
-              minBoxDist = 0.0;
-              break;
-            }
-          }
-        }
-
-        if (anyStarInside) continue;
-
-        // Smooth Hermite blend buffer (75px soft transition zone)
-        const FADE_BUFFER = 75.0;
+        // Soft smooth attenuation: if behind text/cards, keep at 0.30 opacity so it remains visible as an elegant background element; in open space, full 1.0 opacity
         let occFade = 1.0;
-        if (minBoxDist < FADE_BUFFER) {
-          const t = Math.max(0.0, minBoxDist / FADE_BUFFER);
-          occFade = t * t * (3.0 - 2.0 * t); // Smoothstep curve
+        if (starInsideCount > 0) {
+          occFade = 0.32;
+        } else if (minBoxDist < 60.0) {
+          occFade = 0.32 + 0.68 * (minBoxDist / 60.0);
         }
 
         // Unified Constellation Alpha — Every star and line uses this EXACT alpha
         const conAlpha = depthFade * occFade;
-        if (conAlpha < 0.035) continue;
+        if (conAlpha < 0.025) continue;
 
         if (isHovered) {
           hoveredConstellation = { con, projectedStars, avgX, avgY };
         }
 
-        // C. Draw Constellation Connection Lines (All lines together as one unified figure)
+        // C. Draw Constellation Connection Lines (Crisp, vibrant, beautiful asterism figures)
         for (let l = 0; l < con.lines.length; l++) {
           const [iA, iB] = con.lines[l];
           const pA = projectedStars[iA];
@@ -1708,17 +1708,17 @@
               ctx.shadowBlur = 14;
             } else {
               ctx.shadowBlur = 0;
-              ctx.lineWidth = 1.35;
+              ctx.lineWidth = 1.55;
               if (con.season === "WINTER") {
-                ctx.strokeStyle = `rgba(0, 240, 255, ${conAlpha * 0.72})`;
+                ctx.strokeStyle = `rgba(0, 240, 255, ${conAlpha * 0.88})`;
               } else if (con.season === "SPRING") {
-                ctx.strokeStyle = `rgba(168, 85, 247, ${conAlpha * 0.72})`;
+                ctx.strokeStyle = `rgba(192, 132, 252, ${conAlpha * 0.88})`;
               } else if (con.season === "SUMMER") {
-                ctx.strokeStyle = `rgba(251, 191, 36, ${conAlpha * 0.72})`;
+                ctx.strokeStyle = `rgba(251, 191, 36, ${conAlpha * 0.88})`;
               } else if (con.season === "AUTUMN") {
-                ctx.strokeStyle = `rgba(56, 189, 248, ${conAlpha * 0.70})`;
+                ctx.strokeStyle = `rgba(56, 189, 248, ${conAlpha * 0.85})`;
               } else {
-                ctx.strokeStyle = `rgba(255, 255, 255, ${conAlpha * 0.75})`;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${conAlpha * 0.90})`;
               }
             }
             ctx.stroke();
@@ -1733,30 +1733,30 @@
           const star = p.star;
 
           const color = STAR_COLORS[star.color] || STAR_COLORS[0];
-          const r = star.r * p.scale * (0.85 + 0.3 * Math.sin(star.pulse));
-          const starAlpha = conAlpha;
+          const r = Math.max(1.2, star.r * p.scale * (0.85 + 0.3 * Math.sin(star.pulse)));
+          const starAlpha = Math.min(1.0, conAlpha * 1.15);
 
           // Radial Corona for Primary Stars
-          if (star.r >= 3.6 && starAlpha > 0.14) {
-            const glowR = r * (isHovered ? 5.6 : 4.4);
+          if (star.r >= 3.2 && starAlpha > 0.12) {
+            const glowR = r * (isHovered ? 5.8 : 4.6);
             const grad = ctx.createRadialGradient(p.sx, p.sy, 0, p.sx, p.sy, glowR);
-            grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.78})`);
-            grad.addColorStop(0.35, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.25})`);
+            grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.82})`);
+            grad.addColorStop(0.35, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.28})`);
             grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
             ctx.fillStyle = grad;
             ctx.beginPath();
             ctx.arc(p.sx, p.sy, glowR, 0, Math.PI * 2);
             ctx.fill();
 
-            // 4-Point Diffraction Cross for Navigational Anchors
-            if ((con.id === 27 && s === 0) || (con.id === 17 && s === 0) || (con.id === 1 && s === 0)) {
-              ctx.strokeStyle = `rgba(255, 255, 255, ${starAlpha * 0.85})`;
+            // 4-Point Diffraction Cross for Navigational Anchors & Major Stars
+            if (star.r >= 4.2 && starAlpha > 0.30) {
+              ctx.strokeStyle = `rgba(255, 255, 255, ${starAlpha * 0.78})`;
               ctx.lineWidth = 1.0;
               ctx.beginPath();
-              ctx.moveTo(p.sx - glowR * 1.4, p.sy);
-              ctx.lineTo(p.sx + glowR * 1.4, p.sy);
-              ctx.moveTo(p.sx, p.sy - glowR * 1.4);
-              ctx.lineTo(p.sx, p.sy + glowR * 1.4);
+              ctx.moveTo(p.sx - glowR * 1.3, p.sy);
+              ctx.lineTo(p.sx + glowR * 1.3, p.sy);
+              ctx.moveTo(p.sx, p.sy - glowR * 1.3);
+              ctx.lineTo(p.sx, p.sy + glowR * 1.3);
               ctx.stroke();
             }
           }
@@ -1764,7 +1764,7 @@
           // Solid Star Core
           ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha})`;
           ctx.beginPath();
-          ctx.arc(p.sx, p.sy, Math.max(1.0, r), 0, Math.PI * 2);
+          ctx.arc(p.sx, p.sy, Math.max(1.2, r), 0, Math.PI * 2);
           ctx.fill();
         }
       }
