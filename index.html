@@ -262,11 +262,30 @@
       margin-bottom: 26px;
     }
     .hero-title span.accent {
-      background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 22%, #34d399 52%, #10b981 74%, #fb7185 100%);
+      background: linear-gradient(
+        90deg,
+        #f59e0b 0%,
+        #fbbf24 16%,
+        #10b981 36%,
+        #34d399 48%,
+        #fb7185 68%,
+        #f43f5e 82%,
+        #fbbf24 100%
+      );
+      background-size: 220% 100%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: inline-block;
-      filter: drop-shadow(0 0 32px rgba(245, 158, 11, 0.40));
+      filter: drop-shadow(0 0 28px rgba(245, 158, 11, 0.35));
+      animation: celestialSpectrumRoll 14s ease-in-out infinite alternate;
+    }
+    @keyframes celestialSpectrumRoll {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 100% 50%;
+      }
     }
     .hero-thesis {
       font-size: 1.22rem;
@@ -295,14 +314,23 @@
       border-radius: 4px;
       text-decoration: none;
       transition: all 0.25s ease;
-      box-shadow: 0 0 28px rgba(245, 158, 11, 0.42);
+      box-shadow: 0 0 32px rgba(245, 158, 11, 0.48), 0 0 16px rgba(16, 185, 129, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.25);
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      animation: btnSolidBeacon 6s ease-in-out infinite alternate;
+    }
+    @keyframes btnSolidBeacon {
+      0% {
+        box-shadow: 0 0 28px rgba(245, 158, 11, 0.42), 0 0 14px rgba(16, 185, 129, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+      }
+      100% {
+        box-shadow: 0 0 46px rgba(245, 158, 11, 0.65), 0 0 24px rgba(16, 185, 129, 0.50), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      }
     }
     .btn-solid:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 38px rgba(16, 185, 129, 0.55), 0 0 20px rgba(245, 158, 11, 0.45);
+      box-shadow: 0 0 48px rgba(16, 185, 129, 0.65), 0 0 26px rgba(245, 158, 11, 0.55);
       background: linear-gradient(135deg, #fef08a 0%, #fbbf24 50%, #34d399 100%);
     }
     .btn-outline {
