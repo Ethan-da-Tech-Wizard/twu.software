@@ -40,6 +40,11 @@
       --font-mono: 'JetBrains Mono', monospace;
     }
 
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -152,11 +157,13 @@
       background: linear-gradient(135deg, rgba(0, 240, 255, 0.12), rgba(168, 85, 247, 0.12));
       border: 1px solid var(--border-glow-cyan);
       color: var(--text-main) !important;
-      font-family: var(--font-display);
-      font-size: 0.88rem;
+      font-family: var(--font-mono);
+      font-size: 0.80rem;
       font-weight: 600;
-      padding: 9px 20px;
-      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 8px 18px;
+      border-radius: 3px;
       text-decoration: none;
       transition: all 0.2s ease;
       box-shadow: 0 0 14px rgba(0, 240, 255, 0.15);
@@ -165,6 +172,22 @@
       background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(168, 85, 247, 0.25));
       border-color: var(--cyan);
       transform: translateY(-1px);
+    }
+
+    @media (max-width: 720px) {
+      .nav-bar {
+        padding: 8px 16px;
+      }
+      .nav-actions {
+        gap: 12px;
+      }
+      .nav-link {
+        display: none;
+      }
+      .btn-nav {
+        padding: 7px 14px;
+        font-size: 0.76rem;
+      }
     }
 
     /* Hero */
@@ -178,15 +201,16 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: rgba(168, 85, 247, 0.08);
-      border: 1px solid rgba(168, 85, 247, 0.3);
-      padding: 7px 18px;
-      border-radius: 9999px;
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.28);
+      padding: 6px 18px;
+      border-radius: 3px;
       font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: #e9d5ff;
+      font-size: 0.74rem;
+      color: #e0f2fe;
       margin-bottom: 28px;
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.12);
+      letter-spacing: 0.6px;
     }
     .badge-dot {
       width: 7px;
@@ -205,11 +229,11 @@
       margin-bottom: 26px;
     }
     .hero-title span.accent {
-      background: linear-gradient(135deg, #ffffff 20%, var(--cyan) 60%, var(--violet-light) 95%);
+      background: linear-gradient(135deg, #ffffff 15%, var(--cyan) 60%, var(--violet-light) 95%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: inline-block;
-      filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.3));
+      filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.35));
     }
     .hero-thesis {
       font-size: 1.22rem;
@@ -229,11 +253,13 @@
     .btn-solid {
       background: linear-gradient(135deg, var(--cyan) 0%, #2563eb 100%);
       color: #030712;
-      font-family: var(--font-display);
+      font-family: var(--font-mono);
       font-weight: 700;
-      font-size: 0.96rem;
-      padding: 14px 30px;
-      border-radius: 8px;
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 13px 28px;
+      border-radius: 3px;
       text-decoration: none;
       transition: all 0.25s ease;
       box-shadow: 0 0 24px rgba(0, 240, 255, 0.4);
@@ -249,11 +275,13 @@
       background: rgba(168, 85, 247, 0.08);
       border: 1px solid var(--border-glow-violet);
       color: var(--text-main);
-      font-family: var(--font-display);
+      font-family: var(--font-mono);
       font-weight: 600;
-      font-size: 0.96rem;
-      padding: 14px 28px;
-      border-radius: 8px;
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 13px 26px;
+      border-radius: 3px;
       text-decoration: none;
       transition: all 0.2s ease;
     }
@@ -293,14 +321,19 @@
       padding-bottom: 110px;
     }
     .matrix-header {
-      margin-bottom: 34px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 16px;
     }
     .matrix-label {
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       color: var(--cyan);
       text-transform: uppercase;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       margin-bottom: 8px;
       display: block;
       font-weight: 600;
@@ -312,43 +345,124 @@
       color: var(--text-main);
       letter-spacing: -0.8px;
     }
+    .matrix-telemetry-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      background: rgba(8, 14, 28, 0.6);
+      border: 1px solid var(--border-panel);
+      padding: 6px 14px;
+      border-radius: 2px;
+      letter-spacing: 1px;
+    }
 
     .workstation {
       display: grid;
-      grid-template-columns: 370px 1fr;
-      gap: 24px;
+      grid-template-columns: 360px 1fr;
       background: var(--bg-panel);
-      border: 1px solid rgba(0, 240, 255, 0.2);
-      border-radius: 16px;
+      border: 1px solid rgba(0, 240, 255, 0.28);
+      border-radius: 3px;
       overflow: hidden;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.75), 0 0 30px rgba(0, 240, 255, 0.05);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 240, 255, 0.08);
+      position: relative;
     }
+    .workstation::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 12px;
+      height: 12px;
+      border-top: 2px solid var(--cyan);
+      border-left: 2px solid var(--cyan);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .workstation::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 12px;
+      height: 12px;
+      border-bottom: 2px solid var(--cyan);
+      border-right: 2px solid var(--cyan);
+      pointer-events: none;
+      z-index: 10;
+    }
+
     @media (max-width: 900px) {
       .workstation {
         grid-template-columns: 1fr;
       }
     }
 
+    /* Top Telemetry Header Bar across the workstation */
+    .workstation-topbar {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 22px;
+      background: rgba(3, 7, 18, 0.85);
+      border-bottom: 1px solid rgba(0, 240, 255, 0.20);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 1.2px;
+      color: var(--text-dim);
+    }
+    .ws-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .ws-pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--emerald);
+      display: inline-block;
+    }
+    .ws-telemetry {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ws-telemetry .sep {
+      color: rgba(255, 255, 255, 0.15);
+    }
+    .ws-telemetry .highlight {
+      color: var(--cyan);
+      font-weight: 600;
+    }
+
     .cap-list {
-      background: rgba(5, 9, 20, 0.45);
-      border-right: 1px solid var(--border-panel);
+      background: rgba(5, 9, 20, 0.50);
+      border-right: 1px solid rgba(0, 240, 255, 0.15);
       display: flex;
       flex-direction: column;
     }
     .cap-item {
-      padding: 24px 22px;
+      padding: 22px 24px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
+      user-select: none;
     }
     .cap-item:last-child {
       border-bottom: none;
     }
+    .cap-item:hover {
+      background: rgba(0, 240, 255, 0.04);
+    }
     .cap-item.active {
-      background: linear-gradient(90deg, rgba(0, 240, 255, 0.08), rgba(168, 85, 247, 0.03));
+      background: linear-gradient(90deg, rgba(0, 240, 255, 0.12), rgba(168, 85, 247, 0.04));
     }
     .cap-item.active::before {
       content: '';
@@ -356,84 +470,153 @@
       left: 0;
       top: 0;
       bottom: 0;
-      width: 3.5px;
+      width: 3px;
       background: linear-gradient(180deg, var(--cyan), var(--violet));
-      box-shadow: 0 0 14px var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
     }
     .cap-item-top {
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: space-between;
       margin-bottom: 8px;
     }
-    .cap-item-top img {
-      width: 26px;
-      height: 26px;
+    .cap-item-top-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cap-index {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: 0.5px;
     }
     .cap-name {
       font-family: var(--font-display);
-      font-size: 1.08rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--text-main);
+      letter-spacing: -0.3px;
+    }
+    .cap-item.active .cap-name {
+      color: #ffffff;
+      text-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
+    }
+    .cap-status-pill {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      padding: 2px 7px;
+      border-radius: 2px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-dim);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .cap-item.active .cap-status-pill {
+      background: rgba(0, 240, 255, 0.12);
+      color: var(--cyan);
+      border-color: rgba(0, 240, 255, 0.35);
+      font-weight: 600;
     }
     .cap-summary {
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       color: var(--text-muted);
-      line-height: 1.45;
+      line-height: 1.5;
     }
 
     .inspector-pane {
-      padding: 42px 38px;
+      padding: 38px 40px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      position: relative;
+      transition: opacity 0.14s ease, transform 0.14s ease;
+    }
+    .inspector-pane.swapping {
+      opacity: 0.3;
+      transform: translateY(3px);
+    }
+    .inspector-channel-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
     .inspector-tag {
       font-family: var(--font-mono);
       font-size: 0.74rem;
       color: var(--cyan);
       text-transform: uppercase;
-      letter-spacing: 1.2px;
-      margin-bottom: 12px;
-      display: inline-block;
+      letter-spacing: 1.5px;
       font-weight: 600;
+    }
+    .inspector-active-pill {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--emerald);
+      letter-spacing: 1px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
     .inspector-title {
       font-family: var(--font-display);
-      font-size: 1.85rem;
+      font-size: 1.95rem;
       font-weight: 700;
       color: var(--text-main);
-      margin-bottom: 16px;
-      letter-spacing: -0.5px;
+      margin-bottom: 18px;
+      letter-spacing: -0.6px;
+      line-height: 1.22;
     }
     .inspector-body {
-      font-size: 1.06rem;
+      font-size: 1.04rem;
       color: #cbd5e1;
       line-height: 1.72;
-      margin-bottom: 28px;
-      max-width: 660px;
+      margin-bottom: 24px;
+      max-width: 680px;
+    }
+    .inspector-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 26px;
+    }
+    .ins-chip {
+      font-family: var(--font-mono);
+      font-size: 0.70rem;
+      padding: 4px 10px;
+      background: rgba(0, 240, 255, 0.06);
+      border: 1px solid rgba(0, 240, 255, 0.22);
+      color: #e0f2fe;
+      border-radius: 2px;
+      letter-spacing: 0.8px;
     }
     .spec-matrix {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
-      padding: 18px 22px;
-      background: rgba(3, 7, 18, 0.38);
-      border: 1px solid rgba(0, 240, 255, 0.15);
-      border-radius: 10px;
+      gap: 14px;
+      margin-bottom: 30px;
+      padding: 16px 20px;
+      background: rgba(3, 7, 18, 0.45);
+      border: 1px solid rgba(0, 240, 255, 0.18);
+      border-radius: 3px;
       font-family: var(--font-mono);
     }
     .spec-key {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--text-dim);
       text-transform: uppercase;
       margin-bottom: 4px;
-      letter-spacing: 0.8px;
+      letter-spacing: 1px;
     }
     .spec-val {
-      font-size: 0.96rem;
+      font-size: 0.92rem;
       font-weight: 600;
+      letter-spacing: 0.2px;
     }
     .spec-val.cyan { color: var(--cyan); }
     .spec-val.green { color: var(--emerald); }
@@ -444,7 +627,7 @@
       margin-bottom: 110px;
       background: var(--bg-panel);
       border: 1px solid rgba(168, 85, 247, 0.35);
-      border-radius: 18px;
+      border-radius: 4px;
       padding: 44px;
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -458,7 +641,7 @@
       width: 100%;
       height: auto;
       display: block;
-      border-radius: 10px;
+      border-radius: 2px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     }
 
@@ -495,14 +678,14 @@
       font-style: italic;
       color: var(--text-main);
       background: linear-gradient(90deg, rgba(168, 85, 247, 0.08), transparent);
-      border-radius: 0 10px 10px 0;
+      border-radius: 0 3px 3px 0;
       margin: 26px 0;
       font-size: 1.05rem;
     }
     .baseline-card {
       background: var(--bg-card);
       border: 1px solid rgba(0, 240, 255, 0.25);
-      border-radius: 12px;
+      border-radius: 3px;
       padding: 26px;
       font-family: var(--font-mono);
       font-size: 0.84rem;
@@ -517,7 +700,7 @@
     .contact-monolith {
       background: linear-gradient(180deg, rgba(15, 23, 42, 0.60) 0%, rgba(3, 7, 18, 0.70) 100%);
       border: 1px solid rgba(0, 240, 255, 0.3);
-      border-radius: 16px;
+      border-radius: 4px;
       padding: 64px 40px;
       text-align: center;
       margin-bottom: 100px;
@@ -551,16 +734,17 @@
       align-items: center;
       gap: 12px;
       font-family: var(--font-mono);
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       font-weight: 600;
       color: var(--text-main);
-      background: rgba(6, 11, 25, 0.9);
+      background: rgba(6, 11, 25, 0.88);
       border: 1px solid rgba(0, 240, 255, 0.35);
-      padding: 14px 28px;
-      border-radius: 10px;
+      padding: 13px 26px;
+      border-radius: 3px;
       text-decoration: none;
       transition: all 0.25s ease;
       box-shadow: 0 0 18px rgba(0, 240, 255, 0.1);
+      letter-spacing: 0.5px;
     }
     .c-badge:hover {
       border-color: var(--cyan);
@@ -667,41 +851,73 @@
     <!-- THE CAPABILITY MATRIX WORKSTATION -->
     <section class="matrix-section" id="workstation">
       <div class="matrix-header">
-        <span class="matrix-label">Core Capabilities</span>
-        <h2 class="matrix-title">Engineered for absolute independence.</h2>
+        <div>
+          <span class="matrix-label">Core Capabilities // Operational Matrix</span>
+          <h2 class="matrix-title">Engineered for absolute independence.</h2>
+        </div>
+        <div class="matrix-telemetry-badge">
+          <span>STATION STATUS: <strong style="color:var(--emerald);">ONLINE</strong></span>
+        </div>
       </div>
 
       <div class="workstation">
+        <!-- Top Telemetry Header Bar -->
+        <div class="workstation-topbar">
+          <div class="ws-status">
+            <span class="ws-pulse-dot"></span>
+            <span>SOVEREIGN WORKSTATION // V3.4</span>
+          </div>
+          <div class="ws-telemetry">
+            <span>AIR-GAP: VERIFIED</span>
+            <span class="sep">|</span>
+            <span>TELEMETRY: 0.00%</span>
+            <span class="sep">|</span>
+            <span id="ws-module-id" class="highlight">CHANNEL: 01 // BESPOKE</span>
+          </div>
+        </div>
+
         <!-- Capability Selector List -->
-        <div class="cap-list">
-          <div class="cap-item active" onclick="selectCapability(0)">
+        <div class="cap-list" id="cap-list">
+          <div class="cap-item active" onclick="selectCapability(0)" data-index="0">
             <div class="cap-item-top">
-              <img src="assets/icon-software.svg" alt="Software">
-              <div class="cap-name">Bespoke Software</div>
+              <div class="cap-item-top-left">
+                <span class="cap-index">01 //</span>
+                <span class="cap-name">Bespoke Software</span>
+              </div>
+              <span class="cap-status-pill">ACTIVE</span>
             </div>
-            <div class="cap-summary">Custom tools built to solve exact operational bottlenecks. No per-seat licenses.</div>
+            <div class="cap-summary">Custom tools built to solve exact operational bottlenecks. Zero per-seat subscriptions.</div>
           </div>
 
-          <div class="cap-item" onclick="selectCapability(1)">
+          <div class="cap-item" onclick="selectCapability(1)" data-index="1">
             <div class="cap-item-top">
-              <img src="assets/icon-ai.svg" alt="AI">
-              <div class="cap-name">Private Offline AI</div>
+              <div class="cap-item-top-left">
+                <span class="cap-index">02 //</span>
+                <span class="cap-name">Private Offline AI</span>
+              </div>
+              <span class="cap-status-pill">READY</span>
             </div>
-            <div class="cap-summary">On-premise document models running on local hardware with zero API billing.</div>
+            <div class="cap-summary">On-premise document models running on local hardware with zero API token billing.</div>
           </div>
 
-          <div class="cap-item" onclick="selectCapability(2)">
+          <div class="cap-item" onclick="selectCapability(2)" data-index="2">
             <div class="cap-item-top">
-              <img src="assets/icon-it.svg" alt="IT">
-              <div class="cap-name">On-Site Systems &amp; IT</div>
+              <div class="cap-item-top-left">
+                <span class="cap-index">03 //</span>
+                <span class="cap-name">On-Site Systems &amp; IT</span>
+              </div>
+              <span class="cap-status-pill">READY</span>
             </div>
-            <div class="cap-summary">Hardware triage, high-speed networks, and air-gapped backup systems in Mesa.</div>
+            <div class="cap-summary">Hardware triage, high-speed local networks, and air-gapped backup systems in Mesa.</div>
           </div>
 
-          <div class="cap-item" onclick="selectCapability(3)">
+          <div class="cap-item" onclick="selectCapability(3)" data-index="3">
             <div class="cap-item-top">
-              <img src="assets/icon-education.svg" alt="Education">
-              <div class="cap-name">Hands-On Tech Workshops</div>
+              <div class="cap-item-top-left">
+                <span class="cap-index">04 //</span>
+                <span class="cap-name">Hands-On Workshops</span>
+              </div>
+              <span class="cap-status-pill">READY</span>
             </div>
             <div class="cap-summary">Practical community curriculum on scam defense and sovereign tool building.</div>
           </div>
@@ -710,28 +926,41 @@
         <!-- Dynamic Inspector Pane -->
         <div class="inspector-pane" id="inspector">
           <div>
-            <span class="inspector-tag" id="ins-tag">ARCHITECTURE CHANNEL // 01</span>
-            <h3 class="inspector-title" id="ins-title">Bespoke Software &amp; Internal Tools</h3>
+            <div class="inspector-channel-bar">
+              <span class="inspector-tag" id="ins-tag">CAPABILITY CHANNEL // 01 · LOCAL SOFTWARE</span>
+              <span class="inspector-active-pill"><span class="ws-pulse-dot"></span> INSPECTION READY</span>
+            </div>
+            <h3 class="inspector-title" id="ins-title">Bespoke Internal Tools &amp; Sovereign Software</h3>
             <p class="inspector-body" id="ins-body">
-              Stop paying recurring seat subscriptions for bloated software. We build lean, high-velocity internal tools that solve your exact bottlenecks—automatic scheduling, inventory calculators, and paperless job tracking—owned completely by your firm.
+              Stop paying recurring per-seat subscriptions for bloated, generic SaaS. We engineer lean, high-velocity internal tools—automated scheduling, inventory dispatch, offline-first client registries, and zero-telemetry workflows—tailored precisely to your operational invariants. Built with native performance and owned completely by your company forever.
             </p>
+            <div class="inspector-badges" id="ins-badges">
+              <span class="ins-chip">[LOCAL_NATIVE]</span>
+              <span class="ins-chip">[ZERO_CLOUD_TELEMETRY]</span>
+              <span class="ins-chip">[PERPETUAL_LICENSE]</span>
+              <span class="ins-chip">[OFFLINE_FIRST]</span>
+            </div>
             <div class="spec-matrix" id="ins-specs">
               <div>
-                <div class="spec-key">Execution Mode</div>
-                <div class="spec-val cyan">Local Native / PWA</div>
+                <div class="spec-key">EXECUTION RUNTIME</div>
+                <div class="spec-val cyan">Local Native / Offline PWA</div>
               </div>
               <div>
-                <div class="spec-key">Data Ownership</div>
-                <div class="spec-val green">100% Client Owned</div>
+                <div class="spec-key">DATA RESIDENCY</div>
+                <div class="spec-val green">100% On-Premise Storage</div>
               </div>
               <div>
-                <div class="spec-key">Monthly Licensing</div>
-                <div class="spec-val green">$0.00 / user</div>
+                <div class="spec-key">RECURRING FEES</div>
+                <div class="spec-val green">$0.00 / user perpetual</div>
+              </div>
+              <div>
+                <div class="spec-key">SOURCE CODE</div>
+                <div class="spec-val violet">100% Client-Owned IP</div>
               </div>
             </div>
           </div>
           <div>
-            <a href="#contact" class="btn-solid" id="ins-action">Scope A Custom Tool →</a>
+            <a href="#contact" class="btn-solid" id="ins-action">Commission Custom Software →</a>
           </div>
         </div>
       </div>
@@ -864,10 +1093,19 @@
       function sc(thetaDeg, phiDeg, r = R) {
         const t = (thetaDeg * Math.PI) / 180;
         const p = (phiDeg * Math.PI) / 180;
+        const cosT = Math.cos(t), sinT = Math.sin(t);
+        const cosP = Math.cos(p), sinP = Math.sin(p);
         return {
-          x: r * Math.cos(p) * Math.sin(t),
-          y: -r * Math.sin(p),
-          z: r * Math.cos(p) * Math.cos(t)
+          x: r * cosP * sinT,
+          y: -r * sinP,
+          z: r * cosP * cosT,
+          // Tangent vectors on the celestial sphere:
+          ux: cosT,
+          uy: 0,
+          uz: -sinT,
+          vx: -sinP * sinT,
+          vy: -cosP,
+          vz: -sinP * cosT
         };
       }
 
@@ -1549,9 +1787,9 @@
 
         for (let s = 0; s < con.stars.length; s++) {
           const star = con.stars[s];
-          const wx = center.x + star.dx;
-          const wy = center.y + star.dy;
-          const wz = center.z + star.dz;
+          const wx = center.x + star.dx * center.ux + star.dy * center.vx;
+          const wy = center.y + star.dx * center.uy + star.dy * center.vy;
+          const wz = center.z + star.dx * center.uz + star.dy * center.vz;
 
           const proj = project3D(wx, wy, wz, cx, cy);
           if (proj) {
@@ -1683,6 +1921,130 @@
         }, 3200);
       }
       window.location.href = 'mailto:' + addr;
+    }
+
+    // ============================================================================
+    // CAPABILITY MATRIX WORKSTATION CONTROLLER
+    // ============================================================================
+    const CAPABILITIES = [
+      {
+        channel: "CHANNEL: 01 // BESPOKE",
+        tag: "CAPABILITY CHANNEL // 01 · LOCAL SOFTWARE",
+        title: "Bespoke Internal Tools & Sovereign Software",
+        body: "Stop paying recurring per-seat subscriptions for bloated, generic SaaS. We engineer lean, high-velocity internal tools—automated scheduling, inventory dispatch, offline-first client registries, and zero-telemetry workflows—tailored precisely to your operational invariants. Built with native performance and owned completely by your company forever.",
+        badges: ["[LOCAL_NATIVE]", "[ZERO_CLOUD_TELEMETRY]", "[PERPETUAL_LICENSE]", "[OFFLINE_FIRST]"],
+        specs: [
+          { key: "EXECUTION RUNTIME", val: "Local Native / Offline PWA", color: "cyan" },
+          { key: "DATA RESIDENCY", val: "100% On-Premise Storage", color: "green" },
+          { key: "RECURRING FEES", val: "$0.00 / user perpetual", color: "green" },
+          { key: "SOURCE CODE", val: "100% Client-Owned IP", color: "violet" }
+        ],
+        actionText: "Commission Custom Software →",
+        actionLink: "#contact"
+      },
+      {
+        channel: "CHANNEL: 02 // PRIVATE AI",
+        tag: "CAPABILITY CHANNEL // 02 · PRIVATE INTELLIGENCE",
+        title: "Private On-Premise AI & Air-Gapped LLMs",
+        body: "Harness frontier artificial intelligence without leaking your proprietary corporate secrets, health records, or legal files to third-party cloud servers. We deploy quantized local models directly on your hardware workstations or private local clusters with zero cloud API meters, zero data logging, and complete air-gapped security.",
+        badges: ["[ON_PREMISE_WEIGHTS]", "[ZERO_DATA_LEAKAGE]", "[NO_API_TOKENS]", "[AIR_GAPPED]"],
+        specs: [
+          { key: "INFERENCE ENGINE", val: "Local GPU / CPU Sharded", color: "cyan" },
+          { key: "CLOUD EXPOSURE", val: "Mathematically 0.00%", color: "green" },
+          { key: "API BILLING", val: "$0.00 / token forever", color: "green" },
+          { key: "PRIVACY BOUNDARY", val: "Air-Gapped Sovereign Hardware", color: "violet" }
+        ],
+        actionText: "Deploy Private AI Models →",
+        actionLink: "#contact"
+      },
+      {
+        channel: "CHANNEL: 03 // SYSTEMS & IT",
+        tag: "CAPABILITY CHANNEL // 03 · SYSTEMS & IT",
+        title: "On-Site Systems Architecture & Mesa Triage",
+        body: "Real physical systems require expert hands-on engineering. We provide emergency workstation hardware triage, high-speed local encrypted networks, automated snapshot backups, and Linux cluster maintenance for small businesses, research labs, and independent creators across the East Valley.",
+        badges: ["[MESA_LOCAL_DISPATCH]", "[PHYSICAL_TRIAGE]", "[HARDENED_NETWORKS]", "[RAPID_RECOVERY]"],
+        specs: [
+          { key: "SERVICE AREA", val: "Mesa & Phoenix East Valley", color: "cyan" },
+          { key: "HARDWARE AUDIT", val: "Full Physical & Thermal Triage", color: "green" },
+          { key: "BACKUP PROTOCOL", val: "Encrypted Immutable Snapshots", color: "green" },
+          { key: "NETWORK SECURITY", val: "Defense-Grade Zero-Trust", color: "violet" }
+        ],
+        actionText: "Request On-Site IT Support →",
+        actionLink: "#contact"
+      },
+      {
+        channel: "CHANNEL: 04 // WORKSHOPS",
+        tag: "CAPABILITY CHANNEL // 04 · WORKSHOPS & EDUCATION",
+        title: "Hands-On Tech Workshops & Community Training",
+        body: "Practical, empowering technical education designed to demystify computers and AI. We teach actionable cybersecurity defense—how to identify phishing, protect personal financial data, prevent digital extortion—and guide aspiring builders through assembling their first sovereign local AI workstations.",
+        badges: ["[COMMUNITY_FIRST]", "[HANDS_ON_LABS]", "[SCAM_DEFENSE]", "[SOVEREIGN_SKILLS]"],
+        specs: [
+          { key: "FORMAT", val: "In-Person Interactive Labs", color: "cyan" },
+          { key: "CURRICULUM", val: "Scam Defense & Local AI", color: "green" },
+          { key: "AUDIENCE", val: "Seniors, Students & Builders", color: "green" },
+          { key: "PREREQUISITES", val: "Zero Experience Required", color: "violet" }
+        ],
+        actionText: "Inquire About Workshops →",
+        actionLink: "#contact"
+      }
+    ];
+
+    let currentCapabilityIndex = 0;
+    function selectCapability(index) {
+      if (index < 0 || index >= CAPABILITIES.length) return;
+      currentCapabilityIndex = index;
+
+      const items = document.querySelectorAll('.cap-item');
+      items.forEach((item, i) => {
+        const pill = item.querySelector('.cap-status-pill');
+        if (i === index) {
+          item.classList.add('active');
+          if (pill) pill.textContent = 'ACTIVE';
+        } else {
+          item.classList.remove('active');
+          if (pill) pill.textContent = 'READY';
+        }
+      });
+
+      const pane = document.getElementById('inspector');
+      if (pane) {
+        pane.classList.add('swapping');
+        setTimeout(() => {
+          const cap = CAPABILITIES[index];
+          const wsModId = document.getElementById('ws-module-id');
+          const insTag = document.getElementById('ins-tag');
+          const insTitle = document.getElementById('ins-title');
+          const insBody = document.getElementById('ins-body');
+          const insBadges = document.getElementById('ins-badges');
+          const insSpecs = document.getElementById('ins-specs');
+          const insAction = document.getElementById('ins-action');
+
+          if (wsModId) wsModId.textContent = cap.channel;
+          if (insTag) insTag.textContent = cap.tag;
+          if (insTitle) insTitle.textContent = cap.title;
+          if (insBody) insBody.textContent = cap.body;
+
+          if (insBadges) {
+            insBadges.innerHTML = cap.badges.map(b => `<span class="ins-chip">${b}</span>`).join('');
+          }
+
+          if (insSpecs) {
+            insSpecs.innerHTML = cap.specs.map(s => `
+              <div>
+                <div class="spec-key">${s.key}</div>
+                <div class="spec-val ${s.color}">${s.val}</div>
+              </div>
+            `).join('');
+          }
+
+          if (insAction) {
+            insAction.textContent = cap.actionText;
+            insAction.href = cap.actionLink;
+          }
+
+          pane.classList.remove('swapping');
+        }, 120);
+      }
     }
 
     // Launch Engine
