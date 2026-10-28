@@ -1,34 +1,29 @@
 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Master Cybernetic Palette: Electric Cyan & Neon Magenta/Pink -->
-    <linearGradient id="squircleBorder" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#00f0ff"/>
-      <stop offset="50%" stop-color="#a855f7"/>
-      <stop offset="100%" stop-color="#ec4899"/>
-    </linearGradient>
-    <linearGradient id="glyphW" x1="12" y1="20" x2="36" y2="34" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#c084fc"/>
-      <stop offset="100%" stop-color="#ec4899"/>
-    </linearGradient>
-    <filter id="cyanGlow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+    <filter id="goldGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
       <feComposite in="SourceGraphic" in2="blur" operator="over"/>
     </filter>
   </defs>
 
-  <!-- Deep Obsidian Squircle Badge -->
-  <rect x="3" y="3" width="42" height="42" rx="12" fill="#070a14" stroke="url(#squircleBorder)" stroke-width="2"/>
+  <!-- Deep Obsidian Octagon Badge with Gold/Amber Border -->
+  <polygon points="14,4 34,4 44,14 44,34 34,44 14,44 4,34 4,14" fill="#070a14" stroke="#f59e0b" stroke-width="2"/>
 
-  <!-- Letter W (Neon Magenta / Soft Violet) -->
-  <path d="M13 21L19 33L24 23L29 33L35 21" stroke="url(#glyphW)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Emerald Green Crosshair Reticle -->
+  <circle cx="24" cy="24" r="14" stroke="#10b981" stroke-width="1.4" stroke-opacity="0.85"/>
+  <line x1="24" y1="5" x2="24" y2="10" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="24" y1="38" x2="24" y2="43" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="5" y1="24" x2="10" y2="24" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="38" y1="24" x2="43" y2="24" stroke="#10b981" stroke-width="1.5" stroke-linecap="round"/>
 
-  <!-- Letter T (Electric Cyan with Glow) -->
-  <!-- Crossbar -->
-  <path d="M12 16H36" stroke="#00f0ff" stroke-width="2.8" stroke-linecap="round"/>
-  <!-- Central Stem -->
-  <path d="M24 16V26" stroke="#00f0ff" stroke-width="2.6" stroke-linecap="round"/>
+  <!-- Master Monogram: Coral/Rose TW Glyphs -->
+  <!-- Letter W -->
+  <path d="M15 22L19 32L24 24L29 32L33 22" stroke="#fb7185" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Letter T -->
+  <path d="M14 16H34" stroke="#fbbf24" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M24 16V27" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round"/>
 
-  <!-- Central Luminous Cyan Node -->
-  <circle cx="24" cy="23" r="2.6" fill="#00f0ff" filter="url(#cyanGlow)"/>
-  <circle cx="24" cy="23" r="1.3" fill="#ffffff"/>
+  <!-- Central Emerald Target Spark -->
+  <circle cx="24" cy="24" r="2.2" fill="#10b981" filter="url(#goldGlow)"/>
+  <circle cx="24" cy="24" r="1.1" fill="#ffffff"/>
 </svg>
