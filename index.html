@@ -831,7 +831,6 @@
     let celestialPitch = 0.36;
     let celestialRoll = 0.04;
     let timeAccumulator = 0.0;
-    let hoveredConstellation = null;
 
     // Star Colors: 0 = Quantum Cyan, 1 = Arcane Violet, 2 = Golden Amber, 3 = Diamond White, 4 = Emerald Aurora, 5 = Rose Nebula, 6 = Sapphire Sky
     const STAR_COLORS = [
@@ -1079,7 +1078,7 @@
           { dx: -82, dy: -46, dz: 0, r: 2.7, pulse: 1.1, color: 1, name: "Electra" },
           { dx: -76, dy: -24, dz: 0, r: 2.6, pulse: 2.3, color: 3, name: "Merope" }
         ],
-        lines: [[0, 1], [0, 2], [0, 3], [3, 4], [4, 5], [4, 6], [4, 7]],
+        lines: [[0, 1], [1, 3], [3, 0], [0, 2], [4, 5], [5, 6], [6, 7], [7, 4]],
         label: "TAURUS", desc: "The Bull & Seven Sisters · Aldebaran Fiery Eye"
       });
 
@@ -1137,7 +1136,7 @@
           { dx: 28,  dy: 22,  dz: 0, r: 2.8, pulse: 2.0, color: 0, name: "Gomeisa" },
           { dx: -22, dy: 16,  dz: 0, r: 2.5, pulse: 3.5, color: 0, name: "Epsilon CMi" }
         ],
-        lines: [[0, 1], [0, 2]],
+        lines: [[0, 1], [1, 2], [2, 0]],
         label: "CANIS MINOR", desc: "Procyon Beacon · Lesser Dog"
       });
 
@@ -1603,12 +1602,7 @@
       // 2. Update and Draw Shooting Stars
       updateAndDrawMeteors(dt);
 
-      // 3. Track Hovered Constellation
-      hoveredConstellation = null;
-
-      // 4. Render 31 Flowing Geometric Constellations (Holistic Smooth-Blending Engine)
-      // Constellations remain 100% whole; they fade in/out smoothly as a unified object.
-      // Zero partial disassembling or single-line stick fragments.
+      // 3. Render 31 Flowing Geometric Constellations (Pure Unlabeled Serene Celestial Art)
       for (let c = 0; c < CONSTELLATIONS_3D.length; c++) {
         const con = CONSTELLATIONS_3D[c];
         const center = con.center;
@@ -1617,7 +1611,6 @@
         let avgZ = 0;
         let avgX = 0;
         let avgY = 0;
-        let isHovered = false;
 
         for (let s = 0; s < con.stars.length; s++) {
           const star = con.stars[s];
@@ -1629,9 +1622,6 @@
           if (proj) {
             star.pulse += 0.020;
             if (star.pulse > 6.28) star.pulse -= 6.28;
-
-            const dMouse = Math.hypot(proj.sx - mouse.targetX, proj.sy - mouse.targetY);
-            if (dMouse < 48) isHovered = true;
 
             projectedStars.push({ ...proj, star });
             avgZ += proj.z;
@@ -1646,16 +1636,29 @@
         avgX /= projectedStars.length;
         avgY /= projectedStars.length;
 
+        // Strict Hero Headline Sanctuary: Never collide or draw across hero typography
+        const heroEl = document.querySelector('.hero-container');
+        if (heroEl) {
+          const hr = heroEl.getBoundingClientRect();
+          let inHero = false;
+          for (let s = 0; s < projectedStars.length; s++) {
+            const p = projectedStars[s];
+            if (p.sx >= hr.left - 40 && p.sx <= hr.right + 40 && p.sy >= hr.top - 20 && p.sy <= hr.bottom + 30) {
+              inHero = true;
+              break;
+            }
+          }
+          if (inHero) continue;
+        }
+
         const R = getSphereRadius();
 
-        // A. Smooth Celestial Depth Alpha — Wide FOV to bring 3x more constellations into view
-        // Rotates smoothly from back of sphere into front hemisphere without popping
+        // A. Smooth Celestial Depth Alpha — Wide FOV to bring multiple constellations into view
         const depthNorm = Math.max(0.0, Math.min(1.0, (avgZ + R * 0.65) / (R * 1.30)));
         const depthFade = 0.5 - 0.5 * Math.cos(depthNorm * Math.PI);
         if (depthFade < 0.015) continue;
 
-        // B. Holistic Proximity & Content Preservation
-        // When passing behind hero text cards, gently attenuate rather than deleting the entire asterism
+        // B. Gentle Background Card Blending
         let minBoxDist = 9999.0;
         let starInsideCount = 0;
 
@@ -1675,7 +1678,6 @@
           }
         }
 
-        // Soft smooth attenuation: if behind text/cards, keep at 0.30 opacity so it remains visible as an elegant background element; in open space, full 1.0 opacity
         let occFade = 1.0;
         if (starInsideCount > 0) {
           occFade = 0.32;
@@ -1683,15 +1685,12 @@
           occFade = 0.32 + 0.68 * (minBoxDist / 60.0);
         }
 
-        // Unified Constellation Alpha — Every star and line uses this EXACT alpha
         const conAlpha = depthFade * occFade;
         if (conAlpha < 0.025) continue;
 
-        if (isHovered) {
-          hoveredConstellation = { con, projectedStars, avgX, avgY };
-        }
-
-        // C. Draw Constellation Connection Lines (Crisp, vibrant, beautiful asterism figures)
+        // C. Draw Constellation Connection Lines (Pure, elegant, subtle 1.35px)
+        ctx.shadowBlur = 0;
+        ctx.lineWidth = 1.35;
         for (let l = 0; l < con.lines.length; l++) {
           const [iA, iB] = con.lines[l];
           const pA = projectedStars[iA];
@@ -1701,107 +1700,49 @@
             ctx.moveTo(pA.sx, pA.sy);
             ctx.lineTo(pB.sx, pB.sy);
 
-            if (isHovered) {
-              ctx.strokeStyle = `rgba(0, 240, 255, ${Math.min(0.98, conAlpha * 2.8)})`;
-              ctx.lineWidth = 2.4;
-              ctx.shadowColor = '#00f0ff';
-              ctx.shadowBlur = 14;
+            if (con.season === "WINTER") {
+              ctx.strokeStyle = `rgba(0, 240, 255, ${conAlpha * 0.82})`;
+            } else if (con.season === "SPRING") {
+              ctx.strokeStyle = `rgba(192, 132, 252, ${conAlpha * 0.82})`;
+            } else if (con.season === "SUMMER") {
+              ctx.strokeStyle = `rgba(251, 191, 36, ${conAlpha * 0.82})`;
+            } else if (con.season === "AUTUMN") {
+              ctx.strokeStyle = `rgba(56, 189, 248, ${conAlpha * 0.80})`;
             } else {
-              ctx.shadowBlur = 0;
-              ctx.lineWidth = 1.55;
-              if (con.season === "WINTER") {
-                ctx.strokeStyle = `rgba(0, 240, 255, ${conAlpha * 0.88})`;
-              } else if (con.season === "SPRING") {
-                ctx.strokeStyle = `rgba(192, 132, 252, ${conAlpha * 0.88})`;
-              } else if (con.season === "SUMMER") {
-                ctx.strokeStyle = `rgba(251, 191, 36, ${conAlpha * 0.88})`;
-              } else if (con.season === "AUTUMN") {
-                ctx.strokeStyle = `rgba(56, 189, 248, ${conAlpha * 0.85})`;
-              } else {
-                ctx.strokeStyle = `rgba(255, 255, 255, ${conAlpha * 0.90})`;
-              }
+              ctx.strokeStyle = `rgba(255, 255, 255, ${conAlpha * 0.85})`;
             }
             ctx.stroke();
           }
         }
 
-        ctx.shadowBlur = 0;
-
-        // D. Draw Constellation Stars (Whole asterism smoothly fades together)
+        // D. Draw Constellation Stars (Pure, spherical luminous coronas — zero harsh crosshairs)
         for (let s = 0; s < projectedStars.length; s++) {
           const p = projectedStars[s];
           const star = p.star;
 
           const color = STAR_COLORS[star.color] || STAR_COLORS[0];
-          const r = Math.max(1.2, star.r * p.scale * (0.85 + 0.3 * Math.sin(star.pulse)));
+          const r = Math.max(1.1, star.r * p.scale * (0.85 + 0.3 * Math.sin(star.pulse)));
           const starAlpha = Math.min(1.0, conAlpha * 1.15);
 
-          // Radial Corona for Primary Stars
+          // Soft Glowing Radial Corona for Primary Stars
           if (star.r >= 3.2 && starAlpha > 0.12) {
-            const glowR = r * (isHovered ? 5.8 : 4.6);
+            const glowR = r * 4.6;
             const grad = ctx.createRadialGradient(p.sx, p.sy, 0, p.sx, p.sy, glowR);
-            grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.82})`);
-            grad.addColorStop(0.35, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.28})`);
+            grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.75})`);
+            grad.addColorStop(0.35, `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha * 0.22})`);
             grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
             ctx.fillStyle = grad;
             ctx.beginPath();
             ctx.arc(p.sx, p.sy, glowR, 0, Math.PI * 2);
             ctx.fill();
-
-            // 4-Point Diffraction Cross for Navigational Anchors & Major Stars
-            if (star.r >= 4.2 && starAlpha > 0.30) {
-              ctx.strokeStyle = `rgba(255, 255, 255, ${starAlpha * 0.78})`;
-              ctx.lineWidth = 1.0;
-              ctx.beginPath();
-              ctx.moveTo(p.sx - glowR * 1.3, p.sy);
-              ctx.lineTo(p.sx + glowR * 1.3, p.sy);
-              ctx.moveTo(p.sx, p.sy - glowR * 1.3);
-              ctx.lineTo(p.sx, p.sy + glowR * 1.3);
-              ctx.stroke();
-            }
           }
 
           // Solid Star Core
           ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${starAlpha})`;
           ctx.beginPath();
-          ctx.arc(p.sx, p.sy, Math.max(1.2, r), 0, Math.PI * 2);
+          ctx.arc(p.sx, p.sy, Math.max(1.1, r), 0, Math.PI * 2);
           ctx.fill();
         }
-      }
-
-      // C. Draw Sleek Holographic HUD Tooltip ONLY when Hovering
-      if (hoveredConstellation) {
-        const { con, projectedStars } = hoveredConstellation;
-        const lead = projectedStars[0];
-        const hx = Math.max(20, Math.min(width - 290, lead.sx + 24));
-        const hy = Math.max(80, Math.min(height - 120, lead.sy - 40));
-
-        ctx.save();
-        ctx.fillStyle = 'rgba(5, 11, 28, 0.94)';
-        ctx.strokeStyle = 'rgba(0, 240, 255, 0.70)';
-        ctx.lineWidth = 1.3;
-        ctx.shadowColor = 'rgba(0, 240, 255, 0.35)';
-        ctx.shadowBlur = 14;
-
-        ctx.beginPath();
-        ctx.roundRect(hx, hy, 260, 80, 8);
-        ctx.fill();
-        ctx.stroke();
-
-        ctx.shadowBlur = 0;
-        ctx.fillStyle = '#00f0ff';
-        ctx.font = '700 11px "JetBrains Mono", monospace';
-        ctx.fillText(`// CELESTIAL HUD [${con.season}]`, hx + 14, hy + 22);
-
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '700 13px "Space Grotesk", sans-serif';
-        ctx.fillText(con.label, hx + 14, hy + 42);
-
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '500 10.5px "Plus Jakarta Sans", sans-serif';
-        ctx.fillText(con.desc || "Canonical Astronomical Asterism", hx + 14, hy + 62);
-
-        ctx.restore();
       }
 
       requestAnimationFrame(renderCanvas);
@@ -1819,12 +1760,6 @@
     window.addEventListener('mouseleave', () => {
       mouse.targetX = -1000;
       mouse.targetY = -1000;
-    });
-
-    window.addEventListener('click', e => {
-      if (hoveredConstellation) {
-        focusSeason(hoveredConstellation.con.season);
-      }
     });
 
     // Launch Engine
