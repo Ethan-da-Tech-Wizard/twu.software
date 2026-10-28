@@ -19,8 +19,8 @@
   <style>
     :root {
       --bg: #030712;
-      --bg-panel: rgba(8, 14, 28, 0.78);
-      --bg-card: rgba(13, 20, 38, 0.85);
+      --bg-panel: rgba(8, 14, 28, 0.56);
+      --bg-card: rgba(13, 20, 38, 0.60);
       --border-panel: rgba(255, 255, 255, 0.08);
       --border-glow-cyan: rgba(0, 240, 255, 0.45);
       --border-glow-violet: rgba(168, 85, 247, 0.45);
@@ -321,8 +321,8 @@
       border: 1px solid rgba(0, 240, 255, 0.2);
       border-radius: 16px;
       overflow: hidden;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       box-shadow: 0 25px 80px rgba(0, 0, 0, 0.75), 0 0 30px rgba(0, 240, 255, 0.05);
     }
     @media (max-width: 900px) {
@@ -332,7 +332,7 @@
     }
 
     .cap-list {
-      background: rgba(5, 9, 20, 0.75);
+      background: rgba(5, 9, 20, 0.45);
       border-right: 1px solid var(--border-panel);
       display: flex;
       flex-direction: column;
@@ -419,7 +419,7 @@
       gap: 16px;
       margin-bottom: 32px;
       padding: 18px 22px;
-      background: rgba(3, 7, 18, 0.6);
+      background: rgba(3, 7, 18, 0.38);
       border: 1px solid rgba(0, 240, 255, 0.15);
       border-radius: 10px;
       font-family: var(--font-mono);
@@ -446,8 +446,8 @@
       border: 1px solid rgba(168, 85, 247, 0.35);
       border-radius: 18px;
       padding: 44px;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       box-shadow: 0 0 60px rgba(168, 85, 247, 0.12), inset 0 0 20px rgba(0, 240, 255, 0.05);
       position: relative;
     }
@@ -508,17 +508,21 @@
       font-size: 0.84rem;
       line-height: 1.85;
       color: #cbd5e1;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       box-shadow: 0 0 25px rgba(0, 240, 255, 0.08);
     }
 
     /* Direct Contact Monolith */
     .contact-monolith {
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.85) 0%, rgba(3, 7, 18, 0.98) 100%);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.60) 0%, rgba(3, 7, 18, 0.70) 100%);
       border: 1px solid rgba(0, 240, 255, 0.3);
       border-radius: 16px;
       padding: 64px 40px;
       text-align: center;
       margin-bottom: 100px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       box-shadow: 0 0 60px rgba(0, 240, 255, 0.12), 0 0 40px rgba(168, 85, 247, 0.1);
     }
     .contact-monolith h2 {
