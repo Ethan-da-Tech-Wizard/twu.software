@@ -884,6 +884,35 @@
       a[href^="http"]::after{content:" (" attr(href) ")"}
       section{break-inside:avoid}
     }
+  
+    /* Mobile fixes from layout QA */
+    .matrix-title{line-height:1.15}
+    .hero-title{text-wrap:balance}
+    .receipts-summary a{color:var(--emerald-bright)}
+    .footer-links a,.btn-nav,.fed-card a,.receipts-lede a,.contact-links-grid a{display:inline-flex;align-items:center;min-height:44px}
+    .contact-links-grid a{gap:10px;overflow-wrap:anywhere}
+    .contact-links-grid a svg{flex:0 0 18px;width:18px;height:18px}
+    @media (max-width:900px){.workstation{grid-template-columns:minmax(0,1fr)}.workstation>*{min-width:0}}
+    @media (max-width:720px){
+      .nav-bar{padding:8px 0}
+      .arch-frame{padding:16px;overflow-x:auto}
+      .arch-frame img{width:auto;min-width:640px;max-width:none}
+    }
+    @media (max-width:560px){
+      .workstation-topbar{flex-wrap:wrap;gap:6px 12px;padding:10px 14px}
+      .ws-telemetry{flex-wrap:wrap;gap:4px 10px;min-width:0}
+      .ws-telemetry .sep{display:none}
+      .cap-item-top{gap:8px}.cap-item-top-left{min-width:0}
+      .cap-status-pill{flex-shrink:0}
+      .cap-summary,.inspector-pane{overflow-wrap:anywhere}
+      .footer-links{flex-wrap:wrap;gap:0 20px}
+      .matrix-title{font-size:1.75rem}
+      .hero-title{font-size:2.05rem;letter-spacing:-1px}
+      .wrap{padding:0 20px}
+      .fed-section,.receipts-section{padding-left:0;padding-right:0}
+      .contact-monolith{padding:40px 20px}
+      .contact-monolith h2{font-size:2rem}
+    }
   </style>
 </head>
 <body>
