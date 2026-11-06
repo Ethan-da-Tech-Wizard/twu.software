@@ -911,7 +911,7 @@
         channel: "Custom software",
         tag: "Services · Custom software",
         title: "Custom Internal Tools",
-        body: "Internal tools built around how your operation actually runs, for example scheduling, inventory and client registries, designed to work offline first. There is no paid client work yet; source code and documentation would be delivered under the terms of your agreement.",
+        body: "Internal tools built around how your operation actually runs, for example scheduling, inventory and client registries, designed to work offline first. Source code and documentation would be delivered under the terms of your agreement.",
         badges: ["Local-native", "Offline-first", "Source per agreement"],
         specs: [
           { key: "EXECUTION RUNTIME", val: "Local native / offline-capable", color: "cyan" },
@@ -941,7 +941,7 @@
         channel: "On-site IT",
         tag: "Services · On-site IT",
         title: "On-Site Systems & IT in Mesa",
-        body: "Hands-on engineering for real machines: workstation hardware troubleshooting, local networks, automated backups, and Linux and multi-machine maintenance for small businesses and offices. There are no paying IT customers yet. We document each change so it can be repeated and checked.",
+        body: "Hands-on engineering for real machines: workstation hardware troubleshooting, local networks, automated backups, and Linux and multi-machine maintenance for small businesses and offices. We document each change so it can be repeated and checked.",
         badges: ["Mesa and East Valley", "Hands-on", "Documented changes"],
         specs: [
           { key: "SERVICE AREA", val: "Mesa & Phoenix East Valley", color: "cyan" },
@@ -956,7 +956,7 @@
         channel: "Workshops",
         tag: "Services · Workshops",
         title: "Workshops & Community Training",
-        body: "Practical technical education that demystifies computers and AI: spotting phishing, protecting personal financial data, and making your own small tools. No classes have been delivered yet; a first set is in discussion with a local library and nothing is booked.",
+        body: "Practical technical education that demystifies computers and AI: spotting phishing, protecting personal financial data, and making your own small tools. A first set of classes is in discussion with a local library; nothing is booked yet.",
         badges: ["Hands-on", "In person", "Beginner-friendly"],
         specs: [
           { key: "FORMAT", val: "In-person, hands-on", color: "cyan" },
@@ -1050,10 +1050,11 @@
     // ---- Receipts: this page audits itself from /claims.json (same origin)
     (function () {
       var list = document.getElementById('receipts-list'), sum = document.getElementById('receipts-summary');
-      if (!list || !sum) return;
+      if (!sum) return;
       var LABEL = { VERIFIED: 'MATCHED', PLAN: 'PLAN', UNVERIFIED: 'NOT YET MATCHED', FAILED: 'FAILED', STALE: 'STALE' };
       fetch('claims.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (d) {
-        sum.textContent = d.verified + ' statements matched to company records by script · ' + d.plan + ' plans (not claims of fact) · ' + d.unverified + ' not yet matched to a record, labeled · ' + d.failed + ' failed · checked ' + d.checked;
+        sum.textContent = d.verified + ' published statements matched to company records by script (a fact can appear on more than one page) · ' + d.plan + ' plans (not claims of fact) · ' + d.unverified + ' not yet matched to a record, labeled · ' + d.failed + ' failed · checked ' + d.checked;
+        if (!list) return;
         var frag = document.createDocumentFragment();
         d.claims.slice(0, 80).forEach(function (c) {
           var li = document.createElement('li'), tag = document.createElement('span');

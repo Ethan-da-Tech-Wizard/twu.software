@@ -1,8 +1,8 @@
 {
  "purpose": "Every factual claim published on twu.software, checked by a deterministic script against company records. No model is involved in the check.",
  "checked": "2026-11-05",
- "verified": 80,
- "plan": 4,
+ "verified": 76,
+ "plan": 5,
  "unverified": 4,
  "failed": 0,
  "claims": [
@@ -50,13 +50,6 @@
   },
   {
    "claim": "NAICS 541512 (Computer Systems Design Services) is a registered secondary code",
-   "topic": "Classification",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "NAICS 541519 (Other Computer Related Services) is a registered secondary code",
    "topic": "Classification",
    "status": "VERIFIED",
    "source": "checked against: company master record",
@@ -280,6 +273,27 @@
    "page": "/index.html"
   },
   {
+   "claim": "A first set of classes is in discussion with a local library; nothing is booked yet.",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "A script, with no AI model involved, matches the factual statements published on this site to our own company records.",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: company records",
+   "page": "/fact-check.html"
+  },
+  {
+   "claim": "All four services are offered now. TWU is a new company with no paying clients yet, and the AI tools are prototypes.",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: company context record, project README as quoted in company records",
+   "page": "/index.html"
+  },
+  {
    "claim": "B.A.S. in Data Analytics and Programming at Mesa Community College, in progress",
    "topic": "Other",
    "status": "VERIFIED",
@@ -291,6 +305,20 @@
    "topic": "Other",
    "status": "VERIFIED",
    "source": "checked against: federal readiness checklist",
+   "page": "/index.html"
+  },
+  {
+   "claim": "Designed to run on your own hardware, offline by default.",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "Every factual statement here is matched to company records by script.",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: company records",
    "page": "/index.html"
   },
   {
@@ -308,35 +336,7 @@
    "page": "/index.html"
   },
   {
-   "claim": "NO PAYING CLIENTS YET",
-   "topic": "Other",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/index.html"
-  },
-  {
-   "claim": "No classes delivered yet",
-   "topic": "Other",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/index.html"
-  },
-  {
-   "claim": "No classes have been delivered yet; a first set is in discussion with a local library and nothing is booked",
-   "topic": "Other",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/index.html"
-  },
-  {
-   "claim": "No paid client work yet",
-   "topic": "Other",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/index.html"
-  },
-  {
-   "claim": "No paying IT customers yet",
+   "claim": "ONE-PERSON COMPANY",
    "topic": "Other",
    "status": "VERIFIED",
    "source": "checked against: company context record",
@@ -354,20 +354,6 @@
    "topic": "Other",
    "status": "VERIFIED",
    "source": "checked against: SAM.gov registration record",
-   "page": "/index.html"
-  },
-  {
-   "claim": "There are no paying IT customers yet",
-   "topic": "Other",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/index.html"
-  },
-  {
-   "claim": "There is no paid client work yet",
-   "topic": "Other",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
    "page": "/index.html"
   },
   {
@@ -455,13 +441,6 @@
    "page": "/index.html"
   },
   {
-   "claim": "SAM.gov registration is active; annual renewal is due 2027-10-27",
-   "topic": "Registration",
-   "status": "VERIFIED",
-   "source": "checked against: SAM.gov registration record",
-   "page": "/capability.html"
-  },
-  {
    "claim": "SAM.gov registration is active; renewal is due 2027-10-27",
    "topic": "Registration",
    "status": "VERIFIED",
@@ -474,13 +453,6 @@
    "status": "VERIFIED",
    "source": "checked against: company master record",
    "page": "/index.html"
-  },
-  {
-   "claim": "SBA Small Business Control ID is SBC_002683059",
-   "topic": "Registration",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
   },
   {
    "claim": "TWU LLC is a one-person company; the owner does the engineering, support and teaching",
@@ -607,6 +579,13 @@
    "status": "PLAN",
    "source": "plan or offer, not a claim of fact",
    "page": "/capability.html"
+  },
+  {
+   "claim": "No per-seat licenses. Source code and documentation under your agreement.",
+   "topic": "Other",
+   "status": "PLAN",
+   "source": "plan or offer, not a claim of fact",
+   "page": "/index.html"
   },
   {
    "claim": "Page statements are script-matched to records; unmatched are labeled unverified; PSC codes are categories",

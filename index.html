@@ -913,6 +913,10 @@
       .contact-monolith{padding:40px 20px}
       .contact-monolith h2{font-size:2rem}
     }
+  
+    .value-row{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;max-width:980px;margin:34px auto 0;padding:0;text-align:left}
+    .value-row li{background:var(--bg-card);border:1px solid var(--border-panel);border-radius:12px;padding:14px 16px;color:var(--text-muted);font-size:.95rem;line-height:1.5}
+    .value-row strong{display:block;color:var(--gold-bright);font-family:var(--font-display);font-size:1.02rem;margin-bottom:4px}
   </style>
 </head>
 <body>
@@ -927,7 +931,7 @@
     <header>
       <div class="nav-bar">
         <a href="/" class="brand-mark" aria-label="TWU LLC home">
-          <img src="assets/twu-logo.svg" alt="TWU Studio">
+          <img src="assets/twu-logo.svg" alt="">
           <div>
             <div class="brand-title">
               TWU
@@ -940,7 +944,7 @@
           <a href="#workstation" class="nav-link">Services</a>
           <a href="#architecture" class="nav-link">Architecture</a>
           <a href="#federal" class="nav-link">Federal</a>
-          <a href="#receipts" class="nav-link">Fact check</a>
+          <a href="fact-check.html" class="nav-link">Fact check</a>
           <a href="#about" class="nav-link">About</a>
           <a href="#contact" class="btn-nav">Contact</a>
         </nav>
@@ -959,12 +963,17 @@
         <span class="accent">Local AI Systems.</span>
       </h1>
       <p class="hero-thesis">
-        We build private software and local AI systems that run on your own hardware, and we publish a fact-check list: the factual statements on this site are matched by script to our own company records (not an outside audit). Offline-first by design. No per-seat subscriptions.
+        We build private software and local AI systems that run on your own hardware, so your data stays with you and you never pay per seat. Offline-first by design.
       </p>
       <div class="hero-actions">
         <a href="TWU_LLC_Capability_Statement.pdf" class="btn-solid">Capability Statement (PDF) →</a>
         <a href="#contact" class="btn-outline">Contact</a>
       </div>
+      <ul class="value-row">
+        <li><strong>Own your tools.</strong> No per-seat licenses. Source code and documentation under your agreement.</li>
+        <li><strong>Keep your data home.</strong> Designed to run on your own hardware, offline by default.</li>
+        <li><strong>Know what is true.</strong> Every factual statement here is matched to company records by script.</li>
+      </ul>
 </section>
 
     <!-- Trust Baseline -->
@@ -1022,7 +1031,7 @@
       </div>
       <div class="hero-actions" style="margin-top:24px;">
         <a href="capability.html" class="btn-solid">Capability Statement →</a>
-        <a href="#contact" class="btn-outline">Contact the Studio</a>
+        <a href="#contact" class="btn-outline">Contact</a>
       </div>
     </section>
     <section class="fed-section" id="proof">
@@ -1053,6 +1062,7 @@
         <div>
           <span class="matrix-label">Services</span>
           <h2 class="matrix-title">What we offer.</h2>
+        <p class="receipts-lede" style="margin-top:8px;">All four services are offered now. TWU is a new company with no paying clients yet, and the AI tools are prototypes.</p>
         </div>
         
       </div>
@@ -1067,7 +1077,7 @@
           <div class="ws-telemetry">
             <span>OFFERED NOW</span>
             <span class="sep">|</span>
-            <span>NO PAYING CLIENTS YET</span>
+            <span>ONE-PERSON COMPANY</span>
             <span class="sep">|</span>
             <span id="ws-module-id" class="highlight">Custom software</span>
           </div>
@@ -1083,7 +1093,7 @@
               </div>
               <span class="cap-status-pill">OFFERED</span>
             </div>
-            <div class="cap-summary">Internal tools built around how your operation runs, with no per-seat licensing. No paid client work yet.</div>
+            <div class="cap-summary">Internal tools built around how your operation runs, with no per-seat licensing.</div>
           </div>
 
           <div class="cap-item" data-index="1">
@@ -1094,7 +1104,7 @@
               </div>
               <span class="cap-status-pill">OFFERED</span>
             </div>
-            <div class="cap-summary">Working prototypes of local AI that run on your own hardware, designed with no per-token API billing.</div>
+            <div class="cap-summary">Working prototypes of local AI that run on your own hardware.</div>
           </div>
 
           <div class="cap-item" data-index="2">
@@ -1105,7 +1115,7 @@
               </div>
               <span class="cap-status-pill">OFFERED</span>
             </div>
-            <div class="cap-summary">Hardware troubleshooting, local networks and backups in Mesa. No paying IT customers yet.</div>
+            <div class="cap-summary">Hardware troubleshooting, local networks and backups in Mesa.</div>
           </div>
 
           <div class="cap-item" data-index="3">
@@ -1116,7 +1126,7 @@
               </div>
               <span class="cap-status-pill">OFFERED</span>
             </div>
-            <div class="cap-summary">Hands-on teaching on scam defense and building your own tools. No classes delivered yet.</div>
+            <div class="cap-summary">Hands-on teaching on scam defense and building your own tools.</div>
           </div>
         </div>
 
@@ -1129,7 +1139,7 @@
             </div>
             <h3 class="inspector-title" id="ins-title">Custom Internal Tools</h3>
             <p class="inspector-body" id="ins-body">
-              Internal tools built around how your operation actually runs, for example scheduling, inventory and client registries, designed to work offline first. There is no paid client work yet; source code and documentation would be delivered under the terms of your agreement.
+              Internal tools built around how your operation actually runs, for example scheduling, inventory and client registries, designed to work offline first. Source code and documentation would be delivered under the terms of your agreement.
             </p>
             <div class="inspector-badges" id="ins-badges">
               <span class="ins-chip">Local-native</span>
@@ -1177,11 +1187,11 @@
 
     <section class="receipts-section" id="receipts">
       <span class="matrix-label">Fact-check log</span>
-      <h2 class="matrix-title">Factual statements are matched to company records.</h2>
-      <p class="receipts-lede">A script, with no AI model involved, matches the factual statements published here to our own company records. This is a consistency check against records we keep, not an outside audit. Statements it cannot match to a record are labeled, never hidden. This list is generated from <a href="claims.json">claims.json</a>.</p>
+      <h2 class="matrix-title">Every factual statement here is checked.</h2>
+      <p class="receipts-lede">A script, with no AI model involved, matches the factual statements on this site to our own company records. It is a consistency check against records we keep, not an outside audit, and anything it cannot match is labeled.</p>
       <div id="receipts-summary" class="receipts-summary" aria-live="polite">Loading the fact-check log…</div>
+      <div class="hero-actions" style="margin-top:14px;justify-content:flex-start;"><a href="fact-check.html" class="btn-outline">Read the full log →</a></div>
       <noscript><p class="receipts-lede">JavaScript is off. Read the full list in <a href="claims.json">claims.json</a>.</p></noscript>
-      <ul id="receipts-list" class="receipts-list"></ul>
     </section>
 
     <section class="monolith" id="about">
@@ -1239,7 +1249,7 @@
         <li><a href="#workstation">Services</a></li>
         <li><a href="#architecture">Architecture</a></li>
         <li><a href="#federal">Federal</a></li>
-        <li><a href="#receipts">Fact check</a></li>
+        <li><a href="fact-check.html">Fact check</a></li>
         <li><a href="capability.html">Capability Statement</a></li>
         <li><a href="TWU_LLC_Capability_Statement.pdf">Capability Statement (PDF)</a></li>
         <li><a href="licensing.html">Licensing</a></li>
