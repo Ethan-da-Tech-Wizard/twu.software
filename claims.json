@@ -1,430 +1,626 @@
 {
  "purpose": "Every factual claim published on twu.software, checked by a deterministic script against company records. No model is involved in the check.",
  "checked": "2026-11-05",
- "verified": 62,
+ "verified": 80,
  "plan": 4,
  "unverified": 4,
  "failed": 0,
  "claims": [
   {
-   "claim": "No FedRAMP authorization is held.",
-   "status": "UNVERIFIED",
-   "source": "no record yet; unverified",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "No facility security clearance is held.",
-   "status": "UNVERIFIED",
-   "source": "no record yet; unverified",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Facility clearance: none",
+   "claim": "No FedRAMP authorization is held (no record either way; not yet matched)",
+   "topic": "Compliance",
    "status": "UNVERIFIED",
    "source": "no record yet; unverified",
    "page": "/index.html"
   },
   {
-   "claim": "FedRAMP authorization: none",
+   "claim": "No facility security clearance is held (no record either way; not yet matched)",
+   "topic": "Compliance",
    "status": "UNVERIFIED",
    "source": "no record yet; unverified",
    "page": "/index.html"
   },
   {
-   "claim": "1 employee",
-   "status": "VERIFIED",
-   "source": "checked against: SAM.gov registration record, company context record",
+   "claim": "The company holds no FedRAMP authorization (no record either way; unverified)",
+   "topic": "Compliance",
+   "status": "UNVERIFIED",
+   "source": "no record yet; unverified",
    "page": "/capability.html"
   },
   {
-   "claim": "26X75",
-   "status": "VERIFIED",
-   "source": "checked against: SAM.gov registration record, company master record",
+   "claim": "The company holds no facility security clearance (no record either way; unverified)",
+   "topic": "Compliance",
+   "status": "UNVERIFIED",
+   "source": "no record yet; unverified",
    "page": "/capability.html"
   },
   {
-   "claim": "541511 Primary Custom Computer Programming Services",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "541512 Secondary Computer Systems Design Services",
+   "claim": "NAICS 541511 (Custom Computer Programming Services) is the registered primary code",
+   "topic": "Classification",
    "status": "VERIFIED",
    "source": "checked against: company master record",
    "page": "/capability.html"
   },
   {
-   "claim": "541519 Secondary Other Computer Related Services",
+   "claim": "NAICS 541511 (Custom Computer Programming) is listed",
+   "topic": "Classification",
+   "status": "VERIFIED",
+   "source": "checked against: SAM.gov registration record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "NAICS 541512 (Computer Systems Design Services) is a registered secondary code",
+   "topic": "Classification",
    "status": "VERIFIED",
    "source": "checked against: company master record",
    "page": "/capability.html"
   },
   {
-   "claim": "541715 Secondary Research and Development in the Physical, Engineering, and Life Sciences",
+   "claim": "NAICS 541519 (Other Computer Related Services) is a registered secondary code",
+   "topic": "Classification",
    "status": "VERIFIED",
    "source": "checked against: company master record",
    "page": "/capability.html"
   },
   {
-   "claim": "611420 Secondary Computer Training",
+   "claim": "NAICS 541715 (Physical, Engineering and Life Sciences R&D) is a registered secondary code",
+   "topic": "Classification",
    "status": "VERIFIED",
    "source": "checked against: company master record",
    "page": "/capability.html"
   },
   {
-   "claim": "611430 Secondary Professional and Management Development Training",
+   "claim": "NAICS 611420 (Computer Training) is a registered secondary code",
+   "topic": "Classification",
    "status": "VERIFIED",
    "source": "checked against: company master record",
    "page": "/capability.html"
   },
   {
-   "claim": "611519 Secondary Other Technical and Trade Schools",
+   "claim": "NAICS 611430 (Professional and Management Development Training) is a registered secondary code",
+   "topic": "Classification",
    "status": "VERIFIED",
    "source": "checked against: company master record",
    "page": "/capability.html"
   },
   {
-   "claim": "Active; annual renewal due 2027-10-27",
+   "claim": "NAICS 611519 (Other Technical and Trade Schools) is a registered secondary code",
+   "topic": "Classification",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "PSC DA01 (IT application development support services, labor) is registered",
+   "topic": "Classification",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "PSC DA10 (IT application development, software as a service) is registered",
+   "topic": "Classification",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "PSC DJ01 (IT security and compliance support services, labor) is registered",
+   "topic": "Classification",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "PSC R425 (professional support: engineering/technical) is registered",
+   "topic": "Classification",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "PSC U006 (education and training, vocational/technical) is registered",
+   "topic": "Classification",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "PSC U008 (training and curriculum development) is registered",
+   "topic": "Classification",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "PSC U009 (education and training, general) is registered",
+   "topic": "Classification",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "PSC U012 (IT and telecommunications training) is registered",
+   "topic": "Classification",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "SAM.gov size representation: small business for all NAICS codes; not small disadvantaged",
+   "topic": "Classification",
    "status": "VERIFIED",
    "source": "checked against: SAM.gov registration record",
    "page": "/capability.html"
   },
   {
-   "claim": "All Awards",
+   "claim": "An NSF SBIR/STTR Phase I Project Pitch was submitted 2026-11-05; no invitation or award yet",
+   "topic": "Compliance",
    "status": "VERIFIED",
-   "source": "checked against: SAM.gov registration record",
+   "source": "checked against: company master record",
    "page": "/capability.html"
   },
   {
-   "claim": "Arizona LLC, formed 2026-10-13",
-   "status": "VERIFIED",
-   "source": "checked against: company context record, company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "CMMC Level 1 self-assessment (SPRS, 17 basic security practices, self-attested): planned, not completed.",
+   "claim": "CMMC Level 1 self-assessment (SPRS, 17 practices, self-attested) is planned, not completed",
+   "topic": "Compliance",
    "status": "VERIFIED",
    "source": "checked against: federal readiness checklist",
    "page": "/capability.html"
   },
   {
-   "claim": "Company policy recorded 2026-11-05: the whole system is released as open source under GPL-3.0-or-later. Existing public repositories carry their own licenses (Apache-2.0, MIT, AGPL-3.0).",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Custom web applications, internal tools, automations, data pipelines, and desktop and command-line tools.",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "DA01 IT & Telecom Business Application / Application Development Support Services (Labor)",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "DA10 IT & Telecom Business Application / Application Development Software as a Service",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "DJ01 IT & Telecom Security and Compliance Support Services (Labor)",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "December 31",
-   "status": "VERIFIED",
-   "source": "checked against: SAM.gov registration record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "DoD SBIR/STTR (DSIP) account: not yet created.",
+   "claim": "CMMC Level 1 self-assessment is planned and has not been completed",
+   "topic": "Compliance",
    "status": "VERIFIED",
    "source": "checked against: federal readiness checklist",
-   "page": "/capability.html"
+   "page": "/index.html"
   },
   {
-   "claim": "Ethan Kilmer, sole member and owner",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "FAQ6J93X5NL3",
-   "status": "VERIFIED",
-   "source": "checked against: SAM.gov registration record, company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "For profit organization, limited liability company",
-   "status": "VERIFIED",
-   "source": "checked against: SAM.gov registration record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Hands-on classes and employee sessions: command-line basics, AI-assisted development, and testing and maintaining a small internal tool.",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Karl, TWU's offline LLM lab, records a JSONL trace of every generation and supports local search over PDFs, Word files, code and CSV, per its project README.",
-   "status": "VERIFIED",
-   "source": "checked against: project README as quoted in company records",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Offered now; no paid software clients yet.",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Offered now; no paying IT customers yet.",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Offered; no classes or paid staff sessions delivered yet.",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Offline document AI that runs on a firm's own computers and shows the source page for every answer.",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "One federal submission is pending: an NSF SBIR/STTR Phase I Project Pitch was submitted 2026-11-05. No invitation or award has been received.",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Past performance: none yet. TWU LLC is pre-revenue and has no federal or commercial contract history.",
+   "claim": "Past performance: none yet; the company is pre-revenue with no contract history",
+   "topic": "Compliance",
    "status": "VERIFIED",
    "source": "checked against: company context record, company master record, founder profile record",
    "page": "/capability.html"
   },
   {
-   "claim": "R425 Professional Support Support - Professional: Engineering / Technical",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "SAM.gov registration is active and must be renewed every year; the current renewal date is 2027-10-27.",
-   "status": "VERIFIED",
-   "source": "checked against: SAM.gov registration record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "SBC_002683059",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Small Business: Y across all registered NAICS codes (SAM.gov size representation); Small Disadvantaged Business: No",
-   "status": "VERIFIED",
-   "source": "checked against: SAM.gov registration record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "TWU LLC is a one-person company; the owner performs the engineering, support and teaching.",
+   "claim": "The company has no past federal performance yet",
+   "topic": "Compliance",
    "status": "VERIFIED",
    "source": "checked against: company context record",
-   "page": "/capability.html"
+   "page": "/index.html"
   },
   {
-   "claim": "TWU's own tools run offline by default and go online only when the customer wants a feature that needs it.",
+   "claim": "The company has not yet created a DoD SBIR/STTR (DSIP) account",
+   "topic": "Compliance",
    "status": "VERIFIED",
-   "source": "checked against: company context record",
+   "source": "checked against: federal readiness checklist",
    "page": "/capability.html"
   },
   {
-   "claim": "Tech Wizards United",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Technology help delivered on site: computer setup and repair, troubleshooting, networks and Wi-Fi, backups, security basics, and getting AI tools set up safely.",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "The project README records 617 harness and comparison regression checks passing, and that full native qualification has not passed: a larger inventory task and an exact-money repair still fail. It is a prototype, not a delivered product.",
-   "status": "VERIFIED",
-   "source": "checked against: project README as quoted in company records",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "The same verification habit is applied to AI output: a task is not marked done until real tests pass, and the proposed document tools are designed to show the exact source passage and page for each answer and to say so when support cannot be confirmed.",
-   "status": "VERIFIED",
-   "source": "checked against: project README as quoted in company records",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "U006 Education / Training Education / Training - Vocational / Technical",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "U008 Education / Training Training / Curriculum Development",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "U009 Education / Training Education / Training - General",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "U012 Education / Training Information Technology / Telecommunications Training",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Working prototypes; pre-revenue.",
-   "status": "VERIFIED",
-   "source": "checked against: company context record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Written claims in company documents that leave the building are registered with their exact text and checked by a deterministic script against company records, with no model calls and no network. The same mechanism checks the statements on this page.",
+   "claim": "Written claims are checked by a deterministic script against company records, no model",
+   "topic": "Compliance",
    "status": "VERIFIED",
    "source": "checked against: company records",
    "page": "/capability.html"
   },
   {
-   "claim": "ethan@twu.software",
-   "status": "VERIFIED",
-   "source": "checked against: company master record",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "tiny_dancer is a fully offline agent built on the open-weight GPT-OSS-20B model (about 20 billion parameters). It runs on a laptop with an RTX 3070 Laptop GPU with 8 GB of VRAM. The model does not fit in 8 GB of VRAM, so the first 16 expert layers run on the CPU and the remaining expert and dense layers run on the GPU.",
-   "status": "VERIFIED",
-   "source": "checked against: project README as quoted in company records",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "tiny_dancer: a 20B-parameter model on a laptop GPU",
-   "status": "VERIFIED",
-   "source": "checked against: project README as quoted in company records",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "20B-parameter open-weight model on a laptop with an 8 GB GPU",
-   "status": "VERIFIED",
-   "source": "checked against: project README as quoted in company records",
-   "page": "/index.html"
-  },
-  {
-   "claim": "541511, Custom Computer Programming",
-   "status": "VERIFIED",
-   "source": "checked against: SAM.gov registration record",
-   "page": "/index.html"
-  },
-  {
-   "claim": "Active, renewal due 2027-10-27",
-   "status": "VERIFIED",
-   "source": "checked against: SAM.gov registration record",
-   "page": "/index.html"
-  },
-  {
-   "claim": "Arizona LLC · City of Mesa Business License",
-   "status": "VERIFIED",
-   "source": "checked against: City of Mesa license record, company master record",
-   "page": "/index.html"
-  },
-  {
-   "claim": "CMMC Level 1 self-assessment: planned, not completed",
-   "status": "VERIFIED",
-   "source": "checked against: federal readiness checklist",
-   "page": "/index.html"
-  },
-  {
-   "claim": "No Trackers · No Third-Party Requests",
-   "status": "VERIFIED",
-   "source": "checked against: this page's own source (measured)",
-   "page": "/index.html"
-  },
-  {
-   "claim": "Offline-First Architecture",
+   "claim": "Policy (2026-11-05): the system is released as open source under GPL-3.0-or-later",
+   "topic": "Legal",
    "status": "VERIFIED",
    "source": "checked against: company context record",
-   "page": "/index.html"
+   "page": "/capability.html"
   },
   {
-   "claim": "Past federal performance: none yet",
+   "claim": "Classes are offered; no classes or paid staff sessions delivered yet",
+   "topic": "Offerings",
    "status": "VERIFIED",
    "source": "checked against: company context record",
-   "page": "/index.html"
+   "page": "/capability.html"
   },
   {
-   "claim": "SAM.gov Active · UEI FAQ6J93X5NL3 · CAGE 26X75",
+   "claim": "Custom software is offered now; no paid software clients yet",
+   "topic": "Offerings",
    "status": "VERIFIED",
-   "source": "checked against: SAM.gov registration record",
-   "page": "/index.html"
+   "source": "checked against: company context record",
+   "page": "/capability.html"
   },
   {
-   "claim": "SBC_002683059",
+   "claim": "Offered: custom web apps, internal tools, automations, data pipelines, desktop and CLI tools",
+   "topic": "Offerings",
    "status": "VERIFIED",
-   "source": "checked against: company master record",
+   "source": "checked against: company context record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "Offered: hands-on classes (command-line basics, AI-assisted development, maintaining a small tool)",
+   "topic": "Offerings",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "Offered: on-site tech help (setup, repair, networks, backups, security basics, AI tool setup)",
+   "topic": "Offerings",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "Offline document AI exists as working prototypes; no revenue yet",
+   "topic": "Offerings",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "Offline document AI that runs on a firm's own computers and cites the source page per answer",
+   "topic": "Offerings",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "On-site tech help is offered now; no paying IT customers yet",
+   "topic": "Offerings",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "38 public repositories on GitHub as of 2026-10-13",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: project README as quoted in company records",
    "page": "/index.html"
   },
   {
-   "claim": "about six years of healthcare operations discipline",
+   "claim": "617 regression checks pass; full native qualification has not passed",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: project README as quoted in company records",
+   "page": "/index.html"
+  },
+  {
+   "claim": "B.A.S. in Data Analytics and Programming at Mesa Community College, in progress",
+   "topic": "Other",
    "status": "VERIFIED",
    "source": "checked against: founder profile record",
    "page": "/index.html"
   },
   {
-   "claim": "shows the source page behind every answer",
+   "claim": "DSIP account: planned, not created",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: federal readiness checklist",
+   "page": "/index.html"
+  },
+  {
+   "claim": "Karl (AGPL-3.0)",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: project README as quoted in company records",
+   "page": "/index.html"
+  },
+  {
+   "claim": "Local semantic PDF search that shows the page an answer came from",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: project README as quoted in company records",
+   "page": "/index.html"
+  },
+  {
+   "claim": "NO PAYING CLIENTS YET",
+   "topic": "Other",
    "status": "VERIFIED",
    "source": "checked against: company context record",
    "page": "/index.html"
   },
   {
-   "claim": "Factual statements on this page are matched to company records by a script, and items it cannot match are labeled unverified; see /claims.json. Registered PSC codes are categories, not evidence of delivered services.",
-   "status": "PLAN",
-   "source": "plan or offer, not a claim of fact",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "Pilot offer (an offer, not a performance claim): TWU LLC will discuss a small, scoped pilot of its private document tools or related software work, with scope, schedule and terms agreed in writing before work starts.",
-   "status": "PLAN",
-   "source": "plan or offer, not a claim of fact",
-   "page": "/capability.html"
-  },
-  {
-   "claim": "No Per-Token Fees",
-   "status": "PLAN",
-   "source": "plan or offer, not a claim of fact",
+   "claim": "No classes delivered yet",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
    "page": "/index.html"
   },
   {
-   "claim": "5 business days",
+   "claim": "No classes have been delivered yet; a first set is in discussion with a local library and nothing is booked",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "No paid client work yet",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "No paying IT customers yet",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "One NSF SBIR/STTR Phase I Project Pitch submitted 2026-11-05; no invitation or award",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: company records",
+   "page": "/index.html"
+  },
+  {
+   "claim": "Small Business: Y per the SAM.gov size representation; Small Disadvantaged Business: No",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: SAM.gov registration record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "There are no paying IT customers yet",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "There is no paid client work yet",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "They are prototypes, not delivered products",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: project README as quoted in company records",
+   "page": "/index.html"
+  },
+  {
+   "claim": "about two years of software development",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: founder profile record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "no cloud calls, a JSONL trace of every generation",
+   "topic": "Other",
+   "status": "VERIFIED",
+   "source": "checked against: project README as quoted in company records",
+   "page": "/index.html"
+  },
+  {
+   "claim": "Business type: for-profit organization, limited liability company",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: SAM.gov registration record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "CAGE code is 26X75",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: SAM.gov registration record, company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "Contact email is ethan@twu.software",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "Ethan Kilmer is the sole member and owner",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "Fiscal year ends December 31",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: SAM.gov registration record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "SAM.gov Unique Entity ID (UEI) is FAQ6J93X5NL3",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: SAM.gov registration record, company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "SAM.gov purpose of registration is All Awards",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: SAM.gov registration record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "SAM.gov registration is active, renews yearly; current renewal date is 2027-10-27",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: SAM.gov registration record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "SAM.gov registration is active, with UEI FAQ6J93X5NL3 and CAGE code 26X75",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: SAM.gov registration record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "SAM.gov registration is active; annual renewal is due 2027-10-27",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: SAM.gov registration record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "SAM.gov registration is active; renewal is due 2027-10-27",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: SAM.gov registration record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "SBA Small Business Control ID is SBC_002683059",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "SBA Small Business Control ID is SBC_002683059",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "TWU LLC is a one-person company; the owner does the engineering, support and teaching",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "The company has one employee (as represented in SAM.gov)",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: SAM.gov registration record, company context record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "The company is a sole-member Arizona LLC with a City of Mesa business license",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: City of Mesa license record, company master record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "The company is an Arizona LLC, formed 2026-10-13",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: company context record, company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "The founder has about six years of healthcare operations experience",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: founder profile record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "Trade name is Tech Wizards United",
+   "topic": "Registration",
+   "status": "VERIFIED",
+   "source": "checked against: company master record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "This website has no trackers and makes no third-party requests (measured on its source)",
+   "topic": "Site",
+   "status": "VERIFIED",
+   "source": "checked against: this page's own source (measured)",
+   "page": "/index.html"
+  },
+  {
+   "claim": "A 20B-parameter open-weight model runs on a laptop with an 8 GB GPU",
+   "topic": "Technology",
+   "status": "VERIFIED",
+   "source": "checked against: project README as quoted in company records",
+   "page": "/index.html"
+  },
+  {
+   "claim": "Karl, an offline LLM lab, logs every generation and searches local PDFs, Word, code and CSV",
+   "topic": "Technology",
+   "status": "VERIFIED",
+   "source": "checked against: project README as quoted in company records",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "TWU's tools run offline by default and go online only for features that need it",
+   "topic": "Technology",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "Tasks are not marked done until tests pass; document tools are designed to cite sources",
+   "topic": "Technology",
+   "status": "VERIFIED",
+   "source": "checked against: project README as quoted in company records",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "The company's tools are designed offline-first (prototype stage)",
+   "topic": "Technology",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "The document search tool is designed to show the source page behind each answer",
+   "topic": "Technology",
+   "status": "VERIFIED",
+   "source": "checked against: company context record",
+   "page": "/index.html"
+  },
+  {
+   "claim": "tiny_dancer is a prototype: 617 regression checks pass, full qualification has not passed",
+   "topic": "Technology",
+   "status": "VERIFIED",
+   "source": "checked against: project README as quoted in company records",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "tiny_dancer is an offline GPT-OSS-20B agent on a laptop with an 8 GB RTX 3070 GPU, split CPU/GPU",
+   "topic": "Technology",
+   "status": "VERIFIED",
+   "source": "checked against: project README as quoted in company records",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "tiny_dancer: a 20B-parameter model running on a laptop GPU",
+   "topic": "Technology",
+   "status": "VERIFIED",
+   "source": "checked against: project README as quoted in company records",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "Security reports: the company aims to acknowledge within 5 business days",
+   "topic": "Legal",
    "status": "PLAN",
    "source": "plan or offer, not a claim of fact",
    "page": "/security-policy.html"
+  },
+  {
+   "claim": "Offer, not a performance claim: a small scoped pilot, terms agreed in writing first",
+   "topic": "Offerings",
+   "status": "PLAN",
+   "source": "plan or offer, not a claim of fact",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "Page statements are script-matched to records; unmatched are labeled unverified; PSC codes are categories",
+   "topic": "Site",
+   "status": "PLAN",
+   "source": "plan or offer, not a claim of fact",
+   "page": "/capability.html"
+  },
+  {
+   "claim": "Planned: designed with no per-token fees",
+   "topic": "Technology",
+   "status": "PLAN",
+   "source": "plan or offer, not a claim of fact",
+   "page": "/index.html"
   }
  ]
 }

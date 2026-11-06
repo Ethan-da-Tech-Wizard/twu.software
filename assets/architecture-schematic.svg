@@ -134,7 +134,7 @@
     <polygon points="684,199 694,205 684,211" fill="#10b981"/>
     <!-- Flow Descriptor -->
     <rect x="608" y="172" width="76" height="18" rx="4" fill="#060c18" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1"/>
-    <text x="614" y="185" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600">OFFLINE DELIVERY</text>
+    <text x="614" y="185" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600">DELIVERY</text>
   </g>
 
   <!-- ========================================== -->
@@ -235,6 +235,6 @@
 
     <!-- Bottom Tag -->
     <rect x="20" y="206" width="185" height="18" rx="4" fill="rgba(16, 185, 129, 0.1)" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1"/>
-    <text x="26" y="219" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">✓ SOURCE DELIVERED</text>
+    <text x="26" y="219" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">✓ SOURCE PER AGREEMENT</text>
   </g>
 </svg>

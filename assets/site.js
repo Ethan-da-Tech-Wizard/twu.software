@@ -649,6 +649,15 @@
       return { sx, sy, scale, alpha, z: z3 };
     }
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let frameRequested = false;
+    function scheduleFrame() {
+      if (frameRequested || document.hidden || reduceMotion.matches) return;
+      frameRequested = true;
+      requestAnimationFrame(function () { frameRequested = false; renderCanvas(); });
+    }
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) scheduleFrame(); });
+
     function initCanvas() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
@@ -848,11 +857,11 @@
         }
       }
 
-      requestAnimationFrame(renderCanvas);
+      scheduleFrame();
     }
 
     // Window & Viewport Listeners
-    window.addEventListener('resize', initCanvas);
+    window.addEventListener('resize', function () { initCanvas(); if (reduceMotion.matches) renderCanvas(); });
     window.addEventListener('scroll', () => {
       scrollY = window.scrollY || 0;
     });
@@ -899,63 +908,63 @@
     // ============================================================================
     const CAPABILITIES = [
       {
-        channel: "CHANNEL: 01 // BESPOKE",
-        tag: "CAPABILITY CHANNEL // 01 · LOCAL SOFTWARE",
-        title: "Bespoke Internal Tools & Private Software",
-        body: "Stop paying recurring per-seat fees for generic software. We build lean internal tools such as scheduling, inventory dispatch and offline-first client registries, designed around how your operation actually runs. You receive the source code and documentation under the terms of your agreement.",
-        badges: ["[LOCAL_NATIVE]", "[NO_CLOUD_DEPENDENCY]", "[SOURCE_DELIVERED]", "[OFFLINE_FIRST]"],
+        channel: "Custom software",
+        tag: "Services · Custom software",
+        title: "Custom Internal Tools",
+        body: "Internal tools built around how your operation actually runs, for example scheduling, inventory and client registries, designed to work offline first. There is no paid client work yet; source code and documentation would be delivered under the terms of your agreement.",
+        badges: ["Local-native", "Offline-first", "Source per agreement"],
         specs: [
-          { key: "EXECUTION RUNTIME", val: "Local Native / Offline PWA", color: "cyan" },
-          { key: "DATA RESIDENCY", val: "On-Premise by Default", color: "green" },
-          { key: "RECURRING FEES", val: "No Per-Seat Fees", color: "green" },
-          { key: "SOURCE CODE", val: "Yours, Per Agreement", color: "violet" }
+          { key: "EXECUTION RUNTIME", val: "Local native / offline-capable", color: "cyan" },
+          { key: "DATA RESIDENCY", val: "On-premise by default", color: "green" },
+          { key: "RECURRING FEES", val: "No per-seat licensing (offer)", color: "green" },
+          { key: "SOURCE CODE", val: "Per your agreement", color: "violet" }
         ],
-        actionText: "Commission Custom Software →",
+        actionText: "Discuss a project →",
         actionLink: "#contact"
       },
       {
-        channel: "CHANNEL: 02 // PRIVATE AI",
-        tag: "CAPABILITY CHANNEL // 02 · PRIVATE INTELLIGENCE",
+        channel: "Private AI (prototype)",
+        tag: "Services · Private AI (prototype)",
         title: "Private On-Premise AI",
-        body: "Run AI models on your own hardware so your documents do not have to leave your premises. We have built a local agent that runs a 20B-parameter open-weight model on a laptop with an 8 GB GPU by splitting layers between CPU and GPU, and a document search tool that shows the source page behind every answer. We will tell you plainly what a model can and cannot do on your hardware before you commit.",
-        badges: ["[ON_PREMISE_WEIGHTS]", "[NO_API_TOKENS]", "[SOURCE_PAGE_CITED]", "[OFFLINE_BY_DEFAULT]"],
+        body: "We have working prototypes: a local agent that runs a 20B-parameter open-weight model on a laptop with an 8 GB GPU by splitting layers between CPU and GPU, and a document search tool designed to show the source page behind each answer. They are prototypes, not delivered products. We will say plainly what a model can and cannot do on your hardware before you commit.",
+        badges: ["Prototype", "Runs locally", "Designed offline-first"],
         specs: [
-          { key: "INFERENCE ENGINE", val: "Local GPU / CPU Split", color: "cyan" },
-          { key: "CLOUD DEPENDENCY", val: "None Required", color: "green" },
-          { key: "API BILLING", val: "No Per-Token Fees", color: "green" },
-          { key: "ANSWER TRACE", val: "Source Page Shown", color: "violet" }
+          { key: "INFERENCE ENGINE", val: "Local GPU / CPU split", color: "cyan" },
+          { key: "CLOUD DEPENDENCY", val: "Designed to run offline", color: "green" },
+          { key: "API BILLING", val: "Designed with no per-token fees", color: "green" },
+          { key: "ANSWER TRACE", val: "Designed to show source page", color: "violet" }
         ],
-        actionText: "Discuss Private AI →",
+        actionText: "Discuss private AI →",
         actionLink: "#contact"
       },
       {
-        channel: "CHANNEL: 03 // SYSTEMS & IT",
-        tag: "CAPABILITY CHANNEL // 03 · SYSTEMS & IT",
+        channel: "On-site IT",
+        tag: "Services · On-site IT",
         title: "On-Site Systems & IT in Mesa",
-        body: "Hands-on engineering for real machines: workstation hardware triage, local networks, automated backups, and Linux and multi-machine maintenance for small businesses, labs and offices. We document each change so it can be repeated and checked.",
-        badges: ["[MESA_LOCAL_DISPATCH]", "[PHYSICAL_TRIAGE]", "[DOCUMENTED_CHANGES]", "[ON_SITE]"],
+        body: "Hands-on engineering for real machines: workstation hardware troubleshooting, local networks, automated backups, and Linux and multi-machine maintenance for small businesses and offices. There are no paying IT customers yet. We document each change so it can be repeated and checked.",
+        badges: ["Mesa and East Valley", "Hands-on", "Documented changes"],
         specs: [
           { key: "SERVICE AREA", val: "Mesa & Phoenix East Valley", color: "cyan" },
-          { key: "HARDWARE AUDIT", val: "Physical & Thermal Triage", color: "green" },
-          { key: "BACKUPS", val: "Automated Backup Setup", color: "green" },
-          { key: "CHANGE RECORD", val: "Replayable Receipts", color: "violet" }
+          { key: "HARDWARE", val: "Hardware troubleshooting", color: "green" },
+          { key: "BACKUPS", val: "Automated backup setup", color: "green" },
+          { key: "CHANGE RECORD", val: "Documented changes", color: "violet" }
         ],
-        actionText: "Request On-Site IT Support →",
+        actionText: "Ask about on-site IT →",
         actionLink: "#contact"
       },
       {
-        channel: "CHANNEL: 04 // WORKSHOPS",
-        tag: "CAPABILITY CHANNEL // 04 · WORKSHOPS & EDUCATION",
-        title: "Hands-On Tech Workshops & Community Training",
-        body: "Practical technical education that demystifies computers and AI. We teach cybersecurity basics such as spotting phishing and protecting personal financial data, and guide new builders through making their own small tools.",
-        badges: ["[COMMUNITY_FIRST]", "[HANDS_ON_LABS]", "[SCAM_DEFENSE]", "[PRACTICAL_SKILLS]"],
+        channel: "Workshops",
+        tag: "Services · Workshops",
+        title: "Workshops & Community Training",
+        body: "Practical technical education that demystifies computers and AI: spotting phishing, protecting personal financial data, and making your own small tools. No classes have been delivered yet; a first set is in discussion with a local library and nothing is booked.",
+        badges: ["Hands-on", "In person", "Beginner-friendly"],
         specs: [
-          { key: "FORMAT", val: "In-Person Interactive Labs", color: "cyan" },
-          { key: "CURRICULUM", val: "Scam Defense & Local AI", color: "green" },
-          { key: "AUDIENCE", val: "Seniors, Students & Builders", color: "green" },
-          { key: "PREREQUISITES", val: "No Experience Required", color: "violet" }
+          { key: "FORMAT", val: "In-person, hands-on", color: "cyan" },
+          { key: "CURRICULUM", val: "Scam defense & local AI", color: "green" },
+          { key: "AUDIENCE", val: "Beginners, students & seniors", color: "green" },
+          { key: "PREREQUISITES", val: "No experience required", color: "violet" }
         ],
-        actionText: "Inquire About Workshops →",
+        actionText: "Ask about workshops →",
         actionLink: "#contact"
       }
     ];
@@ -969,11 +978,11 @@
       items.forEach((item, i) => {
         const pill = item.querySelector('.cap-status-pill');
         if (i === index) {
-          item.classList.add('active');
-          if (pill) pill.textContent = 'ACTIVE';
+          item.classList.add('active'); item.setAttribute('aria-pressed','true');
+          if (pill) pill.textContent = 'VIEWING';
         } else {
-          item.classList.remove('active');
-          if (pill) pill.textContent = 'READY';
+          item.classList.remove('active'); item.setAttribute('aria-pressed','false');
+          if (pill) pill.textContent = 'OFFERED';
         }
       });
 
@@ -1020,12 +1029,12 @@
 
     // Launch Engine
     initCanvas();
-    requestAnimationFrame(renderCanvas);
+    renderCanvas();
 
     // ---- Event wiring (no inline handlers; keeps the CSP free of 'unsafe-inline' for scripts)
     document.querySelectorAll('.cap-item').forEach(function (el) {
       el.addEventListener('click', function () { selectCapability(parseInt(el.dataset.index, 10)); });
-      el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button'); el.setAttribute('aria-pressed', el.classList.contains('active') ? 'true' : 'false'); el.setAttribute('aria-controls', 'inspector');
       el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCapability(parseInt(el.dataset.index, 10)); } });
     });
     (function () {
@@ -1033,6 +1042,8 @@
       if (!btn) return;
       btn.addEventListener('click', openDirectChannel);
       btn.addEventListener('mouseenter', function () { primeEmailLink(btn); });
+      btn.addEventListener('focus', function () { primeEmailLink(btn); });
+      btn.setAttribute('role', 'button');
       btn.addEventListener('touchstart', function () { primeEmailLink(btn); }, { passive: true });
     })();
 
@@ -1040,16 +1051,25 @@
     (function () {
       var list = document.getElementById('receipts-list'), sum = document.getElementById('receipts-summary');
       if (!list || !sum) return;
-      fetch('claims.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
-        sum.textContent = d.verified + ' statements matched to company records by script · ' + d.plan + ' plans (not claims of fact) · ' + d.unverified + ' unverified, labeled · ' + d.failed + ' failed · checked ' + d.checked;
+      var LABEL = { VERIFIED: 'MATCHED', PLAN: 'PLAN', UNVERIFIED: 'NOT YET MATCHED', FAILED: 'FAILED', STALE: 'STALE' };
+      fetch('claims.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (d) {
+        sum.textContent = d.verified + ' statements matched to company records by script · ' + d.plan + ' plans (not claims of fact) · ' + d.unverified + ' not yet matched to a record, labeled · ' + d.failed + ' failed · checked ' + d.checked;
+        var frag = document.createDocumentFragment();
         d.claims.slice(0, 80).forEach(function (c) {
           var li = document.createElement('li'), tag = document.createElement('span');
           tag.className = 'tag ' + (c.status === 'VERIFIED' ? 'ok' : c.status === 'PLAN' ? 'plan' : 'warn');
-          tag.textContent = c.status;
-          li.appendChild(tag); li.appendChild(document.createTextNode(c.claim));
+          tag.textContent = LABEL[c.status] || c.status;
+          li.appendChild(tag);
+          var tp = document.createElement('span'); tp.className = 'topic'; tp.textContent = c.topic || ''; li.appendChild(tp);
+          li.appendChild(document.createTextNode(c.claim));
           var src = document.createElement('span'); src.className = 'src'; src.textContent = c.source; li.appendChild(src);
-          list.appendChild(li);
+          frag.appendChild(li);
         });
-      }).catch(function () { sum.textContent = 'Receipts could not be loaded in this view. See claims.json.'; });
+        list.appendChild(frag);
+        if (d.claims.length > 80) { var more = document.createElement('li'); more.textContent = 'Showing 80 of ' + d.claims.length + '. See claims.json for the full list.'; list.appendChild(more); }
+      }).catch(function () {
+        sum.textContent = '';
+        sum.appendChild(document.createTextNode('The log could not be loaded. '));
+        var a = document.createElement('a'); a.href = 'claims.json'; a.textContent = 'Open claims.json directly'; sum.appendChild(a);
+      });
     })();
-

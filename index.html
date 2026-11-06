@@ -8,6 +8,18 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'">
   <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#06080f">
+  <link rel="canonical" href="https://twu.software/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="TWU LLC">
+  <meta property="og:title" content="TWU LLC | Private Software &amp; Local AI Systems">
+  <meta property="og:description" content="Private software and local AI on your own hardware. SAM.gov registered. Factual statements matched to company records by script.">
+  <meta property="og:url" content="https://twu.software/">
+  <meta property="og:image" content="https://twu.software/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="TWU LLC, Tech Wizards United, on a dark star field">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="assets/twu-logo.svg">
   
   <script src="assets/frame-guard.js"></script>
@@ -49,7 +61,7 @@
 
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --text-dim: #64748b;
+      --text-dim: #8394ab;
       --font-display: ui-sans-serif, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       --font-body: ui-sans-serif, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
       --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
@@ -366,7 +378,7 @@
       flex-shrink: 0;
     }
 
-    /* THE CAPABILITY MATRIX WORKSTATION */
+    /* THE SERVICES WORKSTATION */
     .matrix-section {
       padding-bottom: 110px;
     }
@@ -829,9 +841,15 @@
     }
   
     
+        /* Header fit (system fonts are wider than the original web fonts) */
+    .brand-title, .nav-link, .btn-nav { white-space: nowrap; }
+    .nav-bar { gap: 20px; }
+    .brand-mark > div { min-width: 0; }
+    @media (max-width: 1180px) { .brand-subtitle { display: none; } .nav-actions { gap: 20px; } }
+    @media (max-width: 960px) { .nav-link { display: none; } }
     /* Federal + Receipts sections */
     .fed-section,.receipts-section{max-width:1180px;margin:0 auto;padding:72px 24px 24px;position:relative;z-index:2}
-    .fed-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:22px}
+    .fed-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:22px}
     .fed-card{background:var(--bg-card);border:1px solid var(--border-panel);border-radius:14px;padding:22px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
     .fed-card h3{font-family:var(--font-display);font-size:1.15rem;color:var(--gold-bright);margin-bottom:12px}
     .fed-card dl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:.92rem}
@@ -848,22 +866,38 @@
     .receipts-list li{background:var(--bg-card);border:1px solid var(--border-panel);border-radius:10px;padding:12px 14px;font-size:.9rem;color:var(--text-main)}
     .receipts-list .src{display:block;margin-top:6px;font-family:var(--font-mono);font-size:.74rem;color:var(--text-dim)}
     .receipts-list .tag{font-family:var(--font-mono);font-size:.7rem;border-radius:6px;padding:2px 7px;margin-right:8px;border:1px solid currentColor}
+    .receipts-list .topic{font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim);margin-right:8px;text-transform:uppercase;letter-spacing:.06em}
     .tag.ok{color:var(--emerald-bright)}.tag.plan{color:var(--gold-bright)}.tag.warn{color:var(--pink-bright)}
     a:focus-visible,button:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px}
     @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+  
+    .skip{position:absolute;left:-999px;top:0;background:#fbbf24;color:#07090e;padding:8px 14px;z-index:100;font-weight:600}
+    .skip:focus{left:8px;top:8px}
+    .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+    .cap-item:focus-visible{outline:2px solid var(--gold-bright);outline-offset:-2px}
+    main:focus{outline:none}
+    .receipts-list li{overflow-wrap:anywhere}
+    @media print{
+      #space-canvas,.nav-actions,.hero-actions,.workstation-topbar,.btn-solid,.btn-outline,.c-badge,header{display:none!important}
+      body{background:#fff!important;color:#000!important}
+      *{color:#000!important;background:none!important;box-shadow:none!important;text-shadow:none!important;animation:none!important}
+      a[href^="http"]::after{content:" (" attr(href) ")"}
+      section{break-inside:avoid}
+    }
   </style>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
 
   <!-- Dynamic Celestial Space Canvas (Compiled Rust WebAssembly Kernel) -->
-  <canvas id="space-canvas"></canvas>
+  <canvas id="space-canvas" aria-hidden="true"></canvas>
 
   <div class="wrap">
 
     <!-- Navigation Header -->
     <header>
       <div class="nav-bar">
-        <a href="#" class="brand-mark">
+        <a href="/" class="brand-mark" aria-label="TWU LLC home">
           <img src="assets/twu-logo.svg" alt="TWU Studio">
           <div>
             <div class="brand-title">
@@ -873,33 +907,34 @@
             <div class="brand-subtitle">PRIVATE SOFTWARE &amp; SYSTEMS · MESA, AZ</div>
           </div>
         </a>
-        <div class="nav-actions">
-          <a href="#workstation" class="nav-link">Matrix</a>
+        <nav class="nav-actions" aria-label="Primary">
+          <a href="#workstation" class="nav-link">Services</a>
           <a href="#architecture" class="nav-link">Architecture</a>
           <a href="#federal" class="nav-link">Federal</a>
-          <a href="#receipts" class="nav-link">Receipts</a>
-          <a href="#about" class="nav-link">Studio</a>
-          <a href="#contact" class="btn-nav">Direct Channel →</a>
-        </div>
+          <a href="#receipts" class="nav-link">Fact check</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#contact" class="btn-nav">Contact</a>
+        </nav>
       </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero-container">
+    <main id="main" tabindex="-1">
+<section class="hero-container">
       <div class="hero-badge">
         <span class="badge-dot"></span>
-        <span>Independent Systems &amp; Software Studio · Mesa, Arizona</span>
+        <span>Independent software company · Mesa, Arizona</span>
       </div>
       <h1 class="hero-title">
         Private Software &amp;<br>
         <span class="accent">Local AI Systems.</span>
       </h1>
       <p class="hero-thesis">
-        We build private software and local AI systems that run on your own hardware, and we show our work: every factual claim we publish is checked against company records, and every change leaves a replayable receipt. Offline-first by design. No per-seat subscriptions.
+        We build private software and local AI systems that run on your own hardware, and we publish a fact-check list: the factual statements on this site are matched by script to our own company records (not an outside audit). Offline-first by design. No per-seat subscriptions.
       </p>
       <div class="hero-actions">
-        <a href="#contact" class="btn-solid">Inquire · Direct Channel →</a>
-        <a href="#architecture" class="btn-outline">View Architecture &amp; Invariants</a>
+        <a href="TWU_LLC_Capability_Statement.pdf" class="btn-solid">Capability Statement (PDF) →</a>
+        <a href="#contact" class="btn-outline">Contact</a>
       </div>
 </section>
 
@@ -907,154 +942,25 @@
     <div class="trust-strip">
       <div class="trust-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <span>SAM.gov Active · UEI FAQ6J93X5NL3 · CAGE 26X75</span>
+        <span>SAM.gov registration active · UEI FAQ6J93X5NL3 · CAGE 26X75</span>
       </div>
       <div class="trust-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        <span>Arizona LLC · City of Mesa Business License</span>
+        <span>Sole-member Arizona LLC · City of Mesa business license</span>
       </div>
       <div class="trust-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        <span>Offline-First Architecture</span>
+        <span>Offline-first design (prototype stage)</span>
       </div>
       <div class="trust-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <span>No Trackers · No Third-Party Requests</span>
+        <span>This website: no trackers, no third-party requests</span>
       </div>
     </div>
 
-    <!-- THE CAPABILITY MATRIX WORKSTATION -->
-    <section class="matrix-section" id="workstation">
-      <div class="matrix-header">
-        <div>
-          <span class="matrix-label">Core Capabilities // Operational Matrix</span>
-          <h2 class="matrix-title">Engineered for independence.</h2>
-        </div>
-        <div class="matrix-telemetry-badge">
-          <span>SITE STATUS: <strong style="color:var(--emerald);">LIVE</strong></span>
-        </div>
-      </div>
-
-      <div class="workstation">
-        <!-- Top Telemetry Header Bar -->
-        <div class="workstation-topbar">
-          <div class="ws-status">
-            <span class="ws-pulse-dot"></span>
-            <span>CAPABILITY MATRIX</span>
-          </div>
-          <div class="ws-telemetry">
-            <span>NO TRACKERS</span>
-            <span class="sep">|</span>
-            <span>NO THIRD-PARTY REQUESTS</span>
-            <span class="sep">|</span>
-            <span id="ws-module-id" class="highlight">CHANNEL: 01 // BESPOKE</span>
-          </div>
-        </div>
-
-        <!-- Capability Selector List -->
-        <div class="cap-list" id="cap-list">
-          <div class="cap-item active" data-index="0">
-            <div class="cap-item-top">
-              <div class="cap-item-top-left">
-                <span class="cap-index">01 //</span>
-                <span class="cap-name">Bespoke Software</span>
-              </div>
-              <span class="cap-status-pill">ACTIVE</span>
-            </div>
-            <div class="cap-summary">Custom tools built to solve exact operational bottlenecks, with no per-seat licensing.</div>
-          </div>
-
-          <div class="cap-item" data-index="1">
-            <div class="cap-item-top">
-              <div class="cap-item-top-left">
-                <span class="cap-index">02 //</span>
-                <span class="cap-name">Private Offline AI</span>
-              </div>
-              <span class="cap-status-pill">READY</span>
-            </div>
-            <div class="cap-summary">On-premise document models on local hardware, so there is no per-token API billing.</div>
-          </div>
-
-          <div class="cap-item" data-index="2">
-            <div class="cap-item-top">
-              <div class="cap-item-top-left">
-                <span class="cap-index">03 //</span>
-                <span class="cap-name">On-Site Systems &amp; IT</span>
-              </div>
-              <span class="cap-status-pill">READY</span>
-            </div>
-            <div class="cap-summary">Hardware triage, local networks, and offline backup systems in Mesa.</div>
-          </div>
-
-          <div class="cap-item" data-index="3">
-            <div class="cap-item-top">
-              <div class="cap-item-top-left">
-                <span class="cap-index">04 //</span>
-                <span class="cap-name">Hands-On Workshops</span>
-              </div>
-              <span class="cap-status-pill">READY</span>
-            </div>
-            <div class="cap-summary">Practical community curriculum on scam defense and local tool building.</div>
-          </div>
-        </div>
-
-        <!-- Dynamic Inspector Pane -->
-        <div class="inspector-pane" id="inspector">
-          <div>
-            <div class="inspector-channel-bar">
-              <span class="inspector-tag" id="ins-tag">CAPABILITY CHANNEL // 01 · LOCAL SOFTWARE</span>
-              <span class="inspector-active-pill"><span class="ws-pulse-dot"></span> INSPECTION READY</span>
-            </div>
-            <h3 class="inspector-title" id="ins-title">Bespoke Internal Tools &amp; Private Software</h3>
-            <p class="inspector-body" id="ins-body">
-              Stop paying recurring per-seat fees for generic software. We build lean internal tools such as scheduling, inventory dispatch and offline-first client registries, designed around how your operation actually runs. You receive the source code and documentation under the terms of your agreement.
-            </p>
-            <div class="inspector-badges" id="ins-badges">
-              <span class="ins-chip">[LOCAL_NATIVE]</span>
-              <span class="ins-chip">[NO_CLOUD_DEPENDENCY]</span>
-              <span class="ins-chip">[SOURCE_DELIVERED]</span>
-              <span class="ins-chip">[OFFLINE_FIRST]</span>
-            </div>
-            <div class="spec-matrix" id="ins-specs">
-              <div>
-                <div class="spec-key">EXECUTION RUNTIME</div>
-                <div class="spec-val cyan">Local Native / Offline PWA</div>
-              </div>
-              <div>
-                <div class="spec-key">DATA RESIDENCY</div>
-                <div class="spec-val green">On-Premise by Default</div>
-              </div>
-              <div>
-                <div class="spec-key">RECURRING FEES</div>
-                <div class="spec-val green">No Per-Seat Fees</div>
-              </div>
-              <div>
-                <div class="spec-key">SOURCE CODE</div>
-                <div class="spec-val violet">Yours, Per Agreement</div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <a href="#contact" class="btn-solid" id="ins-action">Commission Custom Software →</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Architecture Blueprint Frame -->
-    <section class="arch-frame" id="architecture">
-      <div class="arch-frame-head">
-        <span class="matrix-label">Engineering Baseline</span>
-        <h2 class="matrix-title">The Private Offline Architecture</h2>
-        <p style="margin-top: 6px; color: var(--text-muted);">How our systems are designed to run on your premises without depending on cloud services. This diagram shows the design target; individual tools are at prototype stage, as the capability statement spells out.</p>
-      </div>
-      <img src="assets/architecture-schematic.svg" alt="Private Architecture Schematic">
-    </section>
-
-    <!-- Studio Philosophy & Founder -->
     <section class="fed-section" id="federal">
       <span class="matrix-label">Federal &amp; Defense Buyers</span>
-      <h2 class="matrix-title">Registered, accountable, and plain about what is not done yet.</h2>
+      <h2 class="matrix-title">Registered in SAM.gov. A new company. What is not done yet is listed here.</h2>
       <div class="fed-grid">
         <div class="fed-card">
           <h3>Registration</h3>
@@ -1078,11 +984,11 @@
           <h3>Not yet done</h3>
           <ul>
             <li>CMMC Level 1 self-assessment: planned, not completed</li>
-            <li>Facility clearance: none</li>
-            <li>FedRAMP authorization: none</li>
+            <li>No facility security clearance held</li>
+            <li>No FedRAMP authorization held</li>
             <li>Past federal performance: none yet</li>
           </ul>
-          <p>We would rather you read this here than discover it later.</p>
+          <p>We would rather you read this here than discover it later. "Private" and "offline" describe design intent, not a security certification.</p>
         </div>
       </div>
       <div class="hero-actions" style="margin-top:24px;">
@@ -1090,21 +996,168 @@
         <a href="#contact" class="btn-outline">Contact the Studio</a>
       </div>
     </section>
+    <section class="fed-section" id="proof">
+      <span class="matrix-label">Public Work</span>
+      <h2 class="matrix-title">Work you can inspect.</h2>
+      <p class="receipts-lede">38 public repositories on GitHub as of 2026-10-13. Status is stated plainly.</p>
+      <div class="fed-grid">
+        <div class="fed-card"><h3>tiny_dancer (prototype)</h3><p>An offline agent on a 20B-parameter open-weight model that runs on a laptop with an 8 GB GPU. 617 regression checks pass; full native qualification has not passed.</p></div>
+        <div class="fed-card"><h3>Karl (AGPL-3.0)</h3><p>An offline LLM lab: no cloud calls, a JSONL trace of every generation, and local search over PDFs, Word files, code and CSV.</p></div>
+        <div class="fed-card"><h3>Quick_Guide</h3><p>Local semantic PDF search that shows the page an answer came from.</p></div>
+      </div>
+      <p class="receipts-lede" style="margin-top:16px;"><a href="https://github.com/Ethan-da-Tech-Wizard" target="_blank" rel="noopener noreferrer">github.com/Ethan-da-Tech-Wizard<span class="sr-only"> (opens in a new tab)</span></a></p>
+    </section>
+
+    <section class="fed-section" id="agencies">
+      <span class="matrix-label">Agencies &amp; Primes</span>
+      <h2 class="matrix-title">Working with agencies and primes.</h2>
+      <div class="fed-grid">
+        <div class="fed-card"><h3>Open to</h3><ul><li>SBIR/STTR topics</li><li>Commercial solutions openings</li><li>Other transaction agreements</li><li>Teaming and subcontract inquiries</li></ul><p>These are offers to talk, not claims of experience.</p></div>
+        <div class="fed-card"><h3>Pilot offer</h3><p>A small, scoped pilot of the private document tools or related software work, with scope, schedule and terms agreed in writing before work starts.</p></div>
+        <div class="fed-card"><h3>Status</h3><ul><li>One NSF SBIR/STTR Phase I Project Pitch submitted 2026-11-05; no invitation or award</li><li>DSIP account: planned, not created</li><li>Small Business: Y per the SAM.gov size representation; Small Disadvantaged Business: No</li></ul></div>
+      </div>
+    </section>
+
+    <!-- THE CAPABILITY MATRIX WORKSTATION -->
+    <section class="matrix-section" id="workstation">
+      <div class="matrix-header">
+        <div>
+          <span class="matrix-label">Services</span>
+          <h2 class="matrix-title">What we offer.</h2>
+        </div>
+        
+      </div>
+
+      <div class="workstation">
+        <!-- Top Telemetry Header Bar -->
+        <div class="workstation-topbar">
+          <div class="ws-status">
+            <span class="ws-pulse-dot"></span>
+            <span>CAPABILITY MATRIX</span>
+          </div>
+          <div class="ws-telemetry">
+            <span>OFFERED NOW</span>
+            <span class="sep">|</span>
+            <span>NO PAYING CLIENTS YET</span>
+            <span class="sep">|</span>
+            <span id="ws-module-id" class="highlight">Custom software</span>
+          </div>
+        </div>
+
+        <!-- Capability Selector List -->
+        <div class="cap-list" id="cap-list" role="group" aria-label="Services">
+          <div class="cap-item active" data-index="0">
+            <div class="cap-item-top">
+              <div class="cap-item-top-left">
+                <span class="cap-index">1</span>
+                <span class="cap-name">Bespoke Software</span>
+              </div>
+              <span class="cap-status-pill">OFFERED</span>
+            </div>
+            <div class="cap-summary">Internal tools built around how your operation runs, with no per-seat licensing. No paid client work yet.</div>
+          </div>
+
+          <div class="cap-item" data-index="1">
+            <div class="cap-item-top">
+              <div class="cap-item-top-left">
+                <span class="cap-index">2</span>
+                <span class="cap-name">Private AI (prototype)</span>
+              </div>
+              <span class="cap-status-pill">OFFERED</span>
+            </div>
+            <div class="cap-summary">Working prototypes of local AI that run on your own hardware, designed with no per-token API billing.</div>
+          </div>
+
+          <div class="cap-item" data-index="2">
+            <div class="cap-item-top">
+              <div class="cap-item-top-left">
+                <span class="cap-index">3</span>
+                <span class="cap-name">On-Site Systems &amp; IT</span>
+              </div>
+              <span class="cap-status-pill">OFFERED</span>
+            </div>
+            <div class="cap-summary">Hardware troubleshooting, local networks and backups in Mesa. No paying IT customers yet.</div>
+          </div>
+
+          <div class="cap-item" data-index="3">
+            <div class="cap-item-top">
+              <div class="cap-item-top-left">
+                <span class="cap-index">4</span>
+                <span class="cap-name">Workshops</span>
+              </div>
+              <span class="cap-status-pill">OFFERED</span>
+            </div>
+            <div class="cap-summary">Hands-on teaching on scam defense and building your own tools. No classes delivered yet.</div>
+          </div>
+        </div>
+
+        <!-- Dynamic Inspector Pane -->
+        <div class="inspector-pane" id="inspector" role="region" aria-live="polite" aria-atomic="false" aria-label="Service details">
+          <div>
+            <div class="inspector-channel-bar">
+              <span class="inspector-tag" id="ins-tag">Services · Custom software</span>
+              
+            </div>
+            <h3 class="inspector-title" id="ins-title">Custom Internal Tools</h3>
+            <p class="inspector-body" id="ins-body">
+              Internal tools built around how your operation actually runs, for example scheduling, inventory and client registries, designed to work offline first. There is no paid client work yet; source code and documentation would be delivered under the terms of your agreement.
+            </p>
+            <div class="inspector-badges" id="ins-badges">
+              <span class="ins-chip">Local-native</span>
+              <span class="ins-chip">Offline-first</span>
+              <span class="ins-chip">Source per agreement</span>
+            </div>
+            <div class="spec-matrix" id="ins-specs">
+              <div>
+                <div class="spec-key">EXECUTION RUNTIME</div>
+                <div class="spec-val cyan">Local native / offline-capable</div>
+              </div>
+              <div>
+                <div class="spec-key">DATA RESIDENCY</div>
+                <div class="spec-val green">On-premise by default</div>
+              </div>
+              <div>
+                <div class="spec-key">RECURRING FEES</div>
+                <div class="spec-val green">No per-seat licensing (offer)</div>
+              </div>
+              <div>
+                <div class="spec-key">SOURCE CODE</div>
+                <div class="spec-val violet">Per your agreement</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <a href="#contact" class="btn-solid" id="ins-action">Discuss a project →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture Blueprint Frame -->
+    <section class="arch-frame" id="architecture">
+      <div class="arch-frame-head">
+        <span class="matrix-label">Design</span>
+        <h2 class="matrix-title">Offline-first design</h2>
+        <p style="margin-top: 6px; color: var(--text-muted);">How our systems are designed to run on your premises without depending on cloud services. This diagram shows the design target; individual tools are at prototype stage, as the capability statement spells out.</p>
+      </div>
+      <img src="assets/architecture-schematic.svg" alt="Private Architecture Schematic">
+    </section>
+
+    <!-- Studio Philosophy & Founder -->
+    
 
     <section class="receipts-section" id="receipts">
-      <span class="matrix-label">Receipts // Self-Auditing Page</span>
+      <span class="matrix-label">Fact-check log</span>
       <h2 class="matrix-title">Factual statements are matched to company records.</h2>
-      <p class="receipts-lede">A script, with no AI model involved, matches the factual statements published here to our own company records. This is a consistency check against records we keep, not an outside audit. Statements it cannot match are labeled UNVERIFIED, never hidden. This list is generated from <a href="claims.json">claims.json</a>.</p>
-      <div id="receipts-summary" class="receipts-summary" aria-live="polite">Loading receipts…</div>
+      <p class="receipts-lede">A script, with no AI model involved, matches the factual statements published here to our own company records. This is a consistency check against records we keep, not an outside audit. Statements it cannot match to a record are labeled, never hidden. This list is generated from <a href="claims.json">claims.json</a>.</p>
+      <div id="receipts-summary" class="receipts-summary" aria-live="polite">Loading the fact-check log…</div>
+      <noscript><p class="receipts-lede">JavaScript is off. Read the full list in <a href="claims.json">claims.json</a>.</p></noscript>
       <ul id="receipts-list" class="receipts-list"></ul>
     </section>
 
     <section class="monolith" id="about">
       <div>
-        <h2>"Anything is possible if you can articulate your thoughts."</h2>
-        <div class="quote-stripe">
-          "When my 7-year-old daughter asked for a game that combined Minecraft and aliens, I built it that evening, and we were flying spaceships alongside friendly aliens before bedtime."
-        </div>
+        <h2>Why TWU exists.</h2>
         <p>
           I founded TWU LLC on a simple principle: computers are meant to empower people, not entrap them in perpetual software subscriptions.
         </p>
@@ -1114,15 +1167,15 @@
       </div>
 
       <div>
-        <h3 style="font-family: var(--font-display); font-size:1.4rem; color:var(--text-main); margin-bottom:14px; font-weight:700;">Technical Baseline</h3>
+        <h3 style="font-family: var(--font-display); font-size:1.4rem; color:var(--text-main); margin-bottom:14px; font-weight:700;">Background</h3>
         <p style="margin-bottom: 20px;">
-          We bring about six years of healthcare operations discipline, deterministic checks on our own work, and hands-on Linux and multi-machine systems practice to every client problem.
+          Ethan Kilmer is the sole member and owner. Background: about six years in healthcare (licensed nursing assistant and staffing coordinator), about two years of software development, and hands-on Linux and multi-machine systems work. B.A.S. in Data Analytics and Programming at Mesa Community College, in progress.
         </p>
         <div class="baseline-card">
-          <p style="color:var(--cyan); margin-bottom:10px; font-weight:700;">// TECHNICAL SPECIFICATIONS</p>
-          <p>• Registered Entity: TWU LLC</p>
-          <p>• Studio Base: Mesa, Arizona</p>
-          <p>• Architecture: Offline-First Runtime</p>
+          <p style="color:var(--cyan); margin-bottom:10px; font-weight:700;">// AT A GLANCE</p>
+          <p>• Entity: TWU LLC, sole-member Arizona LLC</p>
+          <p>• Base: Mesa, Arizona</p>
+          <p>• Design approach: offline-first</p>
           <p>• Deliverables: source and documentation under your agreement. No cloud lock-in by design.</p>
         </div>
       </div>
@@ -1130,8 +1183,8 @@
 
     <!-- Direct Contact Monolith -->
     <section class="contact-monolith" id="contact">
-      <h2>Let’s build something durable.</h2>
-      <p>Have an operational bottleneck, an expensive software bill, or want to deploy private AI in your facility? Connect directly with the studio.</p>
+      <h2>Start a conversation.</h2>
+      <p>Have an operational bottleneck or a software bill you want to cut? Email us. Private AI work starts as a small, scoped pilot.</p>
       <div class="contact-links-grid">
         <!-- institutional-contact: ethan@twu.software -->
         <a href="#contact" class="c-badge" id="contact-email-btn" title="Click to email or copy address">
@@ -1149,17 +1202,20 @@
     </section>
 
     <!-- Footer -->
+    </main>
+
     <footer>
       <div>© 2026 TWU LLC. Tech Wizards United · Mesa, Arizona</div>
       <ul class="footer-links">
-        <li><a href="#workstation">Matrix</a></li>
+        <li><a href="#workstation">Services</a></li>
         <li><a href="#architecture">Architecture</a></li>
         <li><a href="#federal">Federal</a></li>
-        <li><a href="#receipts">Receipts</a></li>
+        <li><a href="#receipts">Fact check</a></li>
         <li><a href="capability.html">Capability Statement</a></li>
+        <li><a href="TWU_LLC_Capability_Statement.pdf">Capability Statement (PDF)</a></li>
         <li><a href="licensing.html">Licensing</a></li>
         <li><a href="security-policy.html">Security</a></li>
-        <li><a href="#about">Studio</a></li>
+        <li><a href="#about">About</a></li>
         <li><a href="https://github.com/Ethan-da-Tech-Wizard" target="_blank" rel="noopener noreferrer">GitHub</a></li>
       </ul>
     </footer>
