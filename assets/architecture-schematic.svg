@@ -106,9 +106,9 @@
   <!-- Perimeter Top Header Bar -->
   <g transform="translate(36, 44)">
     <circle cx="6" cy="0" r="4" fill="#00f0ff" filter="url(#neonGlowCyan)"/>
-    <text x="18" y="4" fill="#00f0ff" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" letter-spacing="2">AIR-GAPPED CLIENT PERIMETER // ZERO CLOUD HARVESTING // 100% OFFLINE</text>
+    <text x="18" y="4" fill="#00f0ff" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700" letter-spacing="2">CLIENT PREMISES // NO CLOUD DEPENDENCY // OFFLINE-FIRST</text>
     <rect x="740" y="-10" width="135" height="22" rx="4" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="1"/>
-    <text x="748" y="5" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="600" letter-spacing="1">✓ ENCLAVE SECURED</text>
+    <text x="748" y="5" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="600" letter-spacing="1">✓ ON-PREMISE</text>
   </g>
 
   <!-- Connective Data Conduit: Node 1 -> Node 2 -->
@@ -134,7 +134,7 @@
     <polygon points="684,199 694,205 684,211" fill="#10b981"/>
     <!-- Flow Descriptor -->
     <rect x="608" y="172" width="76" height="18" rx="4" fill="#060c18" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1"/>
-    <text x="614" y="185" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600">AIRGAP SHIP</text>
+    <text x="614" y="185" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="600">OFFLINE DELIVERY</text>
   </g>
 
   <!-- ========================================== -->
@@ -166,7 +166,7 @@
 
     <!-- Bottom Tag -->
     <rect x="20" y="206" width="185" height="18" rx="4" fill="rgba(0, 240, 255, 0.08)" stroke="rgba(0, 240, 255, 0.25)" stroke-width="1"/>
-    <text x="28" y="219" fill="#00f0ff" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">⚡ ZERO THIRD-PARTY EGRESS</text>
+    <text x="28" y="219" fill="#00f0ff" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">⚡ NO CLOUD REQUIRED</text>
   </g>
 
   <!-- ========================================== -->
@@ -186,7 +186,7 @@
     <circle cx="50" cy="50" r="3.5" fill="#00f0ff" filter="url(#neonGlowCyan)"/>
 
     <!-- Title & Specs -->
-    <text x="24" y="104" fill="#ffffff" font-family="'Space Grotesk', sans-serif" font-size="19" font-weight="800" letter-spacing="-0.3">TWU Sovereign Core</text>
+    <text x="24" y="104" fill="#ffffff" font-family="'Space Grotesk', sans-serif" font-size="19" font-weight="800" letter-spacing="-0.3">TWU Local Core</text>
     <text x="24" y="126" fill="#c084fc" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="700">LOCAL NEURAL ENGINE</text>
 
     <!-- Capabilities -->
@@ -198,12 +198,12 @@
       <text x="14" y="36" fill="#f8fafc" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="600">Runs On In-House Metal / Mac</text>
 
       <circle cx="4" cy="54" r="2.5" fill="#10b981"/>
-      <text x="14" y="58" fill="#f8fafc" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="600">Zero Cloud API Subscriptions</text>
+      <text x="14" y="58" fill="#f8fafc" font-family="'Plus Jakarta Sans', sans-serif" font-size="12.5" font-weight="600">No Per-Token API Fees</text>
     </g>
 
     <!-- Bottom Sovereign Badge -->
     <rect x="20" y="234" width="204" height="22" rx="5" fill="rgba(168, 85, 247, 0.18)" stroke="#a855f7" stroke-width="1.2"/>
-    <text x="30" y="249" fill="#e9d5ff" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700" letter-spacing="1">⚡ 100% OFF-GRID CAPABLE</text>
+    <text x="30" y="249" fill="#e9d5ff" font-family="'JetBrains Mono', monospace" font-size="10.5" font-weight="700" letter-spacing="1">⚡ RUNS OFFLINE</text>
   </g>
 
   <!-- ========================================== -->
@@ -221,20 +221,20 @@
 
     <!-- Content -->
     <text x="22" y="98" fill="#f8fafc" font-family="'Space Grotesk', sans-serif" font-size="17" font-weight="700">Finished Output</text>
-    <text x="22" y="118" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600">VERIFIED DELIVERABLE</text>
+    <text x="22" y="118" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600">DOCUMENTED DELIVERABLE</text>
 
     <text x="22" y="146" fill="#94a3b8" font-family="'Plus Jakarta Sans', sans-serif" font-size="12">
-      • Production-Ready Software
+      • Working Software + Source
     </text>
     <text x="22" y="166" fill="#94a3b8" font-family="'Plus Jakarta Sans', sans-serif" font-size="12">
       • Automated Reports &amp; Pipelines
     </text>
     <text x="22" y="186" fill="#94a3b8" font-family="'Plus Jakarta Sans', sans-serif" font-size="12">
-      • 100% Client Ownership
+      • Yours, Per Agreement
     </text>
 
     <!-- Bottom Tag -->
     <rect x="20" y="206" width="185" height="18" rx="4" fill="rgba(16, 185, 129, 0.1)" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1"/>
-    <text x="26" y="219" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">✓ PERPETUAL CLIENT LICENSE</text>
+    <text x="26" y="219" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600">✓ SOURCE DELIVERED</text>
   </g>
 </svg>

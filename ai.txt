@@ -1,0 +1,4 @@
+# TWU LLC - AI/ML training and data-mining opt-out (Spawning ai.txt style)
+# License terms and contact: https://twu.software/licensing.html
+User-Agent: *
+Disallow: /

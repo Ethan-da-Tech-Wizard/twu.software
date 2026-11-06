@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Automated Access and Data Licensing | TWU LLC</title>
+<meta name="description" content="Terms for automated access to twu.software, including scraping, dataset building and AI training, and how to request a license.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="index, follow">
+<meta name="color-scheme" content="dark">
+<link rel="icon" type="image/svg+xml" href="/assets/twu-logo.svg">
+<style>
+:root{--bg:#06080f;--card:rgba(15,22,36,.82);--gold:#f59e0b;--gold2:#fbbf24;--em:#34d399;--rose:#fb7185;--text:#f8fafc;--muted:#a8b3c5;--sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg) radial-gradient(ellipse 70% 45% at 50% -10%,rgba(245,158,11,.15),transparent 70%),radial-gradient(ellipse 50% 40% at 85% 45%,rgba(16,185,129,.11),transparent 70%),radial-gradient(ellipse 55% 45% at 15% 65%,rgba(244,63,94,.11),transparent 70%);background-repeat:no-repeat;color:var(--muted);font:16px/1.7 var(--sans);min-height:100vh}
+a{color:var(--gold2);text-underline-offset:3px}a:hover{color:#fef08a}
+a:focus-visible,.skip:focus{outline:3px solid var(--em);outline-offset:3px;border-radius:3px}
+.skip{position:absolute;left:-999px;top:8px;background:#000;color:#fff;padding:8px 14px;z-index:10}.skip:focus{left:8px}
+.wrap{max-width:820px;margin:0 auto;padding:0 20px}
+header{border-bottom:1px solid rgba(245,158,11,.22);background:rgba(6,9,17,.9);padding:14px 0}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;font-weight:700;font-size:1.15rem}
+.brand img{width:36px;height:36px}
+nav a{margin-left:18px;font-size:.92rem;color:var(--muted);text-decoration:none}nav a:hover{color:var(--gold2)}
+main{padding:44px 0 56px}
+h1{color:#fff;font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.15;letter-spacing:-.02em;margin-bottom:10px}
+h1 em{font-style:normal;color:var(--gold2)}
+h2{color:#fff;font-size:1.25rem;margin:0 0 10px}
+.eyebrow{font:600 .75rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--rose);margin-bottom:10px}
+.lede{font-size:1.08rem;margin-bottom:26px}
+.panel{background:var(--card);border:1px solid rgba(245,158,11,.18);border-radius:10px;padding:22px 24px;margin-bottom:16px;box-shadow:0 8px 30px rgba(0,0,0,.35)}
+.panel.ok{border-color:rgba(52,211,153,.35)}.panel.no{border-color:rgba(251,113,133,.35)}
+.panel p+p,.panel ul+p,.panel p+ul{margin-top:10px}
+ul{padding-left:22px}li{margin:4px 0}
+code{font:.9em var(--mono);color:var(--em);background:rgba(255,255,255,.06);padding:1px 6px;border-radius:4px;word-break:break-word}
+.meta{font:.82rem var(--mono);color:#8b97ab;margin-top:22px}
+.btn{display:inline-block;margin-top:12px;padding:10px 20px;border:1px solid rgba(245,158,11,.5);border-radius:5px;color:#fff;text-decoration:none;font-weight:600;background:rgba(245,158,11,.14)}
+footer{border-top:1px solid rgba(245,158,11,.2);padding:22px 0;font-size:.85rem;color:#8b97ab}
+@media(max-width:560px){nav a{margin:0 14px 0 0}.panel{padding:18px}}
+@media print{body{background:#fff;color:#000}header,footer nav,.skip,.btn{display:none}.panel{background:#fff;border:1px solid #999;box-shadow:none;break-inside:avoid}h1,h2,.brand{color:#000}a{color:#000;text-decoration:underline}code{background:none;color:#000}.eyebrow,.meta,footer{color:#333}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><div class="wrap nav">
+<a class="brand" href="/"><img src="/assets/twu-logo.svg" alt="" width="36" height="36"><span>TWU LLC</span></a>
+<nav aria-label="Site"><a href="/">Home</a><a href="/capability.html">Capability</a><a href="/licensing.html">Licensing</a><a href="/security-policy.html">Security</a></nav>
+</div></header>
+<main id="main"><div class="wrap">
+<p class="eyebrow">Licensing notice</p>
+<h1>Automated Access and <em>Data Licensing</em></h1>
+<p class="lede">Read and share this site freely. If you want to collect it at scale, or use it to build or train something, please ask us first.</p>
+<section class="panel ok"><h2>People are welcome</h2>
+<p>The text, designs, code and documentation on twu.software are copyrighted by TWU LLC. You are free to read the site, link to it, and share those links. Ordinary quoting with attribution, and other uses that copyright law allows without permission, are not affected by this page.</p></section>
+<section class="panel no"><h2>Automated collection needs a written license</h2>
+<p>Without a written license from TWU LLC, we do not permit automated collection or reuse of this site's content. That includes:</p>
+<ul><li>scraping or crawling beyond what ordinary search indexing involves;</li>
+<li>building datasets or archives from our content;</li>
+<li>training, fine-tuning or evaluating AI or machine-learning models on it;</li>
+<li>using it for retrieval or as a source for generated output at scale; and</li>
+<li>bulk copying or republishing.</li></ul>
+<p>Conventional search engines that follow our <code>robots.txt</code> may index the site so that people can find it.</p></section>
+<section class="panel"><h2>Our machine-readable opt-outs</h2>
+<p>We publish these signals so automated systems can find them without reading this page:</p>
+<ul><li><a href="/robots.txt">/robots.txt</a></li><li><a href="/ai.txt">/ai.txt</a></li><li><a href="/.well-known/tdmrep.json">/.well-known/tdmrep.json</a> (W3C TDM Reservation Protocol)</li></ul>
+<p>Together, these are TWU LLC's express, machine-readable reservation of text-and-data-mining rights in the content of this site, including under Article 4 of EU Directive 2019/790 and similar laws elsewhere. The reservation applies to all of our content regardless of how it is accessed.</p></section>
+<section class="panel"><h2>How to request a license</h2>
+<p>Email <a href="mailto:ethan@twu.software">ethan@twu.software</a> and tell us:</p>
+<ul><li>who you are (person or organization, and a contact);</li>
+<li>what you want to collect;</li>
+<li>how you will use it; and</li>
+<li>the expected volume and frequency.</li></ul>
+<p>We will reply with whether we can license it and on what terms. TWU LLC may charge a license fee for commercial use or AI training. Fees are quoted per request, and nothing is owed unless you and TWU LLC both agree to a written license. Visiting or accessing this site does not create any payment obligation, and this page is not an offer that you accept by browsing.</p></section>
+<section class="panel"><h2>If access is unlicensed</h2>
+<p>We may block automated access that we believe is not licensed. TWU LLC reserves all of its legal rights, including under copyright law and contract law. We make no promise about any particular remedy, and we would much rather answer a polite email than do any of that.</p></section>
+<p class="meta">Last updated 2026-11-05</p>
+</div></main>
+<footer><div class="wrap">&copy; 2026 TWU LLC &middot; Mesa, Arizona &middot; <a href="mailto:ethan@twu.software">ethan@twu.software</a></div></footer>
+</body>
+</html>
