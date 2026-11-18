@@ -1,14 +1,24 @@
 <!DOCTYPE html>
+<!--
+  Program: twu.software - index.html
+  Programmer: Ethan-da-Tech-Wizard (written with Claude, an AI assistant)
+  Last Modified: 2026-11-18
+  Purpose: The home page of twu.software (TWU LLC): hero, federal registration facts, public work, services selector, offline-first diagram, fact-check summary, about and contact sections, styled by an inline stylesheet and driven by assets/site.js.
+-->
 <html lang="en">
 <head>
+  <!-- Page setup: character encoding, mobile scaling, title and search description. -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TWU LLC | Tech Wizards United · Private Software & Local AI Systems</title>
   <meta name="description" content="TWU LLC (Tech Wizards United): private software and local AI systems that run on your own hardware, with every published claim checked against company records. SAM.gov registered. Mesa, Arizona.">
+  <!-- Send only the site name to other sites when a link is followed. -->
   <meta name="referrer" content="strict-origin-when-cross-origin">
+  <!-- Security rules: only this site may supply scripts, fonts, images and network requests; inline styles are allowed. -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#06080f">
+  <!-- Canonical address and social-sharing (Open Graph and Twitter card) tags used for link previews. -->
   <link rel="canonical" href="https://twu.software/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="TWU LLC">
@@ -20,11 +30,14 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="TWU LLC, Tech Wizards United, on a dark star field">
   <meta name="twitter:card" content="summary_large_image">
+  <!-- Small logo shown in the browser tab. -->
   <link rel="icon" type="image/svg+xml" href="assets/twu-logo.svg">
   
+  <!-- Runs first: stops other sites from embedding this page in a frame (see assets/frame-guard.js). -->
   <script src="assets/frame-guard.js"></script>
   
   
+  <!-- Inline stylesheet (CSS) for the whole home page: colors, layout, animations and small-screen rules. -->
   <style>
     :root {
       --bg: #06080f;
@@ -919,7 +932,9 @@
     .value-row strong{display:block;color:var(--gold-bright);font-family:var(--font-display);font-size:1.02rem;margin-bottom:4px}
   </style>
 </head>
+<!-- Everything below is what visitors see. -->
 <body>
+  <!-- Keyboard shortcut link that lets keyboard and screen-reader users jump to the main content. -->
   <a class="skip" href="#main">Skip to content</a>
 
   <!-- Dynamic Celestial Space Canvas (Compiled Rust WebAssembly Kernel) -->
@@ -953,6 +968,7 @@
 
     <!-- Hero Section -->
     <main id="main" tabindex="-1">
+<!-- Hero: headline, one-line thesis, buttons and three value points. -->
 <section class="hero-container">
       <div class="hero-badge">
         <span class="badge-dot"></span>
@@ -996,6 +1012,7 @@
       </div>
     </div>
 
+    <!-- Federal and defense buyers: registration identifiers, classification and what is not done yet. -->
     <section class="fed-section" id="federal">
       <span class="matrix-label">Federal &amp; Defense Buyers</span>
       <h2 class="matrix-title">Registered in SAM.gov. A new company. What is not done yet is listed here.</h2>
@@ -1034,6 +1051,7 @@
         <a href="#contact" class="btn-outline">Contact</a>
       </div>
     </section>
+    <!-- Public work: short descriptions of open repositories with their honest status. -->
     <section class="fed-section" id="proof">
       <span class="matrix-label">Public Work</span>
       <h2 class="matrix-title">Work you can inspect.</h2>
@@ -1046,6 +1064,7 @@
       <p class="receipts-lede" style="margin-top:16px;"><a href="https://github.com/Ethan-da-Tech-Wizard" target="_blank" rel="noopener noreferrer">github.com/Ethan-da-Tech-Wizard<span class="sr-only"> (opens in a new tab)</span></a></p>
     </section>
 
+    <!-- Agencies and primes: contract types the company is open to, pilot offer and current status. -->
     <section class="fed-section" id="agencies">
       <span class="matrix-label">Agencies &amp; Primes</span>
       <h2 class="matrix-title">Working with agencies and primes.</h2>
@@ -1084,6 +1103,7 @@
         </div>
 
         <!-- Capability Selector List -->
+        <!-- Clickable list of the four services; assets/site.js fills the details pane below when one is chosen. -->
         <div class="cap-list" id="cap-list" role="group" aria-label="Services">
           <div class="cap-item active" data-index="0">
             <div class="cap-item-top">
@@ -1131,6 +1151,7 @@
         </div>
 
         <!-- Dynamic Inspector Pane -->
+        <!-- Details pane for the selected service (title, text, chips and spec grid), updated by assets/site.js. -->
         <div class="inspector-pane" id="inspector" role="region" aria-live="polite" aria-atomic="false" aria-label="Service details">
           <div>
             <div class="inspector-channel-bar">
@@ -1185,6 +1206,7 @@
     <!-- Studio Philosophy & Founder -->
     
 
+    <!-- Fact-check summary; assets/site.js fills in the summary line from claims.json. -->
     <section class="receipts-section" id="receipts">
       <span class="matrix-label">Fact-check log</span>
       <h2 class="matrix-title">Every factual statement here is checked.</h2>
@@ -1194,6 +1216,7 @@
       <noscript><p class="receipts-lede">JavaScript is off. Read the full list in <a href="claims.json">claims.json</a>.</p></noscript>
     </section>
 
+    <!-- About section: why the company exists and the founder background. -->
     <section class="monolith" id="about">
       <div>
         <h2>Why TWU exists.</h2>
@@ -1243,6 +1266,7 @@
     <!-- Footer -->
     </main>
 
+    <!-- Footer with site links. -->
     <footer>
       <div>© 2026 TWU LLC. Tech Wizards United · Mesa, Arizona</div>
       <ul class="footer-links">
@@ -1261,6 +1285,7 @@
 
   </div>
 
+  <!-- Main page script (deferred until the page is parsed): canvas star-field animation and page interactions. -->
   <script src="assets/site.js" defer></script>
 </body>
 </html>

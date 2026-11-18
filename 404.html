@@ -1,15 +1,26 @@
 <!DOCTYPE html>
+<!--
+  Program: twu.software - 404.html
+  Programmer: Ethan-da-Tech-Wizard (written with Claude, an AI assistant)
+  Last Modified: 2026-11-18
+  Purpose: The "page not found" (404) error page for the TWU LLC site, with a link back to the home page.
+-->
 <html lang="en">
 <head>
+<!-- Page setup: character encoding, mobile scaling, title and search-engine description. -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page not found | TWU LLC</title>
 <meta name="description" content="The page you were looking for could not be found.">
+<!-- Security rules: the browser may load resources only from this same site (plus inline styles), and forms are disabled. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'self'; form-action 'none'">
+<!-- Send only the site name (not the full address) to other sites when a link is followed. -->
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex">
 <meta name="color-scheme" content="dark">
+<!-- Small logo shown in the browser tab. -->
 <link rel="icon" type="image/svg+xml" href="/assets/twu-logo.svg">
+<!-- Page styling (CSS): colors, layout, fonts, small-screen rules and print rules for this page. -->
 <style>
 :root{--bg:#06080f;--card:rgba(15,22,36,.82);--gold:#f59e0b;--gold2:#fbbf24;--em:#34d399;--rose:#fb7185;--text:#f8fafc;--muted:#a8b3c5;--sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -42,19 +53,26 @@ footer{border-top:1px solid rgba(245,158,11,.2);padding:22px 0;font-size:.85rem;
 @media print{body{background:#fff;color:#000}header,footer nav,.skip,.btn{display:none}.panel{background:#fff;border:1px solid #999;box-shadow:none;break-inside:avoid}h1,h2,.brand{color:#000}a{color:#000;text-decoration:underline}code{background:none;color:#000}.eyebrow,.meta,footer{color:#333}}
 </style>
 </head>
+<!-- Everything below is what visitors see on the page. -->
 <body>
+<!-- Keyboard shortcut link that lets screen-reader and keyboard users jump past the menu. -->
 <a class="skip" href="#main">Skip to content</a>
+<!-- Top bar with the logo and site menu. -->
 <header><div class="wrap nav">
 <a class="brand" href="/"><img src="/assets/twu-logo.svg" alt="" width="36" height="36"><span>TWU LLC</span></a>
 <nav aria-label="Site"><a href="/">Home</a><a href="/capability.html">Capability</a><a href="/licensing.html">Licensing</a><a href="/security-policy.html">Security</a></nav>
 </div></header>
+<!-- Main content of the page. -->
 <main id="main"><div class="wrap">
+<!-- Small label above the heading, then the main headline and intro sentence. -->
 <p class="eyebrow">Error 404</p>
 <h1>This page <em>drifted off</em> course.</h1>
 <p class="lede">The address you followed does not exist on this site, or it has moved.</p>
+<!-- Box that tells the visitor what to do next and gives a button back to the home page. -->
 <div class="panel"><p>Head back to the front page and try again from there. If a link on our site led you here, we would appreciate a note at <a href="mailto:ethan@twu.software">ethan@twu.software</a>.</p>
 <a class="btn" href="/">Return to the home page</a></div>
 </div></main>
+<!-- Footer with copyright and contact address. -->
 <footer><div class="wrap">&copy; 2026 TWU LLC &middot; Mesa, Arizona &middot; <a href="mailto:ethan@twu.software">ethan@twu.software</a></div></footer>
 </body>
 </html>

@@ -1,15 +1,26 @@
 <!DOCTYPE html>
+<!--
+  Program: twu.software - fact-check.html
+  Programmer: Ethan-da-Tech-Wizard (written with Claude, an AI assistant)
+  Last Modified: 2026-11-18
+  Purpose: The public fact-check log page: it shows a summary and the list of claims from /claims.json, filled in by assets/factcheck.js.
+-->
 <html lang="en">
 <head>
+<!-- Page setup: character encoding, mobile scaling, title and search-engine description. -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fact-check log | TWU LLC</title>
 <meta name="description" content="Every factual statement published on twu.software, matched by a script to company records. Statements that cannot be matched are labeled, never hidden.">
+<!-- Security rules: the browser may load resources only from this same site (plus inline styles), and forms are disabled. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'self'; form-action 'none'">
+<!-- Send only the site name (not the full address) to other sites when a link is followed. -->
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="index, follow">
 <meta name="color-scheme" content="dark">
+<!-- Small logo shown in the browser tab. -->
 <link rel="icon" type="image/svg+xml" href="/assets/twu-logo.svg">
+<!-- Page styling (CSS): colors, layout, fonts, small-screen rules and print rules for this page. -->
 <style>
 :root{--bg:#06080f;--card:rgba(15,22,36,.82);--gold:#f59e0b;--gold2:#fbbf24;--em:#34d399;--rose:#fb7185;--text:#f8fafc;--muted:#a8b3c5;--sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -50,22 +61,33 @@ footer{border-top:1px solid rgba(245,158,11,.2);padding:22px 0;font-size:.85rem;
 .fc-tag.ok{color:#34d399}.fc-tag.plan{color:#fbbf24}.fc-tag.warn{color:#fb7185}
 </style>
 </head>
+<!-- Everything below is what visitors see on the page. -->
 <body>
+<!-- Keyboard shortcut link that lets screen-reader and keyboard users jump past the menu. -->
 <a class="skip" href="#main">Skip to content</a>
+<!-- Top bar with the logo and site menu. -->
 <header><div class="wrap nav">
 <a class="brand" href="/"><img src="/assets/twu-logo.svg" alt="" width="36" height="36"><span>TWU LLC</span></a>
 <nav aria-label="Site"><a href="/">Home</a><a href="/capability.html">Capability</a><a href="/fact-check.html">Fact check</a><a href="/licensing.html">Licensing</a><a href="/security-policy.html">Security</a></nav>
 </div></header>
+<!-- Main content of the page. -->
 <main id="main"><div class="wrap">
+<!-- Label, headline and explanation of what the fact-check script does. -->
 <p class="eyebrow">Fact-check log</p>
 <h1>Factual statements, <em>matched to records</em></h1>
 <p class="lede">A script, with no AI model involved, matches the factual statements published on this site to our own company records. This is a consistency check against records we keep, not an outside audit. Statements it cannot match to a record are labeled, never hidden.</p>
+<!-- Summary line; factcheck.js replaces this "Loading" text once claims.json has loaded. -->
 <p id="fc-summary" class="fc-summary" aria-live="polite">Loading the log…</p>
+<!-- Shown only when JavaScript is off, pointing to the raw data file. -->
 <noscript><p>JavaScript is off. The same list is in <a href="/claims.json">claims.json</a>.</p></noscript>
+<!-- Empty container; factcheck.js builds one section per topic here. -->
 <div id="fc-groups"></div>
+<!-- Note about where the data comes from. -->
 <p class="meta">Source data: <a href="/claims.json">/claims.json</a>. The check runs against records kept by TWU LLC; where a record is a project README, it is quoted in company records and was not re-measured.</p>
 </div></main>
+<!-- Footer with copyright and contact address. -->
 <footer><div class="wrap">&copy; 2026 TWU LLC &middot; Mesa, Arizona &middot; <a href="mailto:ethan@twu.software">ethan@twu.software</a></div></footer>
+<!-- Loads the script that fetches claims.json and fills in the list above (deferred until the page is parsed). -->
 <script src="/assets/factcheck.js" defer></script>
 </body>
 </html>

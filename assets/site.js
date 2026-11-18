@@ -1,3 +1,10 @@
+/*
+ * Program: twu.software - site.js
+ * Programmer: Ethan-da-Tech-Wizard (written with Claude, an AI assistant)
+ * Last Modified: 2026-11-18
+ * Purpose: Home-page script that draws the animated 3D constellation star-field on a canvas, runs the clickable services panel, builds the click-to-email link, and loads the fact-check summary from claims.json.
+ */
+
 
     // ============================================================================
     // CELESTIAL OBSERVATORY ENGINE (TWU LLC)
@@ -11,14 +18,21 @@
     // • Defense-grade Sanctuary Shield: mathematically 0.0 opacity across hero text and cards.
     // • Shooting stars / cosmic meteors engine.
 
+    /**
+     * NOTE: the banner above says 950 particles, but initAmbient3D() below actually creates 1,850.
+     * The drawing surface (<canvas>) from index.html and its 2D drawing tool, called ctx.
+     */
     const canvas = document.getElementById('space-canvas');
     const ctx = canvas.getContext('2d');
+    // Current canvas size, and the mouse state (raw target position plus a smoothed position that eases toward it).
     let width = 0, height = 0;
     let mouse = { x: -1000, y: -1000, targetX: 0, targetY: 0, smoothX: 0, smoothY: 0 };
+    // Timing and scroll state: the time of the last frame and the page's vertical scroll amount.
     let lastTime = performance.now();
     let scrollY = window.scrollY || 0;
 
     // Completely random celestial starting angle on each session (0 to 2*PI)
+    // Camera angles for the star sphere: yaw (turn left/right), pitch (tilt) and roll, plus a running clock for gentle motion.
     let celestialYaw = Math.random() * Math.PI * 2.0;
     let targetYaw = null;
     let celestialPitch = 0.36;
@@ -26,6 +40,7 @@
     let timeAccumulator = 0.0;
 
     // Star Colors: The Master Triad Spectra (Gold, Emerald Green, Rose Pink & Diamond White)
+    // Palette of star colors as red/green/blue numbers (0-255); stars pick one by its index.
     const STAR_COLORS = [
       { r: 240, g: 245, b: 255 },  // 0: Celestial Starlight White (Rigel, Sirius, Deneb)
       { r: 254, g: 240, b: 138 },  // 1: Warm Electrum Gold (Vega, Capella)
@@ -36,6 +51,10 @@
       { r: 244, g: 63,  b: 94 }    // 6: Deep Rose Magenta (Alphecca)
     ];
 
+    /**
+     * Returns the radius of the imaginary sphere that the stars sit on; it grows with the window width but is never below 1200.
+     * @returns {number} sphere radius in pixels
+     */
     function getSphereRadius() {
       return Math.max(1200, (width || 1440) * 0.92);
     }
@@ -44,10 +63,20 @@
     // 31 CANONICAL GEOMETRIC CONSTELLATIONS (Ordered by Astronomical Seasons)
     // Summer (225°-305°) -> Autumn (315°-35°) -> Winter (45°-125°) -> Spring (135°-215°)
     // ============================================================================
+    /**
+     * Builds and returns the list of constellations. Each has an id, a season, a center point on the sphere,
+     * stars (offsets dx/dy from the center, size r, twinkle phase, color index, name) and lines (pairs of star indexes to connect).
+     * @returns {Array<object>} the constellation list
+     */
     function build3DConstellations() {
       const constellations = [];
       const R = getSphereRadius();
 
+      /**
+       * Converts two angles (theta around, phi up/down, in degrees) into a point on the sphere plus two direction vectors lying flat against the sphere there.
+       * The star offsets (dx, dy) are laid out along those vectors.
+       * @param {number} thetaDeg horizontal angle  @param {number} phiDeg vertical angle  @param {number} r sphere radius
+       */
       function sc(thetaDeg, phiDeg, r = R) {
         const t = (thetaDeg * Math.PI) / 180;
         const p = (phiDeg * Math.PI) / 180;
@@ -517,15 +546,22 @@
         label: "CEPHEUS", desc: "The King · House of Cepheus Celestial Pentagram"
       });
 
+      // Hand the finished list back to the caller.
       return constellations;
     }
 
+    // Build the constellations once now; initCanvas() rebuilds them when the window is resized.
     let CONSTELLATIONS_3D = build3DConstellations();
 
     // ============================================================================
     // 1,850 AMBIENT STARDUST PARTICLES (Rich, Multi-Color Cosmic Field)
     // ============================================================================
+    // List of the many tiny background stars.
     let ambient3D = [];
+    /**
+     * Fills ambient3D with 1,850 randomly placed background stars, each with a random size, twinkle speed and color.
+     * Each star's position comes from two random angles and a random distance from the center.
+     */
     function initAmbient3D() {
       ambient3D = [];
       const R = getSphereRadius();
@@ -550,7 +586,9 @@
     // ============================================================================
     // COSMIC METEORS & SHOOTING STARS ENGINE
     // ============================================================================
+    // List of shooting stars that are currently on screen.
     let meteors = [];
+    // Each frame, with a small random chance (and at most 3 on screen), start a new meteor near the top of the screen moving diagonally down.
     function maybeSpawnMeteor() {
       if (Math.random() < 0.024 && meteors.length < 3) {
         const startX = Math.random() * width;
@@ -569,6 +607,10 @@
       }
     }
 
+    /**
+     * Moves every meteor, removes the ones that faded or left the screen, and draws the rest as a colored fading streak with a bright head.
+     * @param {number} dt seconds since the previous frame
+     */
     function updateAndDrawMeteors(dt) {
       maybeSpawnMeteor();
       for (let i = meteors.length - 1; i >= 0; i--) {
@@ -608,6 +650,11 @@
     // ============================================================================
     // 3D SPHERICAL PROJECTION PIPELINE
     // ============================================================================
+    /**
+     * Turns a 3D point on the star sphere into a 2D screen position: rotates it by yaw, pitch and roll, shifts it a little with the mouse,
+     * then applies perspective (farther points are smaller). Returns null when the point is too close to the camera to draw.
+     * @returns {{sx:number, sy:number, scale:number, alpha:number, z:number}|null} screen x/y, size scale, brightness and depth
+     */
     function project3D(x, y, z, cx, cy) {
       const fov = 850;
 
@@ -649,15 +696,19 @@
       return { sx, sy, scale, alpha, z: z3 };
     }
 
+    // Respect the visitor's 'reduce motion' setting: if on, the animation does not keep running.
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // Ask the browser to draw the next frame, unless one is already queued, the tab is hidden, or reduced motion is on.
     let frameRequested = false;
     function scheduleFrame() {
       if (frameRequested || document.hidden || reduceMotion.matches) return;
       frameRequested = true;
       requestAnimationFrame(function () { frameRequested = false; renderCanvas(); });
     }
+    // When the tab becomes visible again, restart the animation loop.
     document.addEventListener('visibilitychange', function () { if (!document.hidden) scheduleFrame(); });
 
+    // Sizes the canvas to the window and rebuilds the stars (called at start and on resize).
     function initCanvas() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
@@ -668,10 +719,12 @@
     // ============================================================================
     // MAIN RENDER LOOP
     // ============================================================================
+    // Draws one animation frame: advances the camera, paints the soft background glows, the background stars, meteors and constellations, then schedules the next frame.
     function renderCanvas() {
       ctx.clearRect(0, 0, width, height);
 
       const now = performance.now();
+      // dt = seconds since last frame, capped at 0.05 so a long pause does not cause a big jump.
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
       timeAccumulator += dt;
@@ -699,10 +752,12 @@
       mouse.smoothX += (mouse.targetX - mouse.smoothX) * 0.05;
       mouse.smoothY += (mouse.targetY - mouse.smoothY) * 0.05;
 
+      // Screen center that the sphere is projected around (shifts slightly as the page scrolls).
       const cx = width * 0.5;
       const cy = height * 0.36 - (scrollY * 0.08);
 
       // Deep Cosmic Gold, Emerald & Rose Nebula Background Gases
+      // Three faint colored radial glows (gold, green, rose) painted behind the stars like nebula gas.
       const bgGrad1 = ctx.createRadialGradient(cx - 360, cy - 180, 100, cx - 360, cy - 180, 950);
       bgGrad1.addColorStop(0, 'rgba(245, 158, 11, 0.038)');
       bgGrad1.addColorStop(1, 'rgba(0, 0, 0, 0)');
@@ -761,6 +816,7 @@
         const con = CONSTELLATIONS_3D[c];
         const center = con.center;
 
+        // Project each star of this constellation to the screen and total up positions to find the group's average depth.
         const projectedStars = [];
         let avgZ = 0;
         let avgX = 0;
@@ -804,6 +860,7 @@
         ctx.shadowBlur = 0;
         ctx.lineWidth = 1.45;
         for (let l = 0; l < con.lines.length; l++) {
+          // Each line is a pair of star indexes; look up the two projected stars.
           const [iA, iB] = con.lines[l];
           const pA = projectedStars[iA];
           const pB = projectedStars[iB];
@@ -812,6 +869,7 @@
             ctx.moveTo(pA.sx, pA.sy);
             ctx.lineTo(pB.sx, pB.sy);
 
+            // Line color depends on the constellation's season; anything else is white.
             if (con.season === "WINTER") {
               ctx.strokeStyle = `rgba(254, 240, 138, ${conAlpha * 0.90})`;
             } else if (con.season === "SPRING") {
@@ -861,25 +919,37 @@
     }
 
     // Window & Viewport Listeners
+    // Resize: rebuild the canvas; if motion is reduced, draw one still frame since no loop is running.
     window.addEventListener('resize', function () { initCanvas(); if (reduceMotion.matches) renderCanvas(); });
+    // Remember how far the page has scrolled.
     window.addEventListener('scroll', () => {
       scrollY = window.scrollY || 0;
     });
+    // Track the mouse position for the parallax effect.
     window.addEventListener('mousemove', e => {
       mouse.targetX = e.clientX;
       mouse.targetY = e.clientY;
     });
+    // Park the mouse far off screen when it leaves the window so the effect stops.
     window.addEventListener('mouseleave', () => {
       mouse.targetX = -1000;
       mouse.targetY = -1000;
     });
     // Direct channel controller (builds the mailto address at click time)
+    /**
+     * Builds the contact email address from two pieces at click time (so it is not written as one plain string in the page).
+     * @returns {string} the email address
+     */
     function getCleanAddress() {
       const u = 'ethan';
       const d = 'twu.software';
       return u + '@' + d;
     }
 
+    /**
+     * Sets the email button's mailto: link once, the first time the visitor hovers, focuses or touches it.
+     * @param {HTMLElement} el the contact button
+     */
     function primeEmailLink(el) {
       if (el && !el.dataset.primed) {
         el.href = 'mailto:' + getCleanAddress();
@@ -887,6 +957,10 @@
       }
     }
 
+    /**
+     * Click handler for the contact button: copies the address to the clipboard, shows a short 'Copied' message for about 3 seconds, then opens the visitor's mail program.
+     * @param {Event} e the click event
+     */
     function openDirectChannel(e) {
       if (e) e.preventDefault();
       const addr = getCleanAddress();
@@ -906,6 +980,10 @@
     // ============================================================================
     // CAPABILITY MATRIX WORKSTATION CONTROLLER
     // ============================================================================
+    /**
+     * The four services shown in the services panel. Each entry holds the text, badges, spec rows and button for one service,
+     * in the same order as the .cap-item elements in index.html.
+     */
     const CAPABILITIES = [
       {
         channel: "Custom software",
@@ -969,11 +1047,17 @@
       }
     ];
 
+    // Remember which service is selected.
     let currentCapabilityIndex = 0;
+    /**
+     * Highlights the chosen service in the list, then (after a 120 ms fade) swaps the details pane to show that service's text, chips, specs and button.
+     * @param {number} index position in CAPABILITIES (ignored if out of range)
+     */
     function selectCapability(index) {
       if (index < 0 || index >= CAPABILITIES.length) return;
       currentCapabilityIndex = index;
 
+      // Mark the chosen item as active (and its pill VIEWING); reset the others to OFFERED.
       const items = document.querySelectorAll('.cap-item');
       items.forEach((item, i) => {
         const pill = item.querySelector('.cap-status-pill');
@@ -986,6 +1070,7 @@
         }
       });
 
+      // Fade the details pane, fill in the new content, then fade it back.
       const pane = document.getElementById('inspector');
       if (pane) {
         pane.classList.add('swapping');
@@ -1005,10 +1090,12 @@
           if (insBody) insBody.textContent = cap.body;
 
           if (insBadges) {
+            // Build one chip per badge. (The text comes from the CAPABILITIES list above, not from visitors.)
             insBadges.innerHTML = cap.badges.map(b => `<span class="ins-chip">${b}</span>`).join('');
           }
 
           if (insSpecs) {
+            // Build the grid of key/value spec rows.
             insSpecs.innerHTML = cap.specs.map(s => `
               <div>
                 <div class="spec-key">${s.key}</div>
@@ -1032,12 +1119,14 @@
     renderCanvas();
 
     // ---- Event wiring (no inline handlers; keeps the CSP free of 'unsafe-inline' for scripts)
+    // Make each service item clickable and keyboard-friendly (Tab to focus, Enter or Space to choose) and add the accessibility attributes.
     document.querySelectorAll('.cap-item').forEach(function (el) {
       el.addEventListener('click', function () { selectCapability(parseInt(el.dataset.index, 10)); });
       el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button'); el.setAttribute('aria-pressed', el.classList.contains('active') ? 'true' : 'false'); el.setAttribute('aria-controls', 'inspector');
       el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCapability(parseInt(el.dataset.index, 10)); } });
     });
     (function () {
+      // Wire up the contact email button: click copies and opens mail; hover/focus/touch prepare the mailto link.
       var btn = document.getElementById('contact-email-btn');
       if (!btn) return;
       btn.addEventListener('click', openDirectChannel);
@@ -1049,12 +1138,16 @@
 
     // ---- Receipts: this page audits itself from /claims.json (same origin)
     (function () {
+      // Find the summary (and optional list) elements; if the summary is missing this page has no fact-check block, so stop.
       var list = document.getElementById('receipts-list'), sum = document.getElementById('receipts-summary');
       if (!sum) return;
+      // Friendlier names for the status codes used in claims.json.
       var LABEL = { VERIFIED: 'MATCHED', PLAN: 'PLAN', UNVERIFIED: 'NOT YET MATCHED', FAILED: 'FAILED', STALE: 'STALE' };
+      // Download claims.json (always re-check, no stale cache), then show the counts. Failures are handled in the catch() below.
       fetch('claims.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (d) {
         sum.textContent = d.verified + ' published statements matched to company records by script (a fact can appear on more than one page) · ' + d.plan + ' plans (not claims of fact) · ' + d.unverified + ' not yet matched to a record, labeled · ' + d.failed + ' failed · checked ' + d.checked;
         if (!list) return;
+        // Build the claim list off-screen first, showing at most the first 80 claims, then add it to the page in one step.
         var frag = document.createDocumentFragment();
         d.claims.slice(0, 80).forEach(function (c) {
           var li = document.createElement('li'), tag = document.createElement('span');
@@ -1068,6 +1161,7 @@
         });
         list.appendChild(frag);
         if (d.claims.length > 80) { var more = document.createElement('li'); more.textContent = 'Showing 80 of ' + d.claims.length + '. See claims.json for the full list.'; list.appendChild(more); }
+      // If loading failed, show a message with a link to open the raw file.
       }).catch(function () {
         sum.textContent = '';
         sum.appendChild(document.createTextNode('The log could not be loaded. '));
