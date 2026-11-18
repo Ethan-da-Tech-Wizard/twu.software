@@ -1,3 +1,11 @@
+// ==============================================================================
+// Program: site.js
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Core client-side interactivity engine for TWU software website.
+//          Handles dynamic navigation state, modal dialogues, interactive architecture
+//          diagrams, search filtering, and smooth scroll behaviors.
+// ==============================================================================
 
     // ============================================================================
     // CELESTIAL OBSERVATORY ENGINE (TWU LLC)

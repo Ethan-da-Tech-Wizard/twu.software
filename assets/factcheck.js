@@ -1,3 +1,9 @@
+// ==============================================================================
+// Program: factcheck.js
+// Programmer: Ethan-da-Tech-Wizard
+// Last Modified: November 18, 2026
+// Purpose: Interactive fact-checking ledger viewer and verification claim search utility.
+// ==============================================================================
 (function () {
   var sum = document.getElementById('fc-summary'), wrap = document.getElementById('fc-groups');
   if (!sum || !wrap) return;
