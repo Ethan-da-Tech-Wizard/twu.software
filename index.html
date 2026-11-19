@@ -6,17 +6,33 @@
            Presents software engineering capabilities, project architecture cards,
            interactive technology stack badges, and client engagement workflows.
 ============================================================================== -->
+
+<!-- How this file fits the site: the homepage of twu.software (served by GitHub Pages; CNAME and .nojekyll in the repo root).
+     One self-contained page: all CSS is in the <style> block below, behaviour comes from two scripts:
+     assets/frame-guard.js (loaded first, blocks being framed) and assets/site.js (deferred, draws the star canvas, runs the services
+     selector, the e-mail button and the fact-check receipts). Sister pages: capability.html, licensing.html, security-policy.html,
+     fact-check.html (full claims log from claims.json) and 404.html.
+     Content policy: every factual statement on this page is tracked in claims.json and matched to company records by script, so edit text
+     here and in claims.json together. No third-party requests are made; the Content-Security-Policy meta tag below enforces that.
+     To test: serve the folder statically (for example python3 -m http.server) and open /; keyboard-tab through the page to see the skip link and focus rings.
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TWU LLC | Tech Wizards United · Private Software & Local AI Systems</title>
+
+  <!-- Search/preview snippet; keep in sync with the visible claims. -->
   <meta name="description" content="TWU LLC (Tech Wizards United): private software and local AI systems that run on your own hardware, with every published claim checked against company records. SAM.gov registered. Mesa, Arizona.">
   <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <!-- Content-Security-Policy delivered via <meta> (GitHub Pages cannot set headers): only same-origin resources and scripts are allowed. 'unsafe-inline' is allowed for styles only, because this page uses a <style> block and style attributes; no inline <script> exists, which is why event handlers are attached in site.js. -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#06080f">
+
+  <!-- Canonical URL and Open Graph / Twitter card tags for link previews (image is assets/og.jpg, 1200x630). -->
   <link rel="canonical" href="https://twu.software/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="TWU LLC">
@@ -30,10 +46,13 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="assets/twu-logo.svg">
   
+  <!-- Loaded synchronously in <head> (no defer) so the anti-framing check runs before anything is shown. -->
   <script src="assets/frame-guard.js"></script>
   
   
   <style>
+
+    /* Design tokens. Palette = "Master Triad": gold (primary accent), emerald (positive/verified) and rose (cautions/unverified); each has a -bright variant for text and a -glow variant for shadows. --bg-* are panel surfaces (translucent so the star canvas shows through), --border-panel is the faint gold hairline used on every card. */
     :root {
       --bg: #06080f;
       --bg-panel: rgba(10, 15, 26, 0.75);
@@ -75,17 +94,20 @@
       --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
     }
 
+    /* Smooth in-page scrolling. scroll-padding-top (100px) keeps anchor targets from hiding under the sticky header. */
     html {
       scroll-behavior: smooth;
       scroll-padding-top: 100px;
     }
 
+    /* Reset: zero margins and border-box sizing everywhere (the same reset the other pages use). */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
+    /* Page base. Three large, faint radial gradients (gold top, emerald right, rose left) form the nebula glow and stay fixed while content scrolls (background-attachment: fixed). overflow-x:hidden prevents sideways scrolling; position:relative anchors z-index stacking. */
     body {
       background-color: var(--bg);
       background-image: 
@@ -103,6 +125,8 @@
     }
 
     /* Celestial Observatory Canvas */
+
+    /* Full-viewport canvas that assets/site.js paints. position:fixed + z-index 0 keeps it behind the content (.wrap is z-index 1), and pointer-events:none lets every click/hover reach the page above it. */
     #space-canvas {
       position: fixed;
       top: 0;
@@ -114,6 +138,7 @@
       opacity: 0.95;
     }
 
+    /* Central content column: max 1140px, relatively positioned so it stacks above the canvas. */
     .wrap {
       position: relative;
       z-index: 1;
@@ -123,6 +148,8 @@
     }
 
     /* Navigation */
+
+    /* Header and navigation bar (brand mark left, links right). Hidden when printing (see the print block). */
     header {
       padding: 18px 0;
       border-bottom: 1px solid rgba(245, 158, 11, 0.20);
@@ -212,6 +239,7 @@
       box-shadow: 0 0 24px rgba(245, 158, 11, 0.38);
     }
 
+    /* Narrow-screen nav tweaks (720px and below). */
     @media (max-width: 720px) {
       .nav-bar {
         padding: 8px 16px;
@@ -229,6 +257,8 @@
     }
 
     /* Hero */
+
+    /* Hero: headline, thesis, calls to action and the three-point value row. */
     .hero-container {
       padding: 110px 0 80px;
       text-align: center;
@@ -284,6 +314,8 @@
       filter: drop-shadow(0 0 28px rgba(245, 158, 11, 0.35));
       animation: celestialSpectrumRoll 14s ease-in-out infinite alternate;
     }
+
+    /* Animated gold-emerald-rose sweep across the accent headline (14 s, alternating direction). Disabled by the prefers-reduced-motion rule further down. */
     @keyframes celestialSpectrumRoll {
       0% {
         background-position: 0% 50%;
@@ -301,6 +333,8 @@
       margin-left: auto;
       margin-right: auto;
     }
+
+    /* Hero buttons. .btn-solid is the primary action (pulsing beacon animation, defined by btnSolidBeacon), .btn-outline the secondary. */
     .hero-actions {
       display: flex;
       justify-content: center;
@@ -361,6 +395,7 @@
       box-shadow: 0 0 24px rgba(244, 63, 94, 0.35);
     }
 
+    /* Trust strip: four short facts (registration, entity, offline design, no trackers) shown as icon + text items. */
     /* Trust Baseline */
     .trust-strip {
       display: grid;
@@ -386,6 +421,7 @@
       flex-shrink: 0;
     }
 
+    /* Services workstation: the two-pane widget (list on the left, inspector on the right) driven by selectCapability() in assets/site.js. */
     /* THE SERVICES WORKSTATION */
     .matrix-section {
       padding-bottom: 110px;
@@ -426,6 +462,7 @@
       letter-spacing: 1px;
     }
 
+    /* Two-column grid: 360px selector list and a flexible inspector. Corner brackets are drawn with ::before (top-left, gold) and ::after (bottom-right, emerald); they are decoration only (pointer-events:none). */
     .workstation {
       display: grid;
       grid-template-columns: 360px 1fr;
@@ -463,6 +500,7 @@
       z-index: 10;
     }
 
+    /* Below 900px the workstation becomes a single column (a later, stricter rule near the end of the file also adds minmax(0,1fr) to stop long text widening it). */
     @media (max-width: 900px) {
       .workstation {
         grid-template-columns: 1fr;
@@ -470,6 +508,8 @@
     }
 
     /* Top Telemetry Header Bar across the workstation */
+
+    /* Status bar on top of the workstation ("CAPABILITY MATRIX" + telemetry text). #ws-module-id inside it is rewritten by site.js. */
     .workstation-topbar {
       grid-column: 1 / -1;
       display: flex;
@@ -511,6 +551,7 @@
       font-weight: 600;
     }
 
+    /* Selector list. .cap-item buttons get tabindex, role and aria-pressed from site.js; the .active class marks the one shown in the inspector and draws the gold bar via ::before. */
     .cap-list {
       background: rgba(5, 9, 20, 0.50);
       border-right: 1px solid rgba(245, 158, 11, 0.15);
@@ -544,6 +585,8 @@
       background: linear-gradient(180deg, var(--gold-bright), var(--emerald-bright));
       box-shadow: 0 0 12px var(--gold-glow);
     }
+
+    /* Row layout inside each selector item: index number, service name and status pill (site.js switches the pill between OFFERED and VIEWING). */
     .cap-item-top {
       display: flex;
       align-items: center;
@@ -596,6 +639,7 @@
       line-height: 1.5;
     }
 
+    /* Inspector pane. site.js adds .swapping for ~120 ms while it replaces the text, giving a brief fade between services. */
     .inspector-pane {
       padding: 38px 40px;
       display: flex;
@@ -665,6 +709,8 @@
       border-radius: 2px;
       letter-spacing: 0.8px;
     }
+
+    /* Specification grid (key/value pairs). The colour modifier classes .cyan/.green/.violet are named in site.js's CAPABILITIES data; they map to gold, emerald and rose (the 'cyan' name is a leftover from an earlier palette). */
     .spec-matrix {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -693,6 +739,8 @@
     .spec-val.violet { color: var(--pink-bright); }
 
     /* Architecture Blueprint Frame */
+
+    /* Architecture diagram frame around assets/architecture-schematic.svg. */
     .arch-frame {
       margin-bottom: 110px;
       background: var(--bg-panel);
@@ -716,6 +764,8 @@
     }
 
     /* Founder & Philosophy Monolith */
+
+    /* "About" two-column block (story left, background card right); collapses to one column at 860px. */
     .monolith {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
@@ -767,6 +817,8 @@
     }
 
     /* Direct Contact Monolith */
+
+    /* Contact band with the e-mail badge (#contact-email-btn) and GitHub link. */
     .contact-monolith {
       background: linear-gradient(180deg, rgba(15, 23, 42, 0.60) 0%, rgba(3, 7, 18, 0.70) 100%);
       border: 1px solid rgba(245, 158, 11, 0.32);
@@ -823,6 +875,7 @@
       box-shadow: 0 0 28px rgba(245, 158, 11, 0.35);
     }
 
+    /* Footer link row. */
     footer {
       border-top: 1px solid var(--border-panel);
       padding: 36px 0;
@@ -850,11 +903,15 @@
   
     
         /* Header fit (system fonts are wider than the original web fonts) */
+
+    /* Header fixes added later: keep the nav on one line and hide the long subtitle (1180px) and the text links (960px) as the viewport narrows, leaving only the Contact button. */
     .brand-title, .nav-link, .btn-nav { white-space: nowrap; }
     .nav-bar { gap: 20px; }
     .brand-mark > div { min-width: 0; }
     @media (max-width: 1180px) { .brand-subtitle { display: none; } .nav-actions { gap: 20px; } }
     @media (max-width: 960px) { .nav-link { display: none; } }
+
+    /* Federal-buyer, public-work and fact-check receipts sections: card grids (.fed-grid / .fed-card) and the scrollable receipts list that site.js fills from claims.json. Minified style kept as written; the tag colour classes .ok/.plan/.warn mirror the claim statuses. */
     /* Federal + Receipts sections */
     .fed-section,.receipts-section{max-width:1180px;margin:0 auto;padding:72px 24px 24px;position:relative;z-index:2}
     .fed-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:22px}
@@ -876,15 +933,20 @@
     .receipts-list .tag{font-family:var(--font-mono);font-size:.7rem;border-radius:6px;padding:2px 7px;margin-right:8px;border:1px solid currentColor}
     .receipts-list .topic{font-family:var(--font-mono);font-size:.7rem;color:var(--text-dim);margin-right:8px;text-transform:uppercase;letter-spacing:.06em}
     .tag.ok{color:var(--emerald-bright)}.tag.plan{color:var(--gold-bright)}.tag.warn{color:var(--pink-bright)}
+
+    /* Accessibility: visible keyboard focus ring (gold), and for users who ask the OS for reduced motion all animation, transitions and smooth scrolling are switched off (this also stops the hero gradient sweep). */
     a:focus-visible,button:focus-visible{outline:2px solid var(--gold-bright);outline-offset:3px}
     @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
   
+    /* Skip link (visible only on focus), screen-reader-only utility, and focus styling for the service list; main:focus has no outline because #main is only focused programmatically after the skip link. */
     .skip{position:absolute;left:-999px;top:0;background:#fbbf24;color:#07090e;padding:8px 14px;z-index:100;font-weight:600}
     .skip:focus{left:8px;top:8px}
     .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
     .cap-item:focus-visible{outline:2px solid var(--gold-bright);outline-offset:-2px}
     main:focus{outline:none}
     .receipts-list li{overflow-wrap:anywhere}
+
+    /* Print styles: hide the canvas, navigation and buttons, force black-on-white, and append each external link's URL after its text so a paper copy is still useful. */
     @media print{
       #space-canvas,.nav-actions,.hero-actions,.workstation-topbar,.btn-solid,.btn-outline,.c-badge,header{display:none!important}
       body{background:#fff!important;color:#000!important}
@@ -893,6 +955,7 @@
       section{break-inside:avoid}
     }
   
+    /* Mobile fixes from layout QA: these later rules override earlier ones with equal specificity, which is why they sit at the end of the style block. */
     /* Mobile fixes from layout QA */
     .matrix-title{line-height:1.15}
     .hero-title{text-wrap:balance}
@@ -927,14 +990,20 @@
     .value-row strong{display:block;color:var(--gold-bright);font-family:var(--font-display);font-size:1.02rem;margin-bottom:4px}
   </style>
 </head>
+
+<!-- Page body. The visible order is: skip link, star canvas, header/nav, <main> (hero, trust strip, federal, public work, agencies, services workstation, architecture diagram, fact-check receipts, about, contact), footer. -->
 <body>
+
+  <!-- Skip link: first focusable element so keyboard users can jump past the navigation (styled by .skip). -->
   <a class="skip" href="#main">Skip to content</a>
 
+  <!-- Background canvas painted by assets/site.js (plain 2D canvas JavaScript; the "Rust WebAssembly" wording below is stale, no WebAssembly is used). aria-hidden because it is decorative. -->
   <!-- Dynamic Celestial Space Canvas (Compiled Rust WebAssembly Kernel) -->
   <canvas id="space-canvas" aria-hidden="true"></canvas>
 
   <div class="wrap">
 
+    <!-- Sticky header: logo, name and in-page links (#workstation, #architecture, #federal, #about, #contact) plus fact-check.html. -->
     <!-- Navigation Header -->
     <header>
       <div class="nav-bar">
@@ -959,6 +1028,7 @@
       </div>
     </header>
 
+    <!-- Hero. #main is the skip-link target; tabindex=-1 lets script/skip link focus it without adding it to the tab order. -->
     <!-- Hero Section -->
     <main id="main" tabindex="-1">
 <section class="hero-container">
@@ -984,6 +1054,7 @@
       </ul>
 </section>
 
+    <!-- Trust strip: short factual badges. These statements are covered by claims.json entries. -->
     <!-- Trust Baseline -->
     <div class="trust-strip">
       <div class="trust-item">
@@ -1004,6 +1075,7 @@
       </div>
     </div>
 
+    <!-- Federal and defense buyers: registration identifiers and an honest list of what is not done yet. Plain text cards (.fed-card). -->
     <section class="fed-section" id="federal">
       <span class="matrix-label">Federal &amp; Defense Buyers</span>
       <h2 class="matrix-title">Registered in SAM.gov. A new company. What is not done yet is listed here.</h2>
@@ -1042,6 +1114,8 @@
         <a href="#contact" class="btn-outline">Contact</a>
       </div>
     </section>
+
+    <!-- Public work: cards for open repositories. Counts and dates here go stale; update them together with claims.json. -->
     <section class="fed-section" id="proof">
       <span class="matrix-label">Public Work</span>
       <h2 class="matrix-title">Work you can inspect.</h2>
@@ -1054,6 +1128,7 @@
       <p class="receipts-lede" style="margin-top:16px;"><a href="https://github.com/Ethan-da-Tech-Wizard" target="_blank" rel="noopener noreferrer">github.com/Ethan-da-Tech-Wizard<span class="sr-only"> (opens in a new tab)</span></a></p>
     </section>
 
+    <!-- Agencies and primes: what we are open to, the pilot offer and current status. -->
     <section class="fed-section" id="agencies">
       <span class="matrix-label">Agencies &amp; Primes</span>
       <h2 class="matrix-title">Working with agencies and primes.</h2>
@@ -1064,6 +1139,7 @@
       </div>
     </section>
 
+    <!-- Services workstation. Left list (.cap-item, data-index 0..3) and right inspector (#inspector) are kept in sync by selectCapability(); the first item and the inspector markup are pre-rendered with the first service so the page is complete without JavaScript. -->
     <!-- THE CAPABILITY MATRIX WORKSTATION -->
     <section class="matrix-section" id="workstation">
       <div class="matrix-header">
@@ -1091,6 +1167,7 @@
           </div>
         </div>
 
+        <!-- Selector list. Order and data-index values must match the CAPABILITIES array in assets/site.js. -->
         <!-- Capability Selector List -->
         <div class="cap-list" id="cap-list" role="group" aria-label="Services">
           <div class="cap-item active" data-index="0">
@@ -1138,6 +1215,7 @@
           </div>
         </div>
 
+        <!-- Inspector pane (aria-live=polite so screen readers announce the new service when it changes). The ids ins-tag, ins-title, ins-body, ins-badges, ins-specs and ins-action are rewritten by site.js. -->
         <!-- Dynamic Inspector Pane -->
         <div class="inspector-pane" id="inspector" role="region" aria-live="polite" aria-atomic="false" aria-label="Service details">
           <div>
@@ -1180,6 +1258,7 @@
       </div>
     </section>
 
+    <!-- Architecture diagram: an SVG image (assets/architecture-schematic.svg) showing the offline-first layout; the alt text names it for screen readers. -->
     <!-- Architecture Blueprint Frame -->
     <section class="arch-frame" id="architecture">
       <div class="arch-frame-head">
@@ -1193,6 +1272,7 @@
     <!-- Studio Philosophy & Founder -->
     
 
+    <!-- Fact-check receipts. #receipts-summary and #receipts-list (if present) are filled by the receipts block at the end of site.js from claims.json; the <noscript> fallback links to the raw file. -->
     <section class="receipts-section" id="receipts">
       <span class="matrix-label">Fact-check log</span>
       <h2 class="matrix-title">Every factual statement here is checked.</h2>
@@ -1202,6 +1282,7 @@
       <noscript><p class="receipts-lede">JavaScript is off. Read the full list in <a href="claims.json">claims.json</a>.</p></noscript>
     </section>
 
+    <!-- About: founder statement and background card. Static text. -->
     <section class="monolith" id="about">
       <div>
         <h2>Why TWU exists.</h2>
@@ -1229,6 +1310,8 @@
     </section>
 
     <!-- Direct Contact Monolith -->
+
+    <!-- Contact. #contact-email-btn / #email-label are controlled by openDirectChannel() in site.js; the address is also written in the visible label and in the HTML comment below for people reading the source. -->
     <section class="contact-monolith" id="contact">
       <h2>Start a conversation.</h2>
       <p>Have an operational bottleneck or a software bill you want to cut? Email us. Private AI work starts as a small, scoped pilot.</p>
@@ -1251,6 +1334,7 @@
     <!-- Footer -->
     </main>
 
+    <!-- Footer links. (The <main> element closes just above it.) -->
     <footer>
       <div>© 2026 TWU LLC. Tech Wizards United · Mesa, Arizona</div>
       <ul class="footer-links">
@@ -1269,6 +1353,7 @@
 
   </div>
 
+  <!-- Deferred so it runs after parsing; it needs #space-canvas, which exists by then. -->
   <script src="assets/site.js" defer></script>
 </body>
 </html>

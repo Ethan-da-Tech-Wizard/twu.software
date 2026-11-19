@@ -22,10 +22,17 @@
 //      the script safely replaces `window.location` with `about:blank`, preventing
 //      render of sensitive UI elements inside the hostile framing environment.
 // ==============================================================================
+
+// Wrapped in an IIFE so no globals are created. This file is loaded synchronously in <head> of index.html, before the page paints.
+// Limits: it only protects visitors whose browser runs JavaScript; GitHub Pages cannot send the X-Frame-Options / CSP frame-ancestors headers that would be the stronger defence.
 (function() {
+  // When the page is the top-level document, window.top and window.self are the same object. If they differ, we are inside an iframe or frame.
   if (window.top !== window.self) {
     try {
+      // Try to navigate the outer page to this page's own address, which breaks us out of the frame. replace() (not assign) keeps the framing page out of the back-button history.
       window.top.location.replace(window.self.location.href);
+
+    // Browsers throw a SecurityError when a cross-origin parent forbids this (for example a sandboxed iframe). Fail closed: blank this frame so nothing is shown inside the hostile page.
     } catch (e) {
       window.location.replace('about:blank');
     }
