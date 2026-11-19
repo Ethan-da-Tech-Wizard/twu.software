@@ -746,12 +746,14 @@
       const z2 = y1 * sinP + z1 * cosP;
 
       // Rotation about the view axis (roll) on the x/y plane.
-      // Known issue: sinR is computed with Math.cos, so rotation is a scaled "shear" rather than a true
-      // rotation. The roll angle is tiny (about 0.04 rad), so the visual effect is subtle; left untouched in
-      // this comment-only pass.
+      // sinR must be Math.sin: the 2D rotation below only preserves distances when (cosR, sinR) is a unit
+      // vector. The previous code used Math.cos for both, so for the tiny roll angle (about 0.04 rad) it
+      // behaved as cosR ~ sinR ~ 1, i.e. a fixed ~45 degree turn plus a ~1.41x scale on the whole sky rather
+      // than the intended slight twist. Fixing it changes how the sky is framed (constellations sit at their
+      // designed positions), not just a subtle shear.
       // 3. Precession Wave (Roll)
       const cosR = Math.cos(celestialRoll);
-      const sinR = Math.cos(celestialRoll);
+      const sinR = Math.sin(celestialRoll);
       const x3 = x2 * cosR - y2 * sinR;
       const y3 = x2 * sinR + y2 * cosR;
       const z3 = z2;
