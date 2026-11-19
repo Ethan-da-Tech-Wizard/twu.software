@@ -5,7 +5,9 @@
   Purpose: Transparency verification registry and factual claims documentation portal.
 ============================================================================== -->
 
-<!-- How this file fits the site: full public fact-check log linked from the homepage. It is a static shell; assets/factcheck.js (loaded deferred at the end) fetches /claims.json and fills #fc-summary and #fc-groups. Without JavaScript the <noscript> note points to the raw JSON.
+<!-- How this file fits the site: full public fact-check log linked from the homepage. It is a static shell;
+     assets/factcheck.js (loaded deferred at the end) fetches /claims.json and fills #fc-summary and
+     #fc-groups. Without JavaScript the <noscript> note points to the raw JSON.
      Edit claims in claims.json, not here.
 -->
 <!DOCTYPE html>
@@ -16,7 +18,8 @@
 <title>Fact-check log | TWU LLC</title>
 <meta name="description" content="Every factual statement published on twu.software, matched by a script to company records. Statements that cannot be matched are labeled, never hidden.">
 
-<!-- CSP: scripts only from this origin (factcheck.js), no inline scripts. connect-src falls back to default-src 'self', which is what allows fetching /claims.json. -->
+<!-- CSP: scripts only from this origin (factcheck.js), no inline scripts. connect-src falls back to
+     default-src 'self', which is what allows fetching /claims.json. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="index, follow">
@@ -26,14 +29,18 @@
 <!-- Inline CSS for the shared page chrome plus the .fc-* classes used by factcheck.js. -->
 <style>
 
-/* Design tokens shared by the site's secondary pages (same palette as index.html): --bg page, --card panel surface, --gold/--gold2 accent, --em emerald (good), --rose (warning/no), --muted/text colours and font stacks. This page keeps its own copy because the CSP forbids loading other files' variables and the pages are meant to work standalone. */
+/* Design tokens shared by the site's secondary pages (same palette as index.html): --bg page, --card panel
+   surface, --gold/--gold2 accent, --em emerald (good), --rose (warning/no), --muted/text colours and font
+   stacks. This page keeps its own copy because the CSP forbids loading other files' variables and the pages
+   are meant to work standalone. */
 :root{--bg:#06080f;--card:rgba(15,22,36,.82);--gold:#f59e0b;--gold2:#fbbf24;--em:#34d399;--rose:#fb7185;--text:#f8fafc;--muted:#a8b3c5;--sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 
 /* Reset: no default margins, border-box sizing. */
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 
-/* Dark page with the same three soft radial glows (gold, emerald, rose) as the homepage, but without the animated canvas, so these pages stay lightweight and script-free where possible. */
+/* Dark page with the same three soft radial glows (gold, emerald, rose) as the homepage, but without the
+   animated canvas, so these pages stay lightweight and script-free where possible. */
 body{background-color:var(--bg);background-image:radial-gradient(ellipse 70% 45% at 50% -10%,rgba(245,158,11,.15),transparent 70%),radial-gradient(ellipse 50% 40% at 85% 45%,rgba(16,185,129,.11),transparent 70%),radial-gradient(ellipse 55% 45% at 15% 65%,rgba(244,63,94,.11),transparent 70%);background-repeat:no-repeat;color:var(--muted);font:16px/1.7 var(--sans);min-height:100vh}
 a{color:var(--gold2);text-underline-offset:3px}a:hover{color:#fef08a}
 
@@ -63,7 +70,8 @@ h2{color:#fff;font-size:1.25rem;margin:0 0 10px}
 .eyebrow{font:600 .75rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--rose);margin-bottom:10px}
 .lede{font-size:1.08rem;margin-bottom:26px}
 
-/* Content panels. Modifier .ok (emerald border) and .no (rose border) mark permitted versus restricted content; the adjacent-sibling rules add spacing only between stacked blocks. */
+/* Content panels. Modifier .ok (emerald border) and .no (rose border) mark permitted versus restricted
+   content; the adjacent-sibling rules add spacing only between stacked blocks. */
 .panel{background:var(--card);border:1px solid rgba(245,158,11,.18);border-radius:10px;padding:22px 24px;margin-bottom:16px;box-shadow:0 8px 30px rgba(0,0,0,.35)}
 .panel.ok{border-color:rgba(52,211,153,.35)}.panel.no{border-color:rgba(251,113,133,.35)}
 .panel p+p,.panel ul+p,.panel p+ul{margin-top:10px}
@@ -80,10 +88,13 @@ footer{border-top:1px solid rgba(245,158,11,.2);padding:22px 0;font-size:.85rem;
 /* Phones (560px and below): tighter nav spacing and panel padding. */
 @media(max-width:560px){nav a{margin:0 14px 0 0}.panel{padding:18px}}
 
-/* Print: white background, black text, hide navigation, skip link and buttons, avoid page breaks inside panels. */
+/* Print: white background, black text, hide navigation, skip link and buttons, avoid page breaks inside
+   panels. */
 @media print{body{background:#fff;color:#000}header,footer nav,.skip,.btn{display:none}.panel{background:#fff;border:1px solid #999;box-shadow:none;break-inside:avoid}h1,h2,.brand{color:#000}a{color:#000;text-decoration:underline}code{background:none;color:#000}.eyebrow,.meta,footer{color:#333}}
 
-/* Log layout: .fc-summary is the rounded status pill; .fc-group / .fc-list hold one topic each (created by factcheck.js); .fc-tag is the coloured status label (.ok matched, .plan plan, .warn everything else); .src is the source reference line under each claim. */
+/* Log layout: .fc-summary is the rounded status pill; .fc-group / .fc-list hold one topic each (created by
+   factcheck.js); .fc-tag is the coloured status label (.ok matched, .plan plan, .warn everything else); .src
+   is the source reference line under each claim. */
 
 .fc-summary{display:inline-block;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;color:#34d399;border:1px solid rgba(52,211,153,.35);border-radius:999px;padding:6px 14px;margin:6px 0 18px}
 .fc-group h2{margin-top:26px}

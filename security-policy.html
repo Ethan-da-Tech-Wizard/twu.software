@@ -5,7 +5,9 @@
   Purpose: Vulnerability disclosure program, security guidelines, and reporting contacts.
 ============================================================================== -->
 
-<!-- How this file fits the site: the human-readable vulnerability disclosure policy for twu.software only, linked from the homepage footer; the machine-readable pointer is /.well-known/security.txt. Static, script-free page. -->
+<!-- How this file fits the site: the human-readable vulnerability disclosure policy for twu.software only,
+     linked from the homepage footer; the machine-readable pointer is /.well-known/security.txt. Static,
+     script-free page. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,14 +26,18 @@
 <!-- Inline CSS (copy of the shared secondary-page styles). -->
 <style>
 
-/* Design tokens shared by the site's secondary pages (same palette as index.html): --bg page, --card panel surface, --gold/--gold2 accent, --em emerald (good), --rose (warning/no), --muted/text colours and font stacks. This page keeps its own copy because the CSP forbids loading other files' variables and the pages are meant to work standalone. */
+/* Design tokens shared by the site's secondary pages (same palette as index.html): --bg page, --card panel
+   surface, --gold/--gold2 accent, --em emerald (good), --rose (warning/no), --muted/text colours and font
+   stacks. This page keeps its own copy because the CSP forbids loading other files' variables and the pages
+   are meant to work standalone. */
 :root{--bg:#06080f;--card:rgba(15,22,36,.82);--gold:#f59e0b;--gold2:#fbbf24;--em:#34d399;--rose:#fb7185;--text:#f8fafc;--muted:#a8b3c5;--sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 
 /* Reset: no default margins, border-box sizing. */
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 
-/* Dark page with the same three soft radial glows (gold, emerald, rose) as the homepage, but without the animated canvas, so these pages stay lightweight and script-free where possible. */
+/* Dark page with the same three soft radial glows (gold, emerald, rose) as the homepage, but without the
+   animated canvas, so these pages stay lightweight and script-free where possible. */
 body{background-color:var(--bg);background-image:radial-gradient(ellipse 70% 45% at 50% -10%,rgba(245,158,11,.15),transparent 70%),radial-gradient(ellipse 50% 40% at 85% 45%,rgba(16,185,129,.11),transparent 70%),radial-gradient(ellipse 55% 45% at 15% 65%,rgba(244,63,94,.11),transparent 70%);background-repeat:no-repeat;color:var(--muted);font:16px/1.7 var(--sans);min-height:100vh}
 a{color:var(--gold2);text-underline-offset:3px}a:hover{color:#fef08a}
 
@@ -61,7 +67,8 @@ h2{color:#fff;font-size:1.25rem;margin:0 0 10px}
 .eyebrow{font:600 .75rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--rose);margin-bottom:10px}
 .lede{font-size:1.08rem;margin-bottom:26px}
 
-/* Content panels. Modifier .ok (emerald border) and .no (rose border) mark permitted versus restricted content; the adjacent-sibling rules add spacing only between stacked blocks. */
+/* Content panels. Modifier .ok (emerald border) and .no (rose border) mark permitted versus restricted
+   content; the adjacent-sibling rules add spacing only between stacked blocks. */
 .panel{background:var(--card);border:1px solid rgba(245,158,11,.18);border-radius:10px;padding:22px 24px;margin-bottom:16px;box-shadow:0 8px 30px rgba(0,0,0,.35)}
 .panel.ok{border-color:rgba(52,211,153,.35)}.panel.no{border-color:rgba(251,113,133,.35)}
 .panel p+p,.panel ul+p,.panel p+ul{margin-top:10px}
@@ -78,7 +85,8 @@ footer{border-top:1px solid rgba(245,158,11,.2);padding:22px 0;font-size:.85rem;
 /* Phones (560px and below): tighter nav spacing and panel padding. */
 @media(max-width:560px){nav a{margin:0 14px 0 0}.panel{padding:18px}}
 
-/* Print: white background, black text, hide navigation, skip link and buttons, avoid page breaks inside panels. */
+/* Print: white background, black text, hide navigation, skip link and buttons, avoid page breaks inside
+   panels. */
 @media print{body{background:#fff;color:#000}header,footer nav,.skip,.btn{display:none}.panel{background:#fff;border:1px solid #999;box-shadow:none;break-inside:avoid}h1,h2,.brand{color:#000}a{color:#000;text-decoration:underline}code{background:none;color:#000}.eyebrow,.meta,footer{color:#333}}
 </style>
 </head>
@@ -94,7 +102,8 @@ footer{border-top:1px solid rgba(245,158,11,.2);padding:22px 0;font-size:.85rem;
 <p class="lede">This policy covers the twu.software website only. It is not a statement about customer systems, a security program, or any certification.</p>
 <p class="lede">If you find a security problem with our website, we would like to hear about it. This is a small static site, and we handle reports personally.</p>
 
-<!-- Panels in reading order: how to report, scope (.ok), out of scope (.no), safe harbour, and what to expect. Keep the response promise (5 business days) consistent with any other place it is published. -->
+<!-- Panels in reading order: how to report, scope (.ok), out of scope (.no), safe harbour, and what to
+     expect. Keep the response promise (5 business days) consistent with any other place it is published. -->
 <section class="panel"><h2>How to report</h2>
 <p>Email <a href="mailto:ethan@twu.software">ethan@twu.software</a> with a description of the issue, the affected URL, and steps to reproduce it. Please do not include anyone else's personal data. Our contact details are also published in <a href="/.well-known/security.txt">security.txt</a>.</p></section>
 <section class="panel ok"><h2>In scope</h2>

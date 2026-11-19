@@ -6,8 +6,11 @@
            Outlines core competencies, past performance metrics, and technological proficiencies.
 ============================================================================== -->
 
-<!-- How this file fits the site: the full HTML version of the company capability statement (the PDF TWU_LLC_Capability_Statement.pdf is the printable edition of the same facts). Linked from the homepage footer. Facts here (identifiers, NAICS codes, dates) are covered by claims.json, so change both together.
-     Static, script-free page (the CSP allows only same-origin scripts, and none are loaded). The print block at the end of the CSS makes it print compactly on a few pages.
+<!-- How this file fits the site: the full HTML version of the company capability statement (the PDF
+     TWU_LLC_Capability_Statement.pdf is the printable edition of the same facts). Linked from the homepage
+     footer. Facts here (identifiers, NAICS codes, dates) are covered by claims.json, so change both together.
+     Static, script-free page (the CSP allows only same-origin scripts, and none are loaded). The print block
+     at the end of the CSS makes it print compactly on a few pages.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -23,10 +26,12 @@
 <meta name="robots" content="index, follow">
 <link rel="icon" type="image/svg+xml" href="/assets/twu-logo.svg">
 
-<!-- All CSS inline. Different from the other secondary pages: wider column (1080px) and sticky header, table styles for the NAICS list, key/value grid for the company snapshot. -->
+<!-- All CSS inline. Different from the other secondary pages: wider column (1080px) and sticky header, table
+     styles for the NAICS list, key/value grid for the company snapshot. -->
 <style>
 
-<!-- Tokens: --panel/--card translucent surfaces, --gold, --em (emerald) and --rose with -b (bright) and -l (light) variants, --dim muted text, --display/--body/--mono font stacks. -->
+<!-- Tokens: --panel/--card translucent surfaces, --gold, --em (emerald) and --rose with -b (bright) and -l
+     (light) variants, --dim muted text, --display/--body/--mono font stacks. -->
 :root{--bg:#06080f;--panel:rgba(10,15,26,.78);--card:rgba(15,22,36,.85);--border:rgba(245,158,11,.22);--gold:#f59e0b;--gold-b:#fbbf24;--gold-l:#fef08a;--em:#10b981;--em-b:#34d399;--rose:#f43f5e;--rose-b:#fb7185;--rose-l:#fda4af;--text:#f8fafc;--muted:#b6c2d4;--dim:#94a3b8;--display:"Space Grotesk","Avenir Next","Segoe UI",system-ui,-apple-system,sans-serif;--body:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -88,7 +93,8 @@ thead th{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;lette
 tbody th{color:var(--em-b);white-space:nowrap}
 td{color:var(--text)}
 
-<!-- Tables: wrapped in .tablewrap for horizontal scrolling on phones; header cells are monospaced small caps; .sr hides the caption visually but keeps it for screen readers. -->
+<!-- Tables: wrapped in .tablewrap for horizontal scrolling on phones; header cells are monospaced small caps;
+     .sr hides the caption visually but keeps it for screen readers. -->
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .list{list-style:none}
 .list li{position:relative;padding:8px 0 8px 26px;color:var(--text)}
@@ -96,7 +102,8 @@ td{color:var(--text)}
 .links{margin-top:10px}
 .foot{padding:20px 24px 48px;text-align:center;font-size:.88rem;color:var(--dim);border-top:1px solid rgba(148,163,184,.2);margin-top:20px}
 
-<!-- Small-screen adjustments, reduced-motion preference, and print rules (hide nav, black on white, avoid splitting cards/rows across pages). -->
+<!-- Small-screen adjustments, reduced-motion preference, and print rules (hide nav, black on white, avoid
+     splitting cards/rows across pages). -->
 @media (max-width:480px){th,td{padding:10px 8px}td{overflow-wrap:anywhere}table{font-size:.88rem}}
 @media (max-width:720px){.wrap{padding:0 16px}.hero{padding:44px 0 24px}.panel{padding:20px 16px}nav{gap:14px}nav a:not(.btn-nav){font-size:.85rem}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -139,7 +146,8 @@ a{color:#000;text-decoration:underline}
     <p class="lead">Tech Wizards United is an Arizona limited liability company based in Mesa, Arizona. This page lists registered identifiers, registered NAICS and PSC codes, what the company offers, and what it has not yet done.</p>
   </section>
 
-  <!-- Company snapshot: definition list (dl/dt/dd) of registration facts, SAM.gov identifiers and contact. Values with class mono are identifiers shown in monospace. -->
+  <!-- Company snapshot: definition list (dl/dt/dd) of registration facts, SAM.gov identifiers and contact.
+       Values with class mono are identifiers shown in monospace. -->
   <section class="panel" aria-labelledby="h-snap">
     <h2 id="h-snap">Company snapshot</h2>
     <dl class="kvgrid">

@@ -49,10 +49,12 @@
     // with easing (see renderCanvas) so the parallax glides instead of jittering. -1000 means "no pointer".
     let mouse = { x: -1000, y: -1000, targetX: 0, targetY: 0, smoothX: 0, smoothY: 0 };
 
-    // Timestamp of the previous frame, used to compute dt (seconds) so animation speed does not depend on frame rate.
+    // Timestamp of the previous frame, used to compute dt (seconds) so animation speed does not depend on
+    // frame rate.
     let lastTime = performance.now();
 
-    // Scroll offset in px; shifts the projection centre up slightly so the sky drifts as the page scrolls (parallax).
+    // Scroll offset in px; shifts the projection centre up slightly so the sky drifts as the page scrolls
+    // (parallax).
     let scrollY = window.scrollY || 0;
 
     // Camera orientation of the virtual celestial sphere, in radians. Yaw spins it around the vertical axis
@@ -97,7 +99,8 @@
 
     // Builds the constellation catalogue. Called at startup and on every resize because positions depend on
     // getSphereRadius(). Returns an array of
-    // {id, season, center:{x,y,z,ux,uy,uz,vx,vy,vz}, stars:[{dx,dy,dz,r,pulse,color,name}], lines:[[a,b]...], label, desc}.
+    // {id, season, center:{x,y,z,ux,uy,uz,vx,vy,vz}, stars:[{dx,dy,dz,r,pulse,color,name}], lines:[[a,b]...],
+    // label, desc}.
     // `center` is the point on the sphere; stars are offsets (dx,dy) in the tangent plane at that point,
     // which keeps each constellation's shape flat and undistorted no matter where it sits.
     // `lines` are pairs of star indexes to join; `r` is star radius in px; `pulse` is the initial twinkle
@@ -109,7 +112,8 @@
 
       // Spherical to Cartesian. thetaDeg = longitude (rotation about the vertical axis), phiDeg = latitude
       // (+ above the equator). Returns the 3D point plus two orthogonal unit tangent vectors:
-      // u points along increasing longitude, v along increasing latitude. y is negated because canvas y grows downward.
+      // u points along increasing longitude, v along increasing latitude. y is negated because canvas y grows
+      // downward.
       function sc(thetaDeg, phiDeg, r = R) {
         // Degrees to radians.
         const t = (thetaDeg * Math.PI) / 180;
@@ -131,8 +135,10 @@
         };
       }
 
-      // Table format for every constellation below: `center: sc(longitude, latitude)` places it on the sphere;
-      // each star is {dx,dy: tangent-plane offset in px at sphere radius, dz: unused (always 0), r: base radius px,
+      // Table format for every constellation below: `center: sc(longitude, latitude)` places it on the
+      // sphere;
+      // each star is {dx,dy: tangent-plane offset in px at sphere radius, dz: unused (always 0), r: base
+      // radius px,
       // pulse: initial twinkle phase in radians, color: STAR_COLORS index, name: real star name};
       // `lines` indexes into `stars`. The shapes are stylised, not astronomically exact.
       // The season tag only selects the line colour in renderCanvas (summer amber, autumn rose,
@@ -591,7 +597,8 @@
       return constellations;
     }
 
-    // Module-level catalogue used by renderCanvas(); rebuilt by initCanvas() because star coordinates depend on the sphere radius.
+    // Module-level catalogue used by renderCanvas(); rebuilt by initCanvas() because star coordinates depend
+    // on the sphere radius.
     let CONSTELLATIONS_3D = build3DConstellations();
 
     // ============================================================================
@@ -612,13 +619,15 @@
         const theta = u * 2.0 * Math.PI;
         const phi = (v - 0.5) * Math.PI * 0.98;
 
-        // Radius jitter 0.45R..1.35R gives depth variety, which project3D() turns into size/brightness differences.
+        // Radius jitter 0.45R..1.35R gives depth variety, which project3D() turns into size/brightness
+        // differences.
         const r = R * (0.45 + Math.random() * 0.90);
         ambient3D.push({
           x: r * Math.cos(phi) * Math.sin(theta),
           y: r * Math.sin(phi),
           z: r * Math.cos(phi) * Math.cos(theta),
-          // r = base dot radius px; pulse = twinkle phase (radians, 0..2*PI); pulseSpeed = phase increment per frame.
+          // r = base dot radius px; pulse = twinkle phase (radians, 0..2*PI); pulseSpeed = phase increment
+          // per frame.
           r: 0.65 + Math.random() * 2.2,
           pulse: Math.random() * 6.28,
           pulseSpeed: 0.008 + Math.random() * 0.024,
@@ -634,7 +643,8 @@
     // Active shooting stars; at most 3 exist at once.
     let meteors = [];
 
-    // Randomly spawns a meteor: roughly a 2.4% chance per frame (about once every 0.7 s at 60 fps) while fewer than 3 exist.
+    // Randomly spawns a meteor: roughly a 2.4% chance per frame (about once every 0.7 s at 60 fps) while
+    // fewer than 3 exist.
     // Meteors start in the top 40% of the screen and travel down-right at about 45 degrees (+/- 10 degrees).
     function maybeSpawnMeteor() {
       if (Math.random() < 0.024 && meteors.length < 3) {
@@ -649,7 +659,8 @@
           y: startY,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-          // Tail length in px; life runs 1 -> 0 (opacity) and `decay` is the life lost per second (0.75..1.3, i.e. about 1 second of visibility).
+          // Tail length in px; life runs 1 -> 0 (opacity) and `decay` is the life lost per second (0.75..1.3,
+          // i.e. about 1 second of visibility).
           length: 90 + Math.random() * 120,
           life: 1.0,
           decay: 0.75 + Math.random() * 0.55
@@ -657,7 +668,8 @@
       }
     }
 
-    // Advances and draws every meteor. @param {number} dt seconds since the previous frame (clamped to 0.05 s by the caller).
+    // Advances and draws every meteor. @param {number} dt seconds since the previous frame (clamped to 0.05 s
+    // by the caller).
     // Iterates backwards so splice() while looping does not skip entries.
     function updateAndDrawMeteors(dt) {
       maybeSpawnMeteor();
@@ -667,17 +679,20 @@
         m.y += m.vy * dt;
         m.life -= m.decay * dt;
 
-        // Remove spent meteors, or ones that already left the screen to the right/bottom (200px margin so tails finish drawing).
+        // Remove spent meteors, or ones that already left the screen to the right/bottom (200px margin so
+        // tails finish drawing).
         if (m.life <= 0 || m.x > width + 200 || m.y > height + 200) {
           meteors.splice(i, 1);
           continue;
         }
 
-        // Tail end = head minus velocity direction scaled by length (600 is roughly the average speed, so the tail length reads as `length` px).
+        // Tail end = head minus velocity direction scaled by length (600 is roughly the average speed, so the
+        // tail length reads as `length` px).
         const tailX = m.x - (m.vx / 600) * m.length;
         const tailY = m.y - (m.vy / 600) * m.length;
 
-        // Gradient along the streak: transparent amber tail -> emerald -> rose -> white head, all scaled by remaining life for fade-out.
+        // Gradient along the streak: transparent amber tail -> emerald -> rose -> white head, all scaled by
+        // remaining life for fade-out.
         const grad = ctx.createLinearGradient(tailX, tailY, m.x, m.y);
         grad.addColorStop(0, 'rgba(251, 191, 36, 0)');
         grad.addColorStop(0.40, `rgba(16, 185, 129, ${m.life * 0.65})`);
@@ -710,7 +725,8 @@
     // too close to the camera (depth < 80) to project safely.
     // Reads: celestialYaw/Pitch/Roll and the smoothed mouse for parallax.
     function project3D(x, y, z, cx, cy) {
-      // Focal length in px: larger = flatter perspective. 850 is tuned by eye for a wide, gentle fisheye look.
+      // Focal length in px: larger = flatter perspective. 850 is tuned by eye for a wide, gentle fisheye
+      // look.
       const fov = 850;
 
       // Rotation about the vertical axis (yaw) with the standard 2D rotation formula on the x/z plane.
@@ -731,7 +747,8 @@
 
       // Rotation about the view axis (roll) on the x/y plane.
       // Known issue: sinR is computed with Math.cos, so rotation is a scaled "shear" rather than a true
-      // rotation. The roll angle is tiny (about 0.04 rad), so the visual effect is subtle; left untouched in this comment-only pass.
+      // rotation. The roll angle is tiny (about 0.04 rad), so the visual effect is subtle; left untouched in
+      // this comment-only pass.
       // 3. Precession Wave (Roll)
       const cosR = Math.cos(celestialRoll);
       const sinR = Math.cos(celestialRoll);
@@ -739,7 +756,8 @@
       const y3 = x2 * sinR + y2 * cosR;
       const z3 = z2;
 
-      // Mouse parallax: shift by 4% of the pointer's offset from the centre, so near and far stars move equally in screen space.
+      // Mouse parallax: shift by 4% of the pointer's offset from the centre, so near and far stars move
+      // equally in screen space.
       // 4. Subtle Parallax Gyro
       const gyroX = x3 + (mouse.smoothX - cx) * 0.04;
       const gyroY = y3 + (mouse.smoothY - cy) * 0.04;
@@ -755,19 +773,23 @@
 
       const R = getSphereRadius();
 
-      // Fade alpha: points on the far side of the sphere (small z) fade to 0, near ones reach 1; clamp keeps it in range.
+      // Fade alpha: points on the far side of the sphere (small z) fade to 0, near ones reach 1; clamp keeps
+      // it in range.
       const alpha = Math.max(0.0, Math.min(1.0, (z3 + R * 0.45) / (R * 1.05)));
 
       return { sx, sy, scale, alpha, z: z3 };
     }
 
-    // Honour the OS "reduce motion" setting: scheduleFrame() stops the animation loop when it is on (a single static frame is still drawn).
+    // Honour the OS "reduce motion" setting: scheduleFrame() stops the animation loop when it is on (a single
+    // static frame is still drawn).
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    // True while a requestAnimationFrame callback is pending; prevents stacking multiple loops (for example on resize + visibility change).
+    // True while a requestAnimationFrame callback is pending; prevents stacking multiple loops (for example
+    // on resize + visibility change).
     let frameRequested = false;
 
-    // Queue the next frame unless one is already queued, the tab is hidden (saves battery) or motion is reduced.
+    // Queue the next frame unless one is already queued, the tab is hidden (saves battery) or motion is
+    // reduced.
     function scheduleFrame() {
       if (frameRequested || document.hidden || reduceMotion.matches) return;
       frameRequested = true;
@@ -777,7 +799,8 @@
     // Restart the paused loop when the tab becomes visible again.
     document.addEventListener('visibilitychange', function () { if (!document.hidden) scheduleFrame(); });
 
-    // (Re)initialises the canvas: matches its pixel size to the window (which also clears it), then rebuilds the
+    // (Re)initialises the canvas: matches its pixel size to the window (which also clears it), then rebuilds
+    // the
     // sphere-radius-dependent star data. Called once at startup and from the resize listener.
     function initCanvas() {
       width = canvas.width = window.innerWidth;
@@ -791,19 +814,22 @@
     // ============================================================================
 
     // One animation frame. Called by scheduleFrame() through requestAnimationFrame (and once at startup).
-    // Order of work: update timing and camera -> paint faint nebula gradients -> draw ambient stars -> meteors ->
+    // Order of work: update timing and camera -> paint faint nebula gradients -> draw ambient stars ->
+    // meteors ->
     // constellations -> queue the next frame.
     function renderCanvas() {
       ctx.clearRect(0, 0, width, height);
 
       const now = performance.now();
 
-      // dt in seconds, capped at 0.05 so a long pause (background tab, debugger) does not make everything jump.
+      // dt in seconds, capped at 0.05 so a long pause (background tab, debugger) does not make everything
+      // jump.
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
       timeAccumulator += dt;
 
-      // Camera yaw: ease toward targetYaw if one is set (shortest way round via the +/-PI wrap), otherwise drift slowly.
+      // Camera yaw: ease toward targetYaw if one is set (shortest way round via the +/-PI wrap), otherwise
+      // drift slowly.
       // Camera Yaw Progression (Continuous Flow: Summer -> Autumn -> Winter -> Spring -> Summer)
       if (targetYaw !== null) {
         let diff = targetYaw - celestialYaw;
@@ -812,7 +838,8 @@
         while (diff < -Math.PI) diff += Math.PI * 2;
         while (diff > Math.PI) diff -= Math.PI * 2;
 
-        // Proportional easing: closes 4.2*dt of the remaining angle each frame; snaps and releases when within 0.005 rad.
+        // Proportional easing: closes 4.2*dt of the remaining angle each frame; snaps and releases when
+        // within 0.005 rad.
         celestialYaw += diff * 4.2 * dt;
         if (Math.abs(diff) < 0.005) {
           celestialYaw = targetYaw;
@@ -831,15 +858,18 @@
       celestialPitch = 0.36 + 0.04 * Math.sin(timeAccumulator * 0.015) + 0.02 * Math.cos(timeAccumulator * 0.008);
       celestialRoll = 0.04 * Math.cos(timeAccumulator * 0.012) + 0.015 * Math.sin(timeAccumulator * 0.006);
 
-      // Exponential smoothing: move 5% of the remaining distance each frame, so the parallax follows the cursor lazily.
+      // Exponential smoothing: move 5% of the remaining distance each frame, so the parallax follows the
+      // cursor lazily.
       mouse.smoothX += (mouse.targetX - mouse.smoothX) * 0.05;
       mouse.smoothY += (mouse.targetY - mouse.smoothY) * 0.05;
 
-      // Projection centre: horizontally centred; 36% down the viewport and lifted by 8% of the scroll offset for page-scroll parallax.
+      // Projection centre: horizontally centred; 36% down the viewport and lifted by 8% of the scroll offset
+      // for page-scroll parallax.
       const cx = width * 0.5;
       const cy = height * 0.36 - (scrollY * 0.08);
 
-      // Three huge, very faint radial gradients (alpha about 0.03) in amber, emerald and rose give the sky a coloured haze;
+      // Three huge, very faint radial gradients (alpha about 0.03) in amber, emerald and rose give the sky a
+      // coloured haze;
       // offsets from (cx,cy) place them left-above, right-below and below the centre.
       // Deep Cosmic Gold, Emerald & Rose Nebula Background Gases
       const bgGrad1 = ctx.createRadialGradient(cx - 360, cy - 180, 100, cx - 360, cy - 180, 950);
@@ -875,12 +905,14 @@
         if (proj && proj.alpha > 0.03) {
           const color = STAR_COLORS[a.color];
 
-          // twinkle scales size (0.4 peak-to-peak); starAlpha pulses brightness. min/max clamps keep stars visible but never fully opaque.
+          // twinkle scales size (0.4 peak-to-peak); starAlpha pulses brightness. min/max clamps keep stars
+          // visible but never fully opaque.
           const twinkle = 0.80 + 0.40 * Math.sin(a.pulse);
           const r = Math.max(0.85, a.r * proj.scale * twinkle);
           const starAlpha = Math.min(0.96, proj.alpha * (0.62 + 0.38 * Math.sin(a.pulse)));
 
-          // Only larger, bright stars get a soft glow (radial gradient 3.4x the radius); small ones would just cost fill-rate.
+          // Only larger, bright stars get a soft glow (radial gradient 3.4x the radius); small ones would
+          // just cost fill-rate.
           // Soft radiant corona for prominent background stars
           if (r > 1.8 && starAlpha > 0.25) {
             const glowR = r * 3.4;
@@ -919,14 +951,16 @@
         for (let s = 0; s < con.stars.length; s++) {
           const star = con.stars[s];
 
-          // Star world position = centre + dx*u + dy*v (u, v are the tangent vectors from sc()); dz is unused.
+          // Star world position = centre + dx*u + dy*v (u, v are the tangent vectors from sc()); dz is
+          // unused.
           const wx = center.x + star.dx * center.ux + star.dy * center.vx;
           const wy = center.y + star.dx * center.uy + star.dy * center.vy;
           const wz = center.z + star.dx * center.uz + star.dy * center.vz;
 
           const proj = project3D(wx, wy, wz, cx, cy);
           if (proj) {
-            // Per-star twinkle phase advances 0.02 rad per frame (frame-based, unlike dt-based motion); wrap at 2*PI.
+            // Per-star twinkle phase advances 0.02 rad per frame (frame-based, unlike dt-based motion); wrap
+            // at 2*PI.
             star.pulse += 0.020;
             if (star.pulse > 6.28) star.pulse -= 6.28;
 
@@ -937,7 +971,8 @@
           }
         }
 
-        // A constellation is drawn only if at most one of its stars failed to project; otherwise its shape would be broken.
+        // A constellation is drawn only if at most one of its stars failed to project; otherwise its shape
+        // would be broken.
         // Must have all or virtually all stars projected
         if (projectedStars.length < con.stars.length - 1 || projectedStars.length < 2) continue;
         avgZ /= projectedStars.length;
@@ -986,7 +1021,8 @@
           }
         }
 
-        // Stars: radius pulses between 85% and 115%; stars with base radius >= 3.2 get a larger two-stop corona.
+        // Stars: radius pulses between 85% and 115%; stars with base radius >= 3.2 get a larger two-stop
+        // corona.
         // Draw Constellation Stars (Pure, spherical luminous coronas)
         for (let s = 0; s < projectedStars.length; s++) {
           const p = projectedStars[s];
@@ -1021,7 +1057,8 @@
       scheduleFrame();
     }
 
-    // Window listeners: resize rebuilds the canvas (and redraws once under reduced motion, because no loop is running);
+    // Window listeners: resize rebuilds the canvas (and redraws once under reduced motion, because no loop is
+    // running);
     // scroll and mouse only record values that renderCanvas() reads on its next frame.
     // Window & Viewport Listeners
     window.addEventListener('resize', function () { initCanvas(); if (reduceMotion.matches) renderCanvas(); });
@@ -1037,8 +1074,10 @@
       mouse.targetY = -1000;
     });
 
-    // Contact e-mail helper. The address is assembled from two pieces at run time, so it is not present as a plain
-    // "mailto:" in the page source (a light defence against crawlers that harvest addresses; it does not stop determined scrapers).
+    // Contact e-mail helper. The address is assembled from two pieces at run time, so it is not present as a
+    // plain
+    // "mailto:" in the page source (a light defence against crawlers that harvest addresses; it does not stop
+    // determined scrapers).
     // Direct channel controller (builds the mailto address at click time)
     function getCleanAddress() {
       const u = 'ethan';
@@ -1046,7 +1085,8 @@
       return u + '@' + d;
     }
 
-    // Sets the real mailto: href on hover/focus/touch so right-click "Copy address" and middle-click work, without publishing it earlier.
+    // Sets the real mailto: href on hover/focus/touch so right-click "Copy address" and middle-click work,
+    // without publishing it earlier.
     // Idempotent via data-primed.
     function primeEmailLink(el) {
       if (el && !el.dataset.primed) {
@@ -1055,8 +1095,10 @@
       }
     }
 
-    // Click handler for the contact button: copies the address to the clipboard (best effort; errors ignored because
-    // clipboard access may be denied), shows a temporary confirmation in #email-label for 3.2 s, then opens the mail client.
+    // Click handler for the contact button: copies the address to the clipboard (best effort; errors ignored
+    // because
+    // clipboard access may be denied), shows a temporary confirmation in #email-label for 3.2 s, then opens
+    // the mail client.
     // @param {Event} [e] Click event; its default action is cancelled so we control the navigation.
     function openDirectChannel(e) {
       if (e) e.preventDefault();
@@ -1082,7 +1124,8 @@
     // tag = small caption in the inspector; title/body = heading and paragraph; badges = chips;
     // specs = four key/value rows where `color` (cyan|green|violet) picks the CSS colour class;
     // actionText/actionLink = the button label and in-page anchor. Order must match the data-index values of
-    // the .cap-item elements in index.html. Wording here is public marketing copy; claims in it are tracked in claims.json.
+    // the .cap-item elements in index.html. Wording here is public marketing copy; claims in it are tracked
+    // in claims.json.
     const CAPABILITIES = [
       {
         channel: "Custom software",
@@ -1151,8 +1194,10 @@
 
     // Shows capability `index` in the inspector panel and updates the tab buttons.
     // @param {number} index Position in CAPABILITIES; out-of-range values are ignored.
-    // Side effects: toggles .active / aria-pressed and the "VIEWING"/"OFFERED" pill on every .cap-item, and rewrites
-    // the inspector DOM (#ws-module-id, #ins-tag, #ins-title, #ins-body, #ins-badges, #ins-specs, #ins-action).
+    // Side effects: toggles .active / aria-pressed and the "VIEWING"/"OFFERED" pill on every .cap-item, and
+    // rewrites
+    // the inspector DOM (#ws-module-id, #ins-tag, #ins-title, #ins-body, #ins-badges, #ins-specs,
+    // #ins-action).
     function selectCapability(index) {
       if (index < 0 || index >= CAPABILITIES.length) return;
       currentCapabilityIndex = index;
@@ -1170,7 +1215,8 @@
         }
       });
 
-      // The inspector fades via the .swapping CSS class; the content is swapped 120 ms later, while it is faded out, to avoid a visible flash.
+      // The inspector fades via the .swapping CSS class; the content is swapped 120 ms later, while it is
+      // faded out, to avoid a visible flash.
       const pane = document.getElementById('inspector');
       if (pane) {
         pane.classList.add('swapping');
@@ -1184,7 +1230,8 @@
           const insSpecs = document.getElementById('ins-specs');
           const insAction = document.getElementById('ins-action');
 
-          // Text fields use textContent (safe). Badges and specs use innerHTML, which is acceptable only because the data above
+          // Text fields use textContent (safe). Badges and specs use innerHTML, which is acceptable only
+          // because the data above
           // is hard-coded in this file; never build these from user input.
           if (wsModId) wsModId.textContent = cap.channel;
           if (insTag) insTag.textContent = cap.tag;
@@ -1219,8 +1266,10 @@
     initCanvas();
     renderCanvas();
 
-    // Event wiring is done here instead of inline onclick attributes so the page's Content-Security-Policy can forbid inline scripts.
-    // Each .cap-item is made keyboard accessible: focusable (tabindex 0), announced as a toggle button (role + aria-pressed),
+    // Event wiring is done here instead of inline onclick attributes so the page's Content-Security-Policy
+    // can forbid inline scripts.
+    // Each .cap-item is made keyboard accessible: focusable (tabindex 0), announced as a toggle button (role
+    // + aria-pressed),
     // activated by click, Enter or Space.
     // ---- Event wiring (no inline handlers; keeps the CSP free of 'unsafe-inline' for scripts)
     document.querySelectorAll('.cap-item').forEach(function (el) {
@@ -1229,8 +1278,10 @@
       el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectCapability(parseInt(el.dataset.index, 10)); } });
     });
 
-    // Contact button wiring. mouseenter/focus/touchstart prime the mailto: href early (touch devices have no hover);
-    // `passive: true` tells the browser this touch handler never calls preventDefault, keeping scrolling smooth.
+    // Contact button wiring. mouseenter/focus/touchstart prime the mailto: href early (touch devices have no
+    // hover);
+    // `passive: true` tells the browser this touch handler never calls preventDefault, keeping scrolling
+    // smooth.
     (function () {
       var btn = document.getElementById('contact-email-btn');
       if (!btn) return;
@@ -1247,9 +1298,12 @@
       if (!sum) return;
       var LABEL = { VERIFIED: 'MATCHED', PLAN: 'PLAN', UNVERIFIED: 'NOT YET MATCHED', FAILED: 'FAILED', STALE: 'STALE' };
 
-      // Fetch claims.json (no-cache so a fresh audit is always shown). On success write the summary line and list
-      // up to the first 80 claims, each with a status tag (MATCHED, PLAN, ...), topic, claim text and source; on failure show a link to the raw file.
-      // The tag class is ok for VERIFIED, plan for PLAN and warn for everything else (so unverified, failed and stale look cautionary).
+      // Fetch claims.json (no-cache so a fresh audit is always shown). On success write the summary line and
+      // list
+      // up to the first 80 claims, each with a status tag (MATCHED, PLAN, ...), topic, claim text and source;
+      // on failure show a link to the raw file.
+      // The tag class is ok for VERIFIED, plan for PLAN and warn for everything else (so unverified, failed
+      // and stale look cautionary).
       // All text goes through textContent / createTextNode, so claims cannot inject HTML.
       fetch('claims.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (d) {
         sum.textContent = d.verified + ' published statements matched to company records by script (a fact can appear on more than one page) · ' + d.plan + ' plans (not claims of fact) · ' + d.unverified + ' not yet matched to a record, labeled · ' + d.failed + ' failed · checked ' + d.checked;
