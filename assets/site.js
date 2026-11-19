@@ -21,20 +21,20 @@
 // Inputs: DOM elements named in each section; claims.json {verified, plan, unverified, failed,
 // checked, claims:[{claim, status, topic, source}]}. Output: canvas pixels and DOM text only.
 // Known limits: the code assumes #space-canvas exists (it would throw on a page without it, so it is
-// only included by index.html); header text elsewhere in this file mentions 31 constellations and
-// 950 particles, but the code currently builds 29 constellations and 1,850 stardust particles.
+// only included by index.html). The sky holds 29 constellations and 1,850 stardust particles; the counts
+// quoted in the comments are checked against the code by tests/test_header_counts.js.
 // Test: open index.html through any static server and check the console is clean; with
 // prefers-reduced-motion enabled only a single still frame is drawn.
 
     // ============================================================================
     // CELESTIAL OBSERVATORY ENGINE (TWU LLC)
     // ============================================================================
-    // • 31 Authentic Multi-Star Geometric Constellations flowing in seasonal sequence:
+    // • 29 Authentic Multi-Star Geometric Constellations flowing in seasonal sequence:
     //     SUMMER -> AUTUMN -> WINTER -> SPRING -> SUMMER ...
     // • Random initial season on each page load.
     // • 100% UNLABELED IN SKY: Pure, serene celestial aesthetics (no text labels in sky).
     // • Interactive HUD card appears ONLY when user hovers directly over an asterism.
-    // • 950 ambient multi-depth twinkling stardust particles with full scroll parallax.
+    // • 1,850 ambient multi-depth twinkling stardust particles with full scroll parallax.
     // • Defense-grade Sanctuary Shield: mathematically 0.0 opacity across hero text and cards.
     // • Shooting stars / cosmic meteors engine.
 
@@ -93,7 +93,7 @@
     }
 
     // ============================================================================
-    // 31 CANONICAL GEOMETRIC CONSTELLATIONS (Ordered by Astronomical Seasons)
+    // 29 CANONICAL GEOMETRIC CONSTELLATIONS (Ordered by Astronomical Seasons)
     // Summer (225°-305°) -> Autumn (315°-35°) -> Winter (45°-125°) -> Spring (135°-215°)
     // ============================================================================
 
@@ -940,7 +940,7 @@
 
       // Layer 3: constellations. For each one: project all stars, skip it if (almost) any star is behind the
       // camera, fade it by average depth, then draw its lines and its stars.
-      // 3. Render 31 Flowing Geometric Constellations (Seamless Behind All Menus & Sections)
+      // 3. Render 29 Flowing Geometric Constellations (Seamless Behind All Menus & Sections)
       for (let c = 0; c < CONSTELLATIONS_3D.length; c++) {
         const con = CONSTELLATIONS_3D[c];
         const center = con.center;
